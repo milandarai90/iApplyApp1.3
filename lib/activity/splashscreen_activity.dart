@@ -27,6 +27,14 @@ class splashscreen_state extends State<splashscreen_activity>{
     return Scaffold(
       body: Container(
         color: Theme.of(context).primaryColor,
+        child: Container(
+          child: Center(
+              child: SizedBox(
+                width: double.maxFinite,
+                  height: double.maxFinite,
+                  child: Image.asset("assets/images/iapply_logo.png"))
+          ),
+        ),
       ),
     );
   }

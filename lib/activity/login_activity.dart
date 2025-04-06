@@ -10,7 +10,15 @@ class login_activity extends StatefulWidget{
 class loginactivity_state extends State<login_activity>{
   @override
   Widget build(BuildContext context) {
-   return Scaffold();
+   return Scaffold(
+     body: Container(
+       color: Theme.of(context).primaryColor,
+       child: Column(
+         children: [
+         ],
+       ),
+     ),
+   );
   }
 
 }
