@@ -20,7 +20,7 @@ class splashscreen_state extends State<splashscreen_activity>{
   void initState() {
     super.initState();
    Timer(Duration(seconds: 3),(){
-     Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => home_activity()));
+     Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => login_activity()));
    });
   }
   @override
