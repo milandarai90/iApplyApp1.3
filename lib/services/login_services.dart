@@ -11,11 +11,12 @@ class login_api_services{
     final response = await http.post(uri, headers: {'Accept': 'application/json'},
       body: requestFromServer.toServer(),
     );
-    // print("Response status: ${response.statusCode}");
-    // print("Response body: ${response.body}");
     if(response.statusCode == 200 || response.statusCode ==400){
       return login_response.fromServer(json.decode(response.body));
-    }else
+    }else if (response.statusCode == 400 || response.statusCode == 401) {
+      return login_response.fromServer(json.decode(response.body));
+      }
+    else
       {
         throw Exception('failed to login');
       }

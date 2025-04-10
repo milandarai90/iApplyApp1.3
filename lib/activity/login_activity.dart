@@ -164,7 +164,8 @@ class loginactivity_state extends State<login_activity>{
                                            requestData.password = password_controller.text;
                                            login_api_services login_services =login_api_services();
                                            login_response responseFromServer = await login_services.login(requestData);
-                                           if(responseFromServer.token != null && responseFromServer.token.isNotEmpty){
+                                           // if(responseFromServer.token != null && responseFromServer.token.isNotEmpty){
+                                            if(responseFromServer.token?.isNotEmpty == true){
                                              ScaffoldMessenger.of(context).showSnackBar(
                                                SnackBar(content: Center(child: Text("login successful")),
                                                backgroundColor: Colors.green,),
@@ -176,12 +177,13 @@ class loginactivity_state extends State<login_activity>{
                                                  MaterialPageRoute(builder: (context) => home_activity()),
                                                );
                                            }
-                                         }else{
-                                             ScaffoldMessenger.of(context).showSnackBar(
-                                               SnackBar(content: Center(child: Text("Login failed. Please check your credentials.")), backgroundColor: Colors.red),
-                                             );
-                                           }
-    }
+                                         }
+                                           else{
+                                              ScaffoldMessenger.of(context).showSnackBar(
+                                                  SnackBar(content: Center(child: Text("Login Failed. Incorrect Email or Password.")),
+                                                    backgroundColor: Colors.red));
+                                            }
+                                          }
                                        },
                                            style: ElevatedButton.styleFrom(
                                              backgroundColor: Theme.of(context).primaryColor,
