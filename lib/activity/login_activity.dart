@@ -1,6 +1,8 @@
 
 import 'package:flutter/material.dart';
 import 'package:iapply3/activity/home_activity.dart';
+import 'package:iapply3/models/login_model.dart';
+import 'package:iapply3/services/login_services.dart';
 // import 'home_activity.dart';
 
 class login_activity extends StatefulWidget{
@@ -18,6 +20,15 @@ class loginactivity_state extends State<login_activity>{
   final form_key = GlobalKey<FormState>();
   final scaffold_key = GlobalKey<ScaffoldState>();
   bool hidden_password = true;
+  late final login_request requestData ;
+
+  @override
+  void initState() {
+    requestData = login_request(email: "", password: "");
+    super.initState();
+  }
+
+
   @override
   Widget build(BuildContext context) {
    return Scaffold(
@@ -147,8 +158,30 @@ class loginactivity_state extends State<login_activity>{
                                    SizedBox(
                                      width: 100,
                                        height: 40,
-                                       child: ElevatedButton(onPressed: (){
-                                         // Navigator.push(context, MaterialPageRoute(builder: (context) => home_activity()));
+                                       child: ElevatedButton(onPressed: ()async{
+                                         if(form_key.currentState!.validate()){
+                                           requestData.email = email_controller.text;
+                                           requestData.password = password_controller.text;
+                                           login_api_services login_services =login_api_services();
+                                           login_response responseFromServer = await login_services.login(requestData);
+                                           if(responseFromServer.token != null && responseFromServer.token.isNotEmpty){
+                                             ScaffoldMessenger.of(context).showSnackBar(
+                                               SnackBar(content: Center(child: Text("login successful")),
+                                               backgroundColor: Colors.green,),
+                                             );
+                                             await Future.delayed(Duration(seconds: 2));
+                                             if(context.mounted){
+                                               Navigator.pushReplacement(
+                                                 context,
+                                                 MaterialPageRoute(builder: (context) => home_activity()),
+                                               );
+                                           }
+                                         }else{
+                                             ScaffoldMessenger.of(context).showSnackBar(
+                                               SnackBar(content: Center(child: Text("Login failed. Please check your credentials.")), backgroundColor: Colors.red),
+                                             );
+                                           }
+    }
                                        },
                                            style: ElevatedButton.styleFrom(
                                              backgroundColor: Theme.of(context).primaryColor,

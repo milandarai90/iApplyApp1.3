@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:iapply3/activity/home_activity.dart';
 import 'package:iapply3/activity/login_activity.dart';
 
 
@@ -19,7 +20,7 @@ class splashscreen_state extends State<splashscreen_activity>{
   void initState() {
     super.initState();
    Timer(Duration(seconds: 3),(){
-     Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => login_activity()));
+     Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => home_activity()));
    });
   }
   @override
