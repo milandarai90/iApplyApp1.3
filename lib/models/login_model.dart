@@ -2,7 +2,7 @@ class UserModel{
   final FullName name;
   late final String email;
   late final String gender;
-  // late final String location;
+
 
   UserModel(this.name, {required this.gender ,  required this.email});
 }
