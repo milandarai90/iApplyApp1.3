@@ -32,6 +32,13 @@ class bottom_navbar_activity_state extends State<bottom_navbar_activity>{
       ),
     bottomNavigationBar: Container(
 
+      decoration: BoxDecoration(
+        boxShadow: [BoxShadow(
+          color: Colors.black54,blurRadius: 2,
+          offset: Offset(0, -2)
+        )]
+      ),
+
       child: BottomNavigationBar(
         onTap: (index){
         setState(() {
@@ -48,7 +55,7 @@ class bottom_navbar_activity_state extends State<bottom_navbar_activity>{
         BottomNavigationBarItem(icon: Icon(Icons.home_outlined,color: Theme.of(context).canvasColor,),label:  "Home",),
         BottomNavigationBarItem(icon: Icon(Icons.people_alt_outlined,color: Theme.of(context).canvasColor),label:  "Users"),
         BottomNavigationBarItem(icon: Icon(Icons.notifications_outlined,color: Theme.of(context).canvasColor),label:  "Notification"),
-        BottomNavigationBarItem(icon: Icon(Icons.menu,color: Theme.of(context).canvasColor),label:  "Menu"),
+        BottomNavigationBarItem(icon: Icon(Icons.menu_rounded,color: Theme.of(context).canvasColor),label:  "Menu"),
         BottomNavigationBarItem(icon: Icon(Icons.person,color: Theme.of(context).canvasColor),label:  "Profile"),
 
       ]),

@@ -24,7 +24,7 @@ class myclass_activity_state extends State<myclass_activity>{
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Theme.of(context).primaryColor,
-        title: Text("Data",style: TextStyle(color: Theme.of(context).canvasColor))),
+        title: Text("Testing Users",style: TextStyle(color: Theme.of(context).canvasColor))),
       body: ListView.builder(
           itemCount : users.length,
           itemBuilder: (context ,index){
