@@ -1,5 +1,6 @@
 
 import 'package:flutter/material.dart';
+import 'package:iapply3/activity/bottom_navbar_activity.dart';
 import 'package:iapply3/activity/home_activity.dart';
 import 'package:iapply3/models/login_model.dart';
 import 'package:iapply3/services/login_services.dart';
@@ -174,7 +175,7 @@ class loginactivity_state extends State<login_activity>{
                                              if(context.mounted){
                                                Navigator.pushReplacement(
                                                  context,
-                                                 MaterialPageRoute(builder: (context) => home_activity()),
+                                                 MaterialPageRoute(builder: (context) => bottom_navbar_activity()),
                                                );
                                            }
                                          }
