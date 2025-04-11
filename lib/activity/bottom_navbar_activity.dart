@@ -4,6 +4,7 @@ import 'package:iapply3/activity/home_activity.dart';
 import 'package:iapply3/activity/menu_activity.dart';
 import 'package:iapply3/activity/myclass_activity.dart';
 import 'package:iapply3/activity/notification_activity.dart';
+import 'package:iapply3/activity/profile_activity.dart';
 
 class bottom_navbar_activity extends StatefulWidget{
   const bottom_navbar_activity({super.key});
@@ -18,13 +19,17 @@ class bottom_navbar_activity_state extends State<bottom_navbar_activity>{
     home_activity(),
     myclass_activity(),
     notification_activity(),
-    menu_activity()
+    menu_activity(),
+    profile_activity()
   ];
   int myIndex = 0;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: WidgetList[myIndex],
+      body: IndexedStack(
+        index: myIndex,
+        children: WidgetList,
+      ),
     bottomNavigationBar: Container(
 
       child: BottomNavigationBar(
@@ -44,6 +49,8 @@ class bottom_navbar_activity_state extends State<bottom_navbar_activity>{
         BottomNavigationBarItem(icon: Icon(Icons.people_alt_outlined,color: Theme.of(context).canvasColor),label:  "Users"),
         BottomNavigationBarItem(icon: Icon(Icons.notifications_outlined,color: Theme.of(context).canvasColor),label:  "Notification"),
         BottomNavigationBarItem(icon: Icon(Icons.menu,color: Theme.of(context).canvasColor),label:  "Menu"),
+        BottomNavigationBarItem(icon: Icon(Icons.person,color: Theme.of(context).canvasColor),label:  "Profile"),
+
       ]),
     ),
     );
