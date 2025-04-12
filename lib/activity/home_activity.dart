@@ -3,7 +3,8 @@ import 'package:iapply3/models/consultancy_details_model.dart';
 import 'package:iapply3/services/home_data_services.dart';
 
 class home_activity extends StatefulWidget{
-  const home_activity({super.key});
+  final String token;
+  const home_activity({super.key, required this.token});
   @override
   State<StatefulWidget> createState() {
     return home_activity_state();
@@ -11,31 +12,35 @@ class home_activity extends StatefulWidget{
 }
 class home_activity_state extends State<home_activity>{
 
+  List<Consultancy_details_model>consultancy_details_list =[];
+  int myIndex =0;
+  bool isLoading =true;
 
   @override
   void initState() {
     super.initState();
     fetch_consultancy_details();
+    print("Token received: ${widget.token}");
+
   }
 
-  List<Consultancy_details_model>consultancy_details_list =[];
-  int myIndex =0;
-  bool isLoading =true;
-
-  void fetch_consultancy_details()async{
-    try{
+  void fetch_consultancy_details() async {
+    try {
       consultancy_data_services service = consultancy_data_services();
-      consultancy_details_list =await service.consultancy_details();
+      final response = await service.consultancy_details(widget.token);
+      print('Response: $response');
+      consultancy_details_list = response;
       setState(() {
         isLoading = false;
       });
-    }catch(e){
-print("Error : $e");
-setState(() {
-  isLoading = false;
-});
+    } catch (e) {
+      print("Error: $e");
+      setState(() {
+        isLoading = false;
+      });
     }
   }
+
 
 
   @override
@@ -130,7 +135,15 @@ setState(() {
                           padding: const EdgeInsets.only(top: 20,bottom: 18),
                           child: SingleChildScrollView(
                             scrollDirection: Axis.horizontal,
-                            child:isLoading? Center(child: CircularProgressIndicator()):
+                            child:isLoading? Center(child: CircularProgressIndicator())
+                                : consultancy_details_list.isEmpty
+                                ? Center(
+                              child: Text(
+                                "No consultancies found",
+                                style: TextStyle(color: Colors.red),
+                              ),
+                            )
+                                :
                             Row(
                               children: consultancy_details_list.map((consultancy){
                                 return  Padding(
@@ -156,6 +169,15 @@ setState(() {
                                                 borderRadius: BorderRadius.circular(16),
                                                 color: Colors.blueAccent
                                             ),
+                                            child: consultancy.photo == null
+                                                ? const Center(
+                                              child: Icon(
+                                                Icons.image_not_supported,
+                                                size: 48,
+                                                color: Colors.grey,
+                                              ),
+                                            )
+                                                : null,
                                           ),
                                           const SizedBox(height: 15),
                                           SizedBox(

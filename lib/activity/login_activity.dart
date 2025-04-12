@@ -16,6 +16,8 @@ class login_activity extends StatefulWidget{
 }
 class loginactivity_state extends State<login_activity>{
 
+  late String auth_token;
+
   final email_controller = TextEditingController();
   final password_controller = TextEditingController();
   final form_key = GlobalKey<FormState>();
@@ -163,10 +165,12 @@ class loginactivity_state extends State<login_activity>{
                                          if(form_key.currentState!.validate()){
                                            requestData.email = email_controller.text;
                                            requestData.password = password_controller.text;
+
                                            login_api_services login_services =login_api_services();
                                            login_response responseFromServer = await login_services.login(requestData);
                                            // if(responseFromServer.token != null && responseFromServer.token.isNotEmpty){
                                             if(responseFromServer.token?.isNotEmpty == true){
+                                              auth_token =responseFromServer.token!;
                                              ScaffoldMessenger.of(context).showSnackBar(
                                                SnackBar(content: Center(child: Text("login successful")),
                                                backgroundColor: Colors.green,),
@@ -175,7 +179,7 @@ class loginactivity_state extends State<login_activity>{
                                              if(context.mounted){
                                                Navigator.pushReplacement(
                                                  context,
-                                                 MaterialPageRoute(builder: (context) => bottom_navbar_activity()),
+                                                 MaterialPageRoute(builder: (context) => bottom_navbar_activity(token: auth_token,)),
                                                );
                                            }
                                          }

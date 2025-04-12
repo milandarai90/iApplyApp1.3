@@ -7,7 +7,8 @@ import 'package:iapply3/activity/notification_activity.dart';
 import 'package:iapply3/activity/profile_activity.dart';
 
 class bottom_navbar_activity extends StatefulWidget{
-  const bottom_navbar_activity({super.key});
+  final String token;
+  const bottom_navbar_activity({super.key,required this.token});
   @override
   State<StatefulWidget> createState() {
    return bottom_navbar_activity_state();
@@ -15,13 +16,19 @@ class bottom_navbar_activity extends StatefulWidget{
 }
 
 class bottom_navbar_activity_state extends State<bottom_navbar_activity>{
-  List<Widget>WidgetList = [
-    home_activity(),
-    myclass_activity(),
-    notification_activity(),
-    menu_activity(),
-    profile_activity()
-  ];
+  late List<Widget>WidgetList;
+ @override
+  void initState() {
+   super.initState();
+   WidgetList = [
+     home_activity(token : widget.token),
+     myclass_activity(),
+     notification_activity(),
+     menu_activity(),
+     profile_activity()
+   ];
+
+  }
   int myIndex = 0;
   @override
   Widget build(BuildContext context) {
