@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:iapply3/models/consultancy_details_model.dart';
+import 'package:iapply3/services/home_data_services.dart';
 
 class home_activity extends StatefulWidget{
   const home_activity({super.key});
@@ -8,9 +10,32 @@ class home_activity extends StatefulWidget{
   }
 }
 class home_activity_state extends State<home_activity>{
-  int myIndex =0;
-  FocusNode focusNode = FocusNode();
 
+
+  @override
+  void initState() {
+    super.initState();
+    fetch_consultancy_details();
+  }
+
+  List<Consultancy_details_model>consultancy_details_list =[];
+  int myIndex =0;
+  bool isLoading =true;
+
+  void fetch_consultancy_details()async{
+    try{
+      consultancy_data_services service = consultancy_data_services();
+      consultancy_details_list =await service.consultancy_details();
+      setState(() {
+        isLoading = false;
+      });
+    }catch(e){
+print("Error : $e");
+setState(() {
+  isLoading = false;
+});
+    }
+  }
 
 
   @override
@@ -105,124 +130,49 @@ class home_activity_state extends State<home_activity>{
                           padding: const EdgeInsets.only(top: 20,bottom: 18),
                           child: SingleChildScrollView(
                             scrollDirection: Axis.horizontal,
-                            child: Row(
-                              children: [
-                                Padding(
+                            child:isLoading? Center(child: CircularProgressIndicator()):
+                            Row(
+                              children: consultancy_details_list.map((consultancy){
+                                return  Padding(
                                   padding: const EdgeInsets.only(right: 8,top: 10, bottom: 10,left: 28),
-                                  child: SizedBox(
-                                    width: 90,
-                                    child: Column(
-                                      crossAxisAlignment: CrossAxisAlignment.start,
-                                      children: [
-                                        Container(
-                                          height: 90,
-                                          width: 90,
-                                          decoration: BoxDecoration(
-                                              borderRadius: BorderRadius.circular(16),
-                                              color: Colors.blueAccent
-                                          ),
-                                        ),
-                                        const SizedBox(height: 15),
-                                        SizedBox(
-                                          child: Align(
-                                            alignment: Alignment.center,
-                                            child: Text('Consultancy Name',style: TextStyle(color: Theme.of(context).primaryColor,),
-                                              overflow: TextOverflow.ellipsis,
+                                  child: GestureDetector(
+                                    onTap: (){
+                                      //
+                                    },
+                                    child: SizedBox(
+                                      width: 90,
+                                      child: Column(
+                                        crossAxisAlignment: CrossAxisAlignment.start,
+                                        children: [
+                                          Container(
+                                            height: 90,
+                                            width: 90,
+                                            decoration: BoxDecoration(
+                                              image: consultancy.photo != null ?
+                                              DecorationImage(
+                                                  image: NetworkImage(consultancy.photo!),
+                                                    fit: BoxFit.cover,
+                                              ) : null,
+                                                borderRadius: BorderRadius.circular(16),
+                                                color: Colors.blueAccent
                                             ),
                                           ),
-                                        ),
-                                      ],
-                                    ),
-                                  ),
-                                ),
-                                Padding(
-                                  padding: const EdgeInsets.only(right: 8,top: 10, bottom: 10,left: 28),
-                                  child: SizedBox(
-                                    width: 90,
-                                    child: Column(
-                                      crossAxisAlignment: CrossAxisAlignment.start,
-                                      children: [
-                                        Container(
-                                          height: 90,
-                                          width: 90,
-                                          decoration: BoxDecoration(
-                                              borderRadius: BorderRadius.circular(16),
-                                              color: Colors.blueAccent
-                                          ),
-                                        ),
-                                        const SizedBox(height: 15),
-                                        SizedBox(
-                                          // height:20,
-                                          child: Align(
-                                            alignment: Alignment.center,
-                                            child: Text('Consultancy Name',style: TextStyle(color: Theme.of(context).primaryColor,),
-                                              overflow: TextOverflow.ellipsis,
+                                          const SizedBox(height: 15),
+                                          SizedBox(
+                                            child: Align(
+                                              alignment: Alignment.center,
+                                              child: Text(consultancy.name ,style: TextStyle(color: Theme.of(context).primaryColor,),
+                                                overflow: TextOverflow.ellipsis,
+                                              ),
                                             ),
                                           ),
-                                        ),
-                                      ],
+                                        ],
+                                      ),
                                     ),
                                   ),
-                                ),
-                                Padding(
-                                  padding: const EdgeInsets.only(right: 8,top: 10, bottom: 10,left: 28),
-                                  child: SizedBox(
-                                    width: 90,
-                                    child: Column(
-                                      crossAxisAlignment: CrossAxisAlignment.start,
-                                      children: [
-                                        Container(
-                                          height: 90,
-                                          width: 90,
-                                          decoration: BoxDecoration(
-                                              borderRadius: BorderRadius.circular(16),
-                                              color: Colors.blueAccent
-                                          ),
-                                        ),
-                                        const SizedBox(height: 15),
-                                        SizedBox(
-                                          // height:20,
-                                          child: Align(
-                                            alignment: Alignment.center,
-                                            child: Text('Consultancy Name',style: TextStyle(color: Theme.of(context).primaryColor,),
-                                              overflow: TextOverflow.ellipsis,
-                                            ),
-                                          ),
-                                        ),
-                                      ],
-                                    ),
-                                  ),
-                                ),
-                                Padding(
-                                  padding: const EdgeInsets.only(right: 8,top: 10, bottom: 10,left: 28),
-                                  child: SizedBox(
-                                    width: 90,
-                                    child: Column(
-                                      crossAxisAlignment: CrossAxisAlignment.start,
-                                      children: [
-                                        Container(
-                                          height: 90,
-                                          width: 90,
-                                          decoration: BoxDecoration(
-                                              borderRadius: BorderRadius.circular(16),
-                                              color: Colors.blueAccent
-                                          ),
-                                        ),
-                                        const SizedBox(height: 15),
-                                        SizedBox(
-                                          // height:20,
-                                          child: Align(
-                                            alignment: Alignment.center,
-                                            child: Text('Consultancy Name',style: TextStyle(color: Theme.of(context).primaryColor,),
-                                              overflow: TextOverflow.ellipsis,
-                                            ),
-                                          ),
-                                        ),
-                                      ],
-                                    ),
-                                  ),
-                                ),
-                              ],
+                                );
+                              }).toList()
+
                             ),
                           ),
                         ),

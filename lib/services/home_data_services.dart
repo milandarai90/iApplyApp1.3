@@ -5,10 +5,11 @@ import 'package:iapply3/models/consultancy_details_model.dart';
 
 class consultancy_data_services {
   Future<List<Consultancy_details_model>>consultancy_details() async {
-    final url = "https://iapply.techenfield.com/api/home/";
+    final url = "https://iapply.techenfield.com/api/home";
     final uri = Uri.parse(url);
-    final response_consultancy_data = await http.get(uri);
+    final response_consultancy_data = await http.get(uri,headers:{"Authorization": "Bearer YOUR_TOKEN", "Accept" : "application/json", "Content-Type" : "application/json"});
     if(response_consultancy_data.statusCode == 200){
+      print(response_consultancy_data.statusCode);
       final body = response_consultancy_data.body;
       final json = jsonDecode(body);
       final result= json["consultancy_details"] as List<dynamic>;
@@ -56,6 +57,7 @@ class consultancy_data_services {
       }).toList();
       return mapped_data;
     }else{
+      // print("Failed. Status Code: ${response_consultancy_data.statusCode}");
       throw Exception("Something went wrong");
     }
   }
