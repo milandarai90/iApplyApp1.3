@@ -28,7 +28,6 @@ class home_activity_state extends State<home_activity>{
     try {
       consultancy_data_services service = consultancy_data_services();
       final response = await service.consultancy_details(widget.token);
-      print('Response: $response');
       consultancy_details_list = response;
       setState(() {
         isLoading = false;
@@ -138,9 +137,11 @@ class home_activity_state extends State<home_activity>{
                             child:isLoading? Center(child: CircularProgressIndicator())
                                 : consultancy_details_list.isEmpty
                                 ? Center(
-                              child: Text(
-                                "No consultancies found",
-                                style: TextStyle(color: Colors.red),
+                              child: Center(
+                                child: Text(
+                                  "No consultancies found",
+                                  style: TextStyle(color: Colors.red),
+                                ),
                               ),
                             )
                                 :
@@ -161,6 +162,10 @@ class home_activity_state extends State<home_activity>{
                                             height: 90,
                                             width: 90,
                                             decoration: BoxDecoration(
+                                              border: Border.all(
+                                                color: Theme.of(context).primaryColor,
+                                                width: 1
+                                              ),
                                               image: consultancy.photo != null ?
                                               DecorationImage(
                                                   image: NetworkImage(consultancy.photo!),
