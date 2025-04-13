@@ -1,5 +1,5 @@
 class General_country_model {
-  final String? id;
+  final String id;
   final String? country;
   final String? map;
   final List<Guidelines_model> guidelines_data;

@@ -7,7 +7,6 @@ class login_api_services{
   Future<login_response> login (login_request requestFromServer)async{
     final url = "https://iapply.techenfield.com/api/login";
     final uri = Uri.parse(url);
-    // final response =await http.post(uri,body: requestFromServer.toServer());
     final response = await http.post(uri, headers: {'Accept': 'application/json'},
       body: requestFromServer.toServer(),
     );
