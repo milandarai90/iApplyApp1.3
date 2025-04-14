@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:iapply3/models/consultancy_details_model.dart';
+import 'package:iapply3/models/general_country_model.dart';
+import 'package:iapply3/services/general_country_services.dart';
 import 'package:iapply3/services/home_data_services.dart';
 
 class home_activity extends StatefulWidget{
@@ -13,15 +15,15 @@ class home_activity extends StatefulWidget{
 class home_activity_state extends State<home_activity>{
 
   List<Consultancy_details_model>consultancy_details_list =[];
+  List<General_country_model>general_country_list =[];
   int myIndex =0;
   bool isLoading =true;
 
   @override
   void initState() {
     super.initState();
+    fetch_general_country();
     fetch_consultancy_details();
-    print("Token received: ${widget.token}");
-
   }
 
   void fetch_consultancy_details() async {
@@ -36,6 +38,20 @@ class home_activity_state extends State<home_activity>{
       print("Error: $e");
       setState(() {
         isLoading = false;
+      });
+    }
+  }
+  void fetch_general_country()async{
+    try{
+      general_country_services country_service = general_country_services();
+      final response_country = await country_service.general_country_data(widget.token);
+      general_country_list = response_country;
+      setState(() {
+        isLoading = false;
+      });
+    }catch(e){
+      setState(() {
+        isLoading= false;
       });
     }
   }
@@ -134,7 +150,8 @@ class home_activity_state extends State<home_activity>{
                           padding: const EdgeInsets.only(top: 20,bottom: 18),
                           child: SingleChildScrollView(
                             scrollDirection: Axis.horizontal,
-                            child:isLoading? Center(child: CircularProgressIndicator())
+                            child:isLoading? Center(
+                                child: CircularProgressIndicator())
                                 : consultancy_details_list.isEmpty
                                 ? Center(
                               child: Center(
@@ -229,12 +246,19 @@ class home_activity_state extends State<home_activity>{
                         color: Theme.of(context).canvasColor,
                         width: double.infinity,
                         child: Padding(
+
                           padding: const EdgeInsets.only(top: 20,bottom: 18),
                           child: SingleChildScrollView(
                             scrollDirection: Axis.horizontal,
-                            child: Row(
-                              children: [
-                                Padding(
+                            child: isLoading? Center(child: CircularProgressIndicator(),)
+                            :general_country_list.isEmpty?Center(
+                              child: Center(
+                                child: Text("No country found" , style: TextStyle(color: Colors.red),),
+                              ),
+                            ):
+                            Row(
+                              children: general_country_list.map((country){
+                                return Padding(
                                   padding: const EdgeInsets.only(right: 8,top: 10, bottom: 10,left: 28),
                                   child: SizedBox(
                                     width: 90,
@@ -245,16 +269,31 @@ class home_activity_state extends State<home_activity>{
                                           height: 90,
                                           width: 90,
                                           decoration: BoxDecoration(
+                                            border: Border.all(
+                                              color: Theme.of(context).primaryColor,
+                                              width: 1
+                                            ),
                                               borderRadius: BorderRadius.circular(16),
-                                              color: Colors.blueAccent
+                                              color: Colors.blueAccent,
+                                            image: country.map !=null ?
+                                                DecorationImage(image: NetworkImage(country.map!),
+                                                  fit: BoxFit.cover
+                                                ):null,
                                           ),
+                                          child: country.map == null ? Center(
+                                            child: Icon(Icons.image_not_supported,
+                                              size: 48,
+                                              color: Colors.grey,
+                                            ),
+                                          ):null,
                                         ),
                                         const SizedBox(height: 15),
                                         SizedBox(
                                           // height:20,
                                           child: Align(
                                             alignment: Alignment.center,
-                                            child: Text('Consultancy Name',style: TextStyle(color: Theme.of(context).primaryColor,),
+                                            child: Text(country.country!,
+                                              style: TextStyle(color: Theme.of(context).primaryColor,),
                                               overflow: TextOverflow.ellipsis,
                                             ),
                                           ),
@@ -262,95 +301,8 @@ class home_activity_state extends State<home_activity>{
                                       ],
                                     ),
                                   ),
-                                ),
-                                Padding(
-                                  padding: const EdgeInsets.only(right: 8,top: 10, bottom: 10,left: 28),
-                                  child: SizedBox(
-                                    width: 90,
-                                    child: Column(
-                                      crossAxisAlignment: CrossAxisAlignment.start,
-                                      children: [
-                                        Container(
-                                          height: 90,
-                                          width: 90,
-                                          decoration: BoxDecoration(
-                                              borderRadius: BorderRadius.circular(16),
-                                              color: Colors.blueAccent
-                                          ),
-                                        ),
-                                        const SizedBox(height: 15),
-                                        SizedBox(
-                                          // height:20,
-                                          child: Align(
-                                            alignment: Alignment.center,
-                                            child: Text('Consultancy Name',style: TextStyle(color: Theme.of(context).primaryColor,),
-                                              overflow: TextOverflow.ellipsis,
-                                            ),
-                                          ),
-                                        ),
-                                      ],
-                                    ),
-                                  ),
-                                ),
-                                Padding(
-                                  padding: const EdgeInsets.only(right: 8,top: 10, bottom: 10,left: 28),
-                                  child: SizedBox(
-                                    width: 90,
-                                    child: Column(
-                                      crossAxisAlignment: CrossAxisAlignment.start,
-                                      children: [
-                                        Container(
-                                          height: 90,
-                                          width: 90,
-                                          decoration: BoxDecoration(
-                                              borderRadius: BorderRadius.circular(16),
-                                              color: Colors.blueAccent
-                                          ),
-                                        ),
-                                        const SizedBox(height: 15),
-                                        SizedBox(
-                                          // height:20,
-                                          child: Align(
-                                            alignment: Alignment.center,
-                                            child: Text('Consultancy Name',style: TextStyle(color: Theme.of(context).primaryColor,),
-                                              overflow: TextOverflow.ellipsis,
-                                            ),
-                                          ),
-                                        ),
-                                      ],
-                                    ),
-                                  ),
-                                ),
-                                Padding(
-                                  padding: const EdgeInsets.only(right: 8,top: 10, bottom: 10,left: 28),
-                                  child: SizedBox(
-                                    width: 90,
-                                    child: Column(
-                                      crossAxisAlignment: CrossAxisAlignment.start,
-                                      children: [
-                                        Container(
-                                          height: 90,
-                                          width: 90,
-                                          decoration: BoxDecoration(
-                                              borderRadius: BorderRadius.circular(16),
-                                              color: Colors.blueAccent
-                                          ),
-                                        ),
-                                        const SizedBox(height: 15),
-                                        SizedBox(
-                                          // height:20,
-                                          child: Align(
-                                            alignment: Alignment.center,
-                                            child: Text('Consultancy Name',style: TextStyle(color: Theme.of(context).primaryColor,),
-                                              overflow: TextOverflow.ellipsis,
-                                            ),
-                                          ),
-                                        ),
-                                      ],
-                                    ),
-                                  ),
-                                ),
-                              ],
+                                );
+                              }).toList(),
                             ),
                           ),
                         ),

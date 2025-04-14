@@ -26,8 +26,8 @@ class consultancy_data_services {
           final List<dynamic> courseList = branch["course_details"] ?? [];
 
           final List<Course_details_model> courses = courseList.map<Course_details_model>((course) {
-            final List<dynamic> classList = course["class_details"] ?? [];
 
+            final List<dynamic> classList = course["class_details"] ?? [];
             final List<Class_details_model> classes = classList.map<Class_details_model>((classMap) {
               return Class_details_model(
                 id: classMap["id"]?.toString() ?? '',
