@@ -151,16 +151,20 @@ class home_activity_state extends State<home_activity>{
                           child: SingleChildScrollView(
                             scrollDirection: Axis.horizontal,
                             child:isLoading? Center(
-                                child: CircularProgressIndicator())
+                                child: Center(child: CircularProgressIndicator()))
                                 : consultancy_details_list.isEmpty
-                                ? Center(
-                              child: Center(
-                                child: Text(
-                                  "No consultancies found",
-                                  style: TextStyle(color: Colors.red),
-                                ),
-                              ),
-                            )
+                                ? SizedBox(
+                              height: 90,
+                                  width: 90,
+                                  child: Center(
+                                                                child: Center(
+                                  child: Text(
+                                    "No consultancies found",
+                                    style: TextStyle(color: Colors.red),
+                                  ),
+                                                                ),
+                                                              ),
+                                )
                                 :
                             Row(
                               children: consultancy_details_list.map((consultancy){
@@ -177,7 +181,7 @@ class home_activity_state extends State<home_activity>{
                                         children: [
                                           Container(
                                             height: 90,
-                                            width: 90,
+                                            // width: 90,
                                             decoration: BoxDecoration(
                                               border: Border.all(
                                                 color: Theme.of(context).primaryColor,
@@ -251,9 +255,14 @@ class home_activity_state extends State<home_activity>{
                           child: SingleChildScrollView(
                             scrollDirection: Axis.horizontal,
                             child: isLoading? Center(child: CircularProgressIndicator(),)
-                            :general_country_list.isEmpty?Center(
-                              child: Center(
-                                child: Text("No country found" , style: TextStyle(color: Colors.red),),
+                            :general_country_list.isEmpty?
+                            Center(
+                              child: SizedBox(
+                                height: 90,
+                                // width: 90,
+                                child: Center(
+                                  child: Text("No country found" , style: TextStyle(color: Colors.red),),
+                                ),
                               ),
                             ):
                             Row(
