@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:iapply3/activity/consultancy_gridview_activity.dart';
 import 'package:iapply3/models/consultancy_details_model.dart';
 import 'package:iapply3/models/general_country_model.dart';
 import 'package:iapply3/services/general_country_services.dart';
@@ -137,7 +138,7 @@ class home_activity_state extends State<home_activity>{
                             children: [
                               Text('Top Consultancies',style: TextStyle(color: Theme.of(context).primaryColor,fontSize: 18,fontWeight: FontWeight.w500),),
                               TextButton(onPressed: (){
-                                // something
+                                Navigator.push(context, MaterialPageRoute(builder: (context) => consultancy_gridview_activity(token: widget.token)));
                               }, child: Text('More',style:TextStyle(color: hexToColor('40D900')) ,))
                             ],
                           ),
