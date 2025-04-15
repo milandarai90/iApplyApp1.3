@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:iapply3/activity/all_country_gridview_activity.dart';
 import 'package:iapply3/activity/consultancy_gridview_activity.dart';
 import 'package:iapply3/models/consultancy_details_model.dart';
 import 'package:iapply3/models/general_country_model.dart';
@@ -36,7 +37,6 @@ class home_activity_state extends State<home_activity>{
         isLoading = false;
       });
     } catch (e) {
-      print("Error: $e");
       setState(() {
         isLoading = false;
       });
@@ -168,7 +168,7 @@ class home_activity_state extends State<home_activity>{
                                 )
                                 :
                             Row(
-                              children: consultancy_details_list.map((consultancy){
+                              children: consultancy_details_list.take(5).map((consultancy){
                                 return  Padding(
                                   padding: const EdgeInsets.only(right: 8,top: 10, bottom: 10,left: 28),
                                   child: GestureDetector(
@@ -241,7 +241,7 @@ class home_activity_state extends State<home_activity>{
                             children: [
                               Text('Countries',style: TextStyle(color: Theme.of(context).primaryColor,fontSize: 18,fontWeight: FontWeight.w500),),
                               TextButton(onPressed: (){
-                                // something
+                                Navigator.push(context, MaterialPageRoute(builder: (context) => all_country_gridview_activity(token : widget.token)));
                               }, child: Text('More',style:TextStyle(color: hexToColor('40D900')) ,))
                             ],
                           ),
@@ -267,7 +267,7 @@ class home_activity_state extends State<home_activity>{
                               ),
                             ):
                             Row(
-                              children: general_country_list.map((country){
+                              children: general_country_list.reversed.take(5).toList().reversed.map((country){
                                 return Padding(
                                   padding: const EdgeInsets.only(right: 8,top: 10, bottom: 10,left: 28),
                                   child: SizedBox(

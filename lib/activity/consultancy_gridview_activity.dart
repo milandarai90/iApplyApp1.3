@@ -72,7 +72,7 @@ void initState() {
                 itemCount: allconsultancy_list.length,
                 gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                   crossAxisCount: 3,
-                  mainAxisSpacing: 20,
+                  mainAxisSpacing: 10,
                   crossAxisSpacing: 20,
                   childAspectRatio: 3/4,
                 ),
