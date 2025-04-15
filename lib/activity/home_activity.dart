@@ -28,7 +28,7 @@ class home_activity_state extends State<home_activity>{
     fetch_consultancy_details();
   }
 
-  void fetch_consultancy_details() async {
+  Future <void> fetch_consultancy_details() async {
     try {
       consultancy_data_services service = consultancy_data_services();
       final response = await service.consultancy_details(widget.token);
@@ -42,7 +42,7 @@ class home_activity_state extends State<home_activity>{
       });
     }
   }
-  void fetch_general_country()async{
+  Future <void> fetch_general_country()async{
     try{
       general_country_services country_service = general_country_services();
       final response_country = await country_service.general_country_data(widget.token);
@@ -69,112 +69,215 @@ class home_activity_state extends State<home_activity>{
         child: Container(
           color: Theme.of(context).primaryColor,
           child: SafeArea(
-            child: SingleChildScrollView(
-              child: Column(
-                children: [
-                  Padding(
-                    padding: const EdgeInsets.only(top: 30.0,bottom: 30 ,left: 25,right: 28 ),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text('Welcome',style: TextStyle(color: Colors.white,fontSize: 16,fontWeight: FontWeight.normal),),
-                            Text('@username',style: TextStyle(color: Colors.white,fontSize:28 ,fontWeight: FontWeight.w500),)
-                          ],
-                        ),
-                        SizedBox(
-                            height: 45,
-                            width: 116,
-                            child: Image.asset('assets/images/iapply_logo.png'))
-                      ],
-                    ),
-                  ),
-                  Container(
-                    color: hexToColor("7E6BA3"),
-                    child: Padding(
-                      padding: const EdgeInsets.only(left:25,right: 25,bottom: 10,top: 10 ),
-                      child: SizedBox(
-                        child: TextFormField(
-                          decoration: InputDecoration(
-                            // contentPadding: EdgeInsets.symmetric(vertical: 10),
-                              enabledBorder: OutlineInputBorder(
-                                borderSide: BorderSide(
-                                    color: Colors.white,
-                                    width: 3
-                                ),
-                                borderRadius: BorderRadius.circular(27),
-                              ),
-                              focusedBorder: OutlineInputBorder(
-                                  borderRadius: BorderRadius.circular(27),
-                                  borderSide: BorderSide(color: Theme.of(context).primaryColor,
-                                      width: 1
-                                  )
-                              ),
-                              hintText: "Search",
-                              hintStyle: TextStyle(color: Colors.grey,fontSize: 16,),
-                              fillColor: Colors.white,
-                              filled: true,
-                              suffixIcon: IconButton(onPressed: (){
-                              }, icon: Icon(Icons.search)),
-                              iconColor: Theme.of(context).primaryColor
-
-                          ),
-                        ),
-                      ),
-                    ),
-                  ),
-                  Column(
-                    children: [
-                      Container(height: 25,
-                        color: Theme.of(context).canvasColor,),
-                      Container(
-                        color: Colors.white,
-                        child: Padding(
-                          padding: const EdgeInsets.only(left: 25,right: 10),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            child: RefreshIndicator(
+              onRefresh: ()async{
+                setState(() {
+                  isLoading = true;
+                });
+                await fetch_general_country();
+                await fetch_consultancy_details();
+              },
+              child: SingleChildScrollView(
+                child: Column(
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.only(top: 30.0,bottom: 30 ,left: 25,right: 28 ),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              Text('Top Consultancies',style: TextStyle(color: Theme.of(context).primaryColor,fontSize: 18,fontWeight: FontWeight.w500),),
-                              TextButton(onPressed: (){
-                                Navigator.push(context, MaterialPageRoute(builder: (context) => consultancy_gridview_activity(token: widget.token)));
-                              }, child: Text('More',style:TextStyle(color: hexToColor('40D900')) ,))
+                              Text('Welcome',style: TextStyle(color: Colors.white,fontSize: 16,fontWeight: FontWeight.normal),),
+                              Text('@username',style: TextStyle(color: Colors.white,fontSize:28 ,fontWeight: FontWeight.w500),)
                             ],
                           ),
+                          SizedBox(
+                              height: 45,
+                              width: 116,
+                              child: Image.asset('assets/images/iapply_logo.png'))
+                        ],
+                      ),
+                    ),
+                    Container(
+                      color: hexToColor("7E6BA3"),
+                      child: Padding(
+                        padding: const EdgeInsets.only(left:25,right: 25,bottom: 10,top: 10 ),
+                        child: SizedBox(
+                          child: TextFormField(
+                            decoration: InputDecoration(
+                              // contentPadding: EdgeInsets.symmetric(vertical: 10),
+                                enabledBorder: OutlineInputBorder(
+                                  borderSide: BorderSide(
+                                      color: Colors.white,
+                                      width: 3
+                                  ),
+                                  borderRadius: BorderRadius.circular(27),
+                                ),
+                                focusedBorder: OutlineInputBorder(
+                                    borderRadius: BorderRadius.circular(27),
+                                    borderSide: BorderSide(color: Theme.of(context).primaryColor,
+                                        width: 1
+                                    )
+                                ),
+                                hintText: "Search",
+                                hintStyle: TextStyle(color: Colors.grey,fontSize: 16,),
+                                fillColor: Colors.white,
+                                filled: true,
+                                suffixIcon: IconButton(onPressed: (){
+                                }, icon: Icon(Icons.search)),
+                                iconColor: Theme.of(context).primaryColor
+
+                            ),
+                          ),
                         ),
                       ),
-                      Container(
-                        color: Theme.of(context).canvasColor,
-                        width: double.infinity,
-                        child: Padding(
-                          padding: const EdgeInsets.only(top: 20,bottom: 18),
-                          child: SingleChildScrollView(
-                            scrollDirection: Axis.horizontal,
-                            child:isLoading? Center(
-                                child: Center(child: CircularProgressIndicator()))
-                                : consultancy_details_list.isEmpty
-                                ? SizedBox(
-                              height: 90,
-                                  width: 90,
-                                  child: Center(
-                                                                child: Center(
-                                  child: Text(
-                                    "No consultancies found",
-                                    style: TextStyle(color: Colors.red),
-                                  ),
+                    ),
+                    Column(
+                      children: [
+                        Container(height: 25,
+                          color: Theme.of(context).canvasColor,),
+                        Container(
+                          color: Colors.white,
+                          child: Padding(
+                            padding: const EdgeInsets.only(left: 25,right: 10),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Text('Top Consultancies',style: TextStyle(color: Theme.of(context).primaryColor,fontSize: 18,fontWeight: FontWeight.w500),),
+                                TextButton(onPressed: (){
+                                  Navigator.push(context, MaterialPageRoute(builder: (context) => consultancy_gridview_activity(token: widget.token)));
+                                }, child: Text('More',style:TextStyle(color: hexToColor('40D900')) ,))
+                              ],
+                            ),
+                          ),
+                        ),
+                        Container(
+                          color: Theme.of(context).canvasColor,
+                          width: double.infinity,
+                          child: Padding(
+                            padding: const EdgeInsets.only(top: 20,bottom: 18),
+                            child: SingleChildScrollView(
+                              scrollDirection: Axis.horizontal,
+                              child:isLoading? Center(
+                                  child: Center(child: CircularProgressIndicator()))
+                                  : consultancy_details_list.isEmpty
+                                  ? SizedBox(
+                                height: 90,
+                                    width: 90,
+                                    child: Center(
+                                                                  child: Center(
+                                    child: Text(
+                                      "No consultancies found",
+                                      style: TextStyle(color: Colors.red),
+                                    ),
+                                                                  ),
                                                                 ),
-                                                              ),
-                                )
-                                :
-                            Row(
-                              children: consultancy_details_list.take(5).map((consultancy){
-                                return  Padding(
-                                  padding: const EdgeInsets.only(right: 8,top: 10, bottom: 10,left: 28),
-                                  child: GestureDetector(
-                                    onTap: (){
-                                      //
-                                    },
+                                  )
+                                  :
+                              Row(
+                                children: consultancy_details_list.take(5).map((consultancy){
+                                  return  Padding(
+                                    padding: const EdgeInsets.only(right: 8,top: 10, bottom: 10,left: 28),
+                                    child: GestureDetector(
+                                      onTap: (){
+                                        //
+                                      },
+                                      child: SizedBox(
+                                        width: 90,
+                                        child: Column(
+                                          crossAxisAlignment: CrossAxisAlignment.start,
+                                          children: [
+                                            Container(
+                                              height: 90,
+                                              // width: 90,
+                                              decoration: BoxDecoration(
+                                                border: Border.all(
+                                                  color: Theme.of(context).primaryColor,
+                                                  width: 1
+                                                ),
+                                                image: consultancy.photo != null ?
+                                                DecorationImage(
+                                                    image: NetworkImage(consultancy.photo!),
+                                                      fit: BoxFit.cover,
+                                                ) : null,
+                                                  borderRadius: BorderRadius.circular(16),
+                                                  color: Colors.blueAccent
+                                              ),
+                                              child: consultancy.photo == null
+                                                  ? const Center(
+                                                child: Icon(
+                                                  Icons.image_not_supported,
+                                                  size: 48,
+                                                  color: Colors.grey,
+                                                ),
+                                              )
+                                                  : null,
+                                            ),
+                                            const SizedBox(height: 15),
+                                            SizedBox(
+                                              child: Align(
+                                                alignment: Alignment.center,
+                                                child: Text(consultancy.name ,style: TextStyle(color: Theme.of(context).primaryColor,),
+                                                  overflow: TextOverflow.ellipsis,
+                                                ),
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                    ),
+                                  );
+                                }).toList()
+
+                              ),
+                            ),
+                          ),
+                        )
+                      ],
+                    ),
+                    Column(
+                      children: [
+                        Container(
+                          color: Theme.of(context).canvasColor,),
+                        Container(
+                          color: Colors.white,
+                          child: Padding(
+                            padding: const EdgeInsets.only(left: 25,right: 10),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Text('Countries',style: TextStyle(color: Theme.of(context).primaryColor,fontSize: 18,fontWeight: FontWeight.w500),),
+                                TextButton(onPressed: (){
+                                  Navigator.push(context, MaterialPageRoute(builder: (context) => all_country_gridview_activity(token : widget.token)));
+                                }, child: Text('More',style:TextStyle(color: hexToColor('40D900')) ,))
+                              ],
+                            ),
+                          ),
+                        ),
+                        Container(
+                          color: Theme.of(context).canvasColor,
+                          width: double.infinity,
+                          child: Padding(
+
+                            padding: const EdgeInsets.only(top: 20,bottom: 18),
+                            child: SingleChildScrollView(
+                              scrollDirection: Axis.horizontal,
+                              child: isLoading? Center(child: CircularProgressIndicator(),)
+                              :general_country_list.isEmpty?
+                              Center(
+                                child: SizedBox(
+                                  height: 90,
+                                  // width: 90,
+                                  child: Center(
+                                    child: Text("No country found" , style: TextStyle(color: Colors.red),),
+                                  ),
+                                ),
+                              ):
+                              Row(
+                                children: general_country_list.reversed.take(5).toList().reversed.map((country){
+                                  return Padding(
+                                    padding: const EdgeInsets.only(right: 8,top: 10, bottom: 10,left: 28),
                                     child: SizedBox(
                                       width: 90,
                                       child: Column(
@@ -182,35 +285,33 @@ class home_activity_state extends State<home_activity>{
                                         children: [
                                           Container(
                                             height: 90,
-                                            // width: 90,
+                                            width: 90,
                                             decoration: BoxDecoration(
                                               border: Border.all(
                                                 color: Theme.of(context).primaryColor,
                                                 width: 1
                                               ),
-                                              image: consultancy.photo != null ?
-                                              DecorationImage(
-                                                  image: NetworkImage(consultancy.photo!),
-                                                    fit: BoxFit.cover,
-                                              ) : null,
                                                 borderRadius: BorderRadius.circular(16),
-                                                color: Colors.blueAccent
+                                                color: Colors.blueAccent,
+                                              image: country.map !=null ?
+                                                  DecorationImage(image: NetworkImage(country.map!),
+                                                    fit: BoxFit.cover
+                                                  ):null,
                                             ),
-                                            child: consultancy.photo == null
-                                                ? const Center(
-                                              child: Icon(
-                                                Icons.image_not_supported,
+                                            child: country.map == null ? Center(
+                                              child: Icon(Icons.image_not_supported,
                                                 size: 48,
                                                 color: Colors.grey,
                                               ),
-                                            )
-                                                : null,
+                                            ):null,
                                           ),
                                           const SizedBox(height: 15),
                                           SizedBox(
+                                            // height:20,
                                             child: Align(
                                               alignment: Alignment.center,
-                                              child: Text(consultancy.name ,style: TextStyle(color: Theme.of(context).primaryColor,),
+                                              child: Text(country.country!,
+                                                style: TextStyle(color: Theme.of(context).primaryColor,),
                                                 overflow: TextOverflow.ellipsis,
                                               ),
                                             ),
@@ -218,114 +319,25 @@ class home_activity_state extends State<home_activity>{
                                         ],
                                       ),
                                     ),
-                                  ),
-                                );
-                              }).toList()
-
-                            ),
-                          ),
-                        ),
-                      )
-                    ],
-                  ),
-                  Column(
-                    children: [
-                      Container(
-                        color: Theme.of(context).canvasColor,),
-                      Container(
-                        color: Colors.white,
-                        child: Padding(
-                          padding: const EdgeInsets.only(left: 25,right: 10),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Text('Countries',style: TextStyle(color: Theme.of(context).primaryColor,fontSize: 18,fontWeight: FontWeight.w500),),
-                              TextButton(onPressed: (){
-                                Navigator.push(context, MaterialPageRoute(builder: (context) => all_country_gridview_activity(token : widget.token)));
-                              }, child: Text('More',style:TextStyle(color: hexToColor('40D900')) ,))
-                            ],
-                          ),
-                        ),
-                      ),
-                      Container(
-                        color: Theme.of(context).canvasColor,
-                        width: double.infinity,
-                        child: Padding(
-
-                          padding: const EdgeInsets.only(top: 20,bottom: 18),
-                          child: SingleChildScrollView(
-                            scrollDirection: Axis.horizontal,
-                            child: isLoading? Center(child: CircularProgressIndicator(),)
-                            :general_country_list.isEmpty?
-                            Center(
-                              child: SizedBox(
-                                height: 90,
-                                // width: 90,
-                                child: Center(
-                                  child: Text("No country found" , style: TextStyle(color: Colors.red),),
-                                ),
+                                  );
+                                }).toList(),
                               ),
-                            ):
-                            Row(
-                              children: general_country_list.reversed.take(5).toList().reversed.map((country){
-                                return Padding(
-                                  padding: const EdgeInsets.only(right: 8,top: 10, bottom: 10,left: 28),
-                                  child: SizedBox(
-                                    width: 90,
-                                    child: Column(
-                                      crossAxisAlignment: CrossAxisAlignment.start,
-                                      children: [
-                                        Container(
-                                          height: 90,
-                                          width: 90,
-                                          decoration: BoxDecoration(
-                                            border: Border.all(
-                                              color: Theme.of(context).primaryColor,
-                                              width: 1
-                                            ),
-                                              borderRadius: BorderRadius.circular(16),
-                                              color: Colors.blueAccent,
-                                            image: country.map !=null ?
-                                                DecorationImage(image: NetworkImage(country.map!),
-                                                  fit: BoxFit.cover
-                                                ):null,
-                                          ),
-                                          child: country.map == null ? Center(
-                                            child: Icon(Icons.image_not_supported,
-                                              size: 48,
-                                              color: Colors.grey,
-                                            ),
-                                          ):null,
-                                        ),
-                                        const SizedBox(height: 15),
-                                        SizedBox(
-                                          // height:20,
-                                          child: Align(
-                                            alignment: Alignment.center,
-                                            child: Text(country.country!,
-                                              style: TextStyle(color: Theme.of(context).primaryColor,),
-                                              overflow: TextOverflow.ellipsis,
-                                            ),
-                                          ),
-                                        ),
-                                      ],
-                                    ),
-                                  ),
-                                );
-                              }).toList(),
                             ),
                           ),
-                        ),
-                      )
-                    ],
-                  ),
-                  Container(
-                    decoration: BoxDecoration(
-                      color: Theme.of(context).canvasColor,
+                        )
+                      ],
                     ),
-                  )
-                ],
+                    SizedBox(
+                      height: 80,
+                      child: Container(
+
+                        color: Theme.of(context).canvasColor,
+                      ),
+                    )
+                  ],
+                ),
               ),
+
             ),
           ),
         ),

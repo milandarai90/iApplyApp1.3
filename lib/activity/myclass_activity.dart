@@ -23,7 +23,8 @@ class myclass_activity_state extends State<myclass_activity>{
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Theme.of(context).primaryColor,
+          // iconTheme: IconThemeData(color: Theme.of(context).canvasColor),
+          backgroundColor: Theme.of(context).primaryColor,
         title: Text("Testing Users",style: TextStyle(color: Theme.of(context).canvasColor))),
       body: ListView.builder(
           itemCount : users.length,

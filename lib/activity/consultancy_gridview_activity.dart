@@ -16,7 +16,7 @@ class consultancy_gridview_state extends State <consultancy_gridview_activity>{
 
   bool isLoading = true;
   List<Consultancy_details_model>allconsultancy_list =[];
-  void fetch_allconsultancy_data()async{
+  Future <void> fetch_allconsultancy_data()async{
     try{
       consultancy_data_services allconsultancy_services = consultancy_data_services();
       final response_allconsultancy =await allconsultancy_services.consultancy_details(widget.token);
@@ -41,6 +41,7 @@ void initState() {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        iconTheme: IconThemeData(color: Theme.of(context).canvasColor),
         backgroundColor: Theme.of(context).primaryColor,
         title: Text(
           "Consultancies",
@@ -66,66 +67,69 @@ void initState() {
             )
                 : Padding(
               padding: const EdgeInsets.all(25.0),
-              child: GridView.builder(
-                shrinkWrap: true,
-                physics: NeverScrollableScrollPhysics(),
-                itemCount: allconsultancy_list.length,
-                gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                  crossAxisCount: 3,
-                  mainAxisSpacing: 10,
-                  crossAxisSpacing: 20,
-                  childAspectRatio: 3/4,
-                ),
-                itemBuilder: (context, index) {
-                  final consultancy = allconsultancy_list[index];
-                  return Container(
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: [
-                           Container(
-                            width: 90,
-                            height: 90,
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(16),
-                                border: Border.all(
-                                  color: Theme.of(context).primaryColor,
+              child: RefreshIndicator(
+                onRefresh: fetch_allconsultancy_data,
+                child: GridView.builder(
+                  shrinkWrap: true,
+                  physics: AlwaysScrollableScrollPhysics(),
+                  itemCount: allconsultancy_list.length,
+                  gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                    crossAxisCount: 3,
+                    mainAxisSpacing: 10,
+                    crossAxisSpacing: 20,
+                    childAspectRatio: 3/4,
+                  ),
+                  itemBuilder: (context, index) {
+                    final consultancy = allconsultancy_list[index];
+                    return Container(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                             Container(
+                              width: 90,
+                              height: 90,
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(16),
+                                  border: Border.all(
+                                    color: Theme.of(context).primaryColor,
+                                  ),
+                                image: consultancy.photo != null
+                                    ? DecorationImage(
+                                  image:
+                                  NetworkImage(consultancy.photo!),
+                                  fit: BoxFit.cover,
+                                )
+                                    : null,
+                                color: Colors.grey[200],
+                              ),
+                              child: consultancy.photo == null
+                                  ? Center(
+                                child: Icon(
+                                  Icons.image_not_supported,
+                                  size: 40,
+                                  color: Colors.grey,
                                 ),
-                              image: consultancy.photo != null
-                                  ? DecorationImage(
-                                image:
-                                NetworkImage(consultancy.photo!),
-                                fit: BoxFit.cover,
                               )
                                   : null,
-                              color: Colors.grey[200],
                             ),
-                            child: consultancy.photo == null
-                                ? Center(
-                              child: Icon(
-                                Icons.image_not_supported,
-                                size: 40,
-                                color: Colors.grey,
-                              ),
-                            )
-                                : null,
-                          ),
 
-                        const SizedBox(height: 15),
-                        Padding(
-                          padding: const EdgeInsets.only(left: 5.0),
-                          child: SizedBox(
-                            child: Align(
-                              alignment: Alignment.center,
-                              child: Text(consultancy.name ,style: TextStyle(color: Theme.of(context).primaryColor,),
-                                overflow: TextOverflow.ellipsis,
+                          const SizedBox(height: 15),
+                          Padding(
+                            padding: const EdgeInsets.only(left: 5.0),
+                            child: SizedBox(
+                              child: Align(
+                                alignment: Alignment.center,
+                                child: Text(consultancy.name ,style: TextStyle(color: Theme.of(context).primaryColor,),
+                                  overflow: TextOverflow.ellipsis,
+                                ),
                               ),
                             ),
                           ),
-                        ),
-                      ],
-                    ),
-                  );
-                },
+                        ],
+                      ),
+                    );
+                  },
+                ),
               ),
             ),
           ),
