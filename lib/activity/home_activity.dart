@@ -1,3 +1,5 @@
+
+
 import 'package:flutter/material.dart';
 import 'package:iapply3/activity/all_country_gridview_activity.dart';
 import 'package:iapply3/activity/consultancy_gridview_activity.dart';
@@ -159,20 +161,23 @@ class home_activity_state extends State<home_activity>{
                             padding: const EdgeInsets.only(top: 20,bottom: 18),
                             child: SingleChildScrollView(
                               scrollDirection: Axis.horizontal,
-                              child:isLoading? Center(
-                                  child: Center(child: CircularProgressIndicator()))
+                              child:isLoading? SizedBox(
+                                height: 140,
+                                width: MediaQuery.of(context).size.width,
+                                child: Center(
+                                    child: CircularProgressIndicator()),
+                              )
                                   : consultancy_details_list.isEmpty
                                   ? SizedBox(
                                 height: 90,
                                     width: 90,
                                     child: Center(
-                                                                  child: Center(
+                                      child: Center(
                                     child: Text(
                                       "No consultancies found",
                                       style: TextStyle(color: Colors.red),
+                                    ),),
                                     ),
-                                                                  ),
-                                                                ),
                                   )
                                   :
                               Row(
@@ -263,7 +268,10 @@ class home_activity_state extends State<home_activity>{
                             padding: const EdgeInsets.only(top: 20,bottom: 18),
                             child: SingleChildScrollView(
                               scrollDirection: Axis.horizontal,
-                              child: isLoading? Center(child: CircularProgressIndicator(),)
+                              child: isLoading? SizedBox(
+                                  height:140,
+                                  width: MediaQuery.of(context).size.width,
+                                  child: Center(child: CircularProgressIndicator(),))
                               :general_country_list.isEmpty?
                               Center(
                                 child: SizedBox(
