@@ -2,6 +2,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:iapply3/activity/all_country_gridview_activity.dart';
+import 'package:iapply3/activity/consultancy_branch_activity.dart';
 import 'package:iapply3/activity/consultancy_gridview_activity.dart';
 import 'package:iapply3/models/consultancy_details_model.dart';
 import 'package:iapply3/models/general_country_model.dart';
@@ -186,7 +187,7 @@ class home_activity_state extends State<home_activity>{
                                     padding: const EdgeInsets.only(right: 8,top: 10, bottom: 10,left: 28),
                                     child: GestureDetector(
                                       onTap: (){
-                                        //
+                                        Navigator.push(context, MaterialPageRoute(builder: (context)=> consultancy_branch_activity(token:widget.token)));
                                       },
                                       child: SizedBox(
                                         width: 90,
