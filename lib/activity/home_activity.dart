@@ -187,7 +187,7 @@ class home_activity_state extends State<home_activity>{
                                     padding: const EdgeInsets.only(right: 8,top: 10, bottom: 10,left: 28),
                                     child: GestureDetector(
                                       onTap: (){
-                                        Navigator.push(context, MaterialPageRoute(builder: (context)=> consultancy_branch_activity(token:widget.token)));
+                                        Navigator.push(context, MaterialPageRoute(builder: (context)=> consultancy_branch_activity(token:widget.token,id :consultancy.id , name : consultancy.name)));
                                       },
                                       child: SizedBox(
                                         width: 90,
