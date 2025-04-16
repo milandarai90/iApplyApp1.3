@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:iapply3/models/consultancy_details_model.dart';
 import 'package:iapply3/services/home_data_services.dart';
 
+import 'consultancy_branch_activity.dart';
+
 class consultancy_gridview_activity extends StatefulWidget{
    final String token;
   const consultancy_gridview_activity({super.key, required this.token});
@@ -85,33 +87,38 @@ void initState() {
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.center,
                         children: [
-                             Container(
-                              width: 90,
-                              height: 90,
-                              decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(16),
-                                  border: Border.all(
-                                    color: Theme.of(context).primaryColor,
+                             GestureDetector(
+                               onTap: (){
+                                 Navigator.push(context, MaterialPageRoute(builder: (context)=> consultancy_branch_activity(token:widget.token,id :consultancy.id , name : consultancy.name)));
+                               },
+                               child: Container(
+                                width: 90,
+                                height: 90,
+                                decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(16),
+                                    border: Border.all(
+                                      color: Theme.of(context).primaryColor,
+                                    ),
+                                  image: consultancy.photo != null
+                                      ? DecorationImage(
+                                    image:
+                                    NetworkImage(consultancy.photo!),
+                                    fit: BoxFit.cover,
+                                  )
+                                      : null,
+                                  color: Colors.grey[200],
+                                ),
+                                child: consultancy.photo == null
+                                    ? Center(
+                                  child: Icon(
+                                    Icons.image_not_supported,
+                                    size: 40,
+                                    color: Colors.grey,
                                   ),
-                                image: consultancy.photo != null
-                                    ? DecorationImage(
-                                  image:
-                                  NetworkImage(consultancy.photo!),
-                                  fit: BoxFit.cover,
                                 )
                                     : null,
-                                color: Colors.grey[200],
-                              ),
-                              child: consultancy.photo == null
-                                  ? Center(
-                                child: Icon(
-                                  Icons.image_not_supported,
-                                  size: 40,
-                                  color: Colors.grey,
-                                ),
-                              )
-                                  : null,
-                            ),
+                                                           ),
+                             ),
 
                           const SizedBox(height: 15),
                           Padding(
