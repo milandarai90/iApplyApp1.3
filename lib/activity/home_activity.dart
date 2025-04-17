@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:iapply3/activity/all_country_gridview_activity.dart';
 import 'package:iapply3/activity/consultancy_branch_activity.dart';
 import 'package:iapply3/activity/consultancy_gridview_activity.dart';
+import 'package:iapply3/activity/country_guidelines_activity.dart';
 import 'package:iapply3/models/consultancy_details_model.dart';
 import 'package:iapply3/models/general_country_model.dart';
 import 'package:iapply3/services/general_country_services.dart';
@@ -23,6 +24,7 @@ class home_activity_state extends State<home_activity>{
   List<General_country_model>general_country_list =[];
   int myIndex =0;
   bool isLoading =true;
+  
 
   @override
   void initState() {
@@ -108,6 +110,7 @@ class home_activity_state extends State<home_activity>{
                         padding: const EdgeInsets.only(left:25,right: 25,bottom: 10,top: 10 ),
                         child: SizedBox(
                           child: TextFormField(
+                            autofocus: false,
                             decoration: InputDecoration(
                               // contentPadding: EdgeInsets.symmetric(vertical: 10),
                                 enabledBorder: OutlineInputBorder(
@@ -128,8 +131,9 @@ class home_activity_state extends State<home_activity>{
                                 fillColor: Colors.white,
                                 filled: true,
                                 suffixIcon: IconButton(onPressed: (){
-                                }, icon: Icon(Icons.search)),
-                                iconColor: Theme.of(context).primaryColor
+                                }, icon: Icon(Icons.search,color: Theme.of(context).primaryColor,)
+                                ),
+                                // iconColor: Theme.of(context).canvasColor
 
                             ),
                           ),
@@ -265,7 +269,6 @@ class home_activity_state extends State<home_activity>{
                           color: Theme.of(context).canvasColor,
                           width: double.infinity,
                           child: Padding(
-
                             padding: const EdgeInsets.only(top: 20,bottom: 18),
                             child: SingleChildScrollView(
                               scrollDirection: Axis.horizontal,
@@ -287,45 +290,50 @@ class home_activity_state extends State<home_activity>{
                                 children: general_country_list.reversed.take(5).toList().reversed.map((country){
                                   return Padding(
                                     padding: const EdgeInsets.only(right: 8,top: 10, bottom: 10,left: 28),
-                                    child: SizedBox(
-                                      width: 90,
-                                      child: Column(
-                                        crossAxisAlignment: CrossAxisAlignment.start,
-                                        children: [
-                                          Container(
-                                            height: 90,
-                                            width: 90,
-                                            decoration: BoxDecoration(
-                                              border: Border.all(
-                                                color: Theme.of(context).primaryColor,
-                                                width: 1
+                                    child: GestureDetector(
+                                      onTap: (){
+                                        Navigator.push(context, MaterialPageRoute(builder: (context) => general_country_activity(token : widget.token , id : country.id , country : country.country!)));
+                                      },
+                                      child: SizedBox(
+                                        width: 90,
+                                        child: Column(
+                                          crossAxisAlignment: CrossAxisAlignment.start,
+                                          children: [
+                                            Container(
+                                              height: 90,
+                                              width: 90,
+                                              decoration: BoxDecoration(
+                                                border: Border.all(
+                                                  color: Theme.of(context).primaryColor,
+                                                  width: 1
+                                                ),
+                                                  borderRadius: BorderRadius.circular(16),
+                                                  color: Colors.blueAccent,
+                                                image: country.map !=null ?
+                                                    DecorationImage(image: NetworkImage(country.map!),
+                                                      fit: BoxFit.cover
+                                                    ):null,
                                               ),
-                                                borderRadius: BorderRadius.circular(16),
-                                                color: Colors.blueAccent,
-                                              image: country.map !=null ?
-                                                  DecorationImage(image: NetworkImage(country.map!),
-                                                    fit: BoxFit.cover
-                                                  ):null,
+                                              child: country.map == null ? Center(
+                                                child: Icon(Icons.image_not_supported,
+                                                  size: 48,
+                                                  color: Colors.grey,
+                                                ),
+                                              ):null,
                                             ),
-                                            child: country.map == null ? Center(
-                                              child: Icon(Icons.image_not_supported,
-                                                size: 48,
-                                                color: Colors.grey,
-                                              ),
-                                            ):null,
-                                          ),
-                                          const SizedBox(height: 15),
-                                          SizedBox(
-                                            // height:20,
-                                            child: Align(
-                                              alignment: Alignment.center,
-                                              child: Text(country.country!,
-                                                style: TextStyle(color: Theme.of(context).primaryColor,),
-                                                overflow: TextOverflow.ellipsis,
+                                            const SizedBox(height: 15),
+                                            SizedBox(
+                                              // height:20,
+                                              child: Align(
+                                                alignment: Alignment.center,
+                                                child: Text(country.country!,
+                                                  style: TextStyle(color: Theme.of(context).primaryColor,),
+                                                  overflow: TextOverflow.ellipsis,
+                                                ),
                                               ),
                                             ),
-                                          ),
-                                        ],
+                                          ],
+                                        ),
                                       ),
                                     ),
                                   );

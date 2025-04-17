@@ -2,8 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:iapply3/models/general_country_model.dart';
 import 'package:iapply3/services/general_country_services.dart';
 
-class all_country_gridview_activity extends StatefulWidget{
+import 'country_guidelines_activity.dart';
 
+class all_country_gridview_activity extends StatefulWidget{
   final String token;
   const all_country_gridview_activity({super.key , required this.token});
 
@@ -85,32 +86,37 @@ class all_country_state extends State<all_country_gridview_activity>{
                      child: Column(
                        crossAxisAlignment: CrossAxisAlignment.center,
                        children: [
-                         Container(
-                           width: 90,
-                           height: 90,
-                           decoration: BoxDecoration(
-                             borderRadius: BorderRadius.circular(16),
-                             border: Border.all(
-                               color: Theme.of(context).primaryColor,
+                         GestureDetector(
+                           onTap: (){
+                             Navigator.push(context, MaterialPageRoute(builder: (context) => general_country_activity(token : widget.token , id : country_list.id , country : country_list.country!)));
+                           },
+                           child: Container(
+                             width: 90,
+                             height: 90,
+                             decoration: BoxDecoration(
+                               borderRadius: BorderRadius.circular(16),
+                               border: Border.all(
+                                 color: Theme.of(context).primaryColor,
+                               ),
+                               image: country_list.map != null
+                                   ? DecorationImage(
+                                 image:
+                                 NetworkImage(country_list.map!),
+                                 fit: BoxFit.cover,
+                               )
+                                   : null,
+                               color: Colors.grey[200],
                              ),
-                             image: country_list.map != null
-                                 ? DecorationImage(
-                               image:
-                               NetworkImage(country_list.map!),
-                               fit: BoxFit.cover,
+                             child: country_list.map == null
+                                 ? Center(
+                               child: Icon(
+                                 Icons.image_not_supported,
+                                 size: 40,
+                                 color: Colors.grey,
+                               ),
                              )
                                  : null,
-                             color: Colors.grey[200],
                            ),
-                           child: country_list.map == null
-                               ? Center(
-                             child: Icon(
-                               Icons.image_not_supported,
-                               size: 40,
-                               color: Colors.grey,
-                             ),
-                           )
-                               : null,
                          ),
 
                          const SizedBox(height: 15),

@@ -44,16 +44,29 @@ setState(() {
   return Scaffold(
     appBar: AppBar(
       backgroundColor:Theme.of(context).primaryColor ,
-        title: Text(widget.name,style: TextStyle(color: Theme.of(context).canvasColor),),
+        title: Text("Branches, ${widget.name}",style: TextStyle(color: Theme.of(context).canvasColor),),
       iconTheme: IconThemeData(color :Theme.of(context).canvasColor)
     ),
     body: Container(
+      margin: const EdgeInsets.only(bottom: 10 ,top: 10),
       child: RefreshIndicator(
         onRefresh: fetch_consultancy_branch,
         child: isLoading
             ? const Center(child: CircularProgressIndicator())
             : branch_data.isEmpty
-            ? const Center(child: Text("No branches found", style: TextStyle(color: Colors.red)))
+            ? const Center(child:
+        Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Icon(Icons.sentiment_very_dissatisfied_rounded,
+                  size: 50,
+                  color: Colors.grey,),
+                Padding(
+                  padding: EdgeInsets.all(8.0),
+                  child: Text("No branches found", style: TextStyle(color: Colors.grey)),
+                ),
+              ],
+            ))
             : ListView.builder(
           itemCount: branch_data.length,
           itemBuilder: (context, index) {
@@ -67,13 +80,13 @@ setState(() {
                   borderRadius: BorderRadius.circular(8),
                   child: Image.network(
                     branch.photo!,
-                    height: 50,
-                    width: 50,
+                    height: 60,
+                    width: 60,
                     fit: BoxFit.cover,
                   ),
                 )
                     : const Icon(Icons.business, size: 50, color: Colors.grey),
-                title: Text(branch.name ?? 'Branch'),
+                title: Text(branch.name ?? ''),
                 subtitle: Text(branch.email ?? ''),
                 onTap: () {
 
