@@ -200,7 +200,7 @@ class home_activity_state extends State<home_activity>{
                                           children: [
                                             Container(
                                               height: 90,
-                                              // width: 90,
+                                              width: 90,
                                               decoration: BoxDecoration(
                                                 border: Border.all(
                                                   color: Theme.of(context).primaryColor,

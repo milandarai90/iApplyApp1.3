@@ -61,48 +61,51 @@ class classes_state extends State<classes_activity>{
       Center(child: CircularProgressIndicator(),)
           :
           class_list.isEmpty
-      ? Container(
-            child: Center(
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                // crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  Icon(Icons.sentiment_very_dissatisfied_rounded,
-                    size: 50,
-                    color: Colors.grey,),
-                  Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Text("No classes found for ${widget.course_name}", style: TextStyle(color: Colors.grey),),
-                  )
-                ],
-              ),
-            ),
-          )
-              :
-      Container(
-        margin: const EdgeInsets.only(bottom: 10 ,top: 10),
-        child: ListView.builder(itemCount: class_list.length,
-            itemBuilder: (context, index){
-          final classes  = class_list[index];
-          return Card(
-            margin:const EdgeInsets.symmetric(horizontal: 16, vertical: 8) ,
-            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
-            child: ListTile(
-              title: Text("${classes.class_name}",style: TextStyle(color: Theme.of(context).primaryColor),),
-              leading: CircleAvatar(child: Text("${index + 1}",style: TextStyle(fontSize: 14,color: Theme.of(context).primaryColor),),radius: 18,),
-              subtitle: Text("${classes.start_time}"),
-              trailing: Text("${classes.status == 'available' ? "Available" : "Full" }",style: TextStyle(
-              color: (classes.status?.toLowerCase()??'') == 'available'?
-              Colors.green :
-              Colors.red,
-              fontSize: 12),
-            ),
-              onTap: (){
-
-              },
+      ? Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          // crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            Icon(Icons.sentiment_very_dissatisfied_rounded,
+              size: 50,
+              color: Colors.grey,),
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Text("No classes found for ${widget.course_name}", style: TextStyle(color: Colors.grey),),
             )
-          );
-        }),
+          ],
+        ),
+      )
+              :
+      RefreshIndicator(
+        onRefresh: ()async{
+         await fetch_class_details();
+        },
+        child: Container(
+          margin: const EdgeInsets.only(bottom: 10 ,top: 10),
+          child: ListView.builder(itemCount: class_list.length,
+              itemBuilder: (context, index){
+            final classes  = class_list[index];
+            return Card(
+              margin:const EdgeInsets.symmetric(horizontal: 16, vertical: 8) ,
+              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+              child: ListTile(
+                title: Text("${classes.class_name}",style: TextStyle(color: Theme.of(context).primaryColor),),
+                leading: CircleAvatar(child: Text("${index + 1}",style: TextStyle(fontSize: 14,color: Theme.of(context).primaryColor),),radius: 18,),
+                subtitle: Text("${classes.start_time}"),
+                trailing: Text("${classes.status == 'available' ? "Available" : "Full" }",style: TextStyle(
+                color: (classes.status?.toLowerCase()??'') == 'available'?
+                Colors.green :
+                Colors.red,
+                fontSize: 12),
+              ),
+                onTap: (){
+
+                },
+              )
+            );
+          }),
+        ),
       ),
     ),
   );
