@@ -51,6 +51,7 @@ super.initState();
       ),
       body: Container(
         margin: const EdgeInsets.only(bottom: 10 ,top: 10),
+        color: Theme.of(context).canvasColor,
         child: RefreshIndicator(
           onRefresh: ()async{
            await fetch_country_guidelines;
@@ -81,8 +82,8 @@ super.initState();
                 child: ListTile(
                  leading: CircleAvatar(
                    radius: 18,
-                     child: Text("${index +1}",style: TextStyle(fontSize: 14),)),
-                  title: Text(guidelines.Guidelines ?? ''),
+                     child: Text("${index +1}",style: TextStyle(fontSize: 14,color: Theme.of(context).primaryColor),)),
+                  title: Text(guidelines.Guidelines ?? '',style: TextStyle(color: Theme.of(context).primaryColor)),
                 ),
               );
             },

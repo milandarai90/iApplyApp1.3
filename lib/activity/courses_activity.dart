@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:iapply3/activity/classes_activity.dart';
 import 'package:iapply3/services/general_country_services.dart';
 import 'package:iapply3/services/home_data_services.dart';
 
@@ -67,19 +68,28 @@ setState(() {
              )
            ],
          ) ,
-       ): ListView.builder(
-         itemCount: courses_list.length,
-           itemBuilder: (context,index){
-         final courses = courses_list[index];
-         return Card(
-           margin:const EdgeInsets.symmetric(horizontal: 16, vertical: 8) ,
-           shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
-           child: ListTile(
-             leading: Text("${index+1}"),
-             title: Text(courses.course_title ?? ""),
-           ),
-         );
-       }),
+       ): Container(
+         margin: const EdgeInsets.only(bottom: 10 ,top: 10),
+         child: ListView.builder(
+           itemCount: courses_list.length,
+             itemBuilder: (context,index){
+           final courses = courses_list[index];
+           return Card(
+             margin:const EdgeInsets.symmetric(horizontal: 16, vertical: 8) ,
+             shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+             child: ListTile(
+               onTap: (){
+                 Navigator.push(context, MaterialPageRoute(builder: (context)=> classes_activity(token: widget.token ,consultancy_id: widget.consultancy_id, branch_id: widget.branch_id,course_id: courses.id! , course_name: courses.course_title! ,)));
+               },
+               leading: CircleAvatar(
+                   radius:18,
+                   child: Text("${index+1}",style: TextStyle(fontSize: 14,color: Theme.of(context).primaryColor),)),
+               title: Text(courses.course_title ?? "",style: TextStyle(color: Theme.of(context).primaryColor),),
+
+             ),
+           );
+         }),
+       ),
      ),
 
    );

@@ -26,16 +26,20 @@ class myclass_activity_state extends State<myclass_activity>{
           // iconTheme: IconThemeData(color: Theme.of(context).canvasColor),
           backgroundColor: Theme.of(context).primaryColor,
         title: Text("Testing Users",style: TextStyle(color: Theme.of(context).canvasColor))),
-      body: ListView.builder(
-          itemCount : users.length,
-          itemBuilder: (context ,index){
-        final userindex = users[index];
-               return ListTile(
-          title: Text(userindex.name.fullname),
-            leading:CircleAvatar(child: Text("${index+1}")),
-          subtitle: Text(userindex.email),
-        );
-      }),
+      body: Container(
+        color: Theme.of(context).canvasColor,
+        child: ListView.builder(
+
+            itemCount : users.length,
+            itemBuilder: (context ,index){
+          final userindex = users[index];
+                 return ListTile(
+            title: Text(userindex.name.fullname),
+              leading:CircleAvatar(child: Text("${index+1}")),
+            subtitle: Text(userindex.email),
+          );
+        }),
+      ),
     );
   }
   void datacheck() async{

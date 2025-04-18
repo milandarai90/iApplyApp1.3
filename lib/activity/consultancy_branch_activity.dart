@@ -49,6 +49,7 @@ setState(() {
       iconTheme: IconThemeData(color :Theme.of(context).canvasColor)
     ),
     body: Container(
+      color: Theme.of(context).canvasColor,
       margin: const EdgeInsets.only(bottom: 10 ,top: 10),
       child: RefreshIndicator(
         onRefresh: fetch_consultancy_branch,

@@ -13,6 +13,7 @@ class profile_activity_state extends State<profile_activity>{
   return Scaffold(
     appBar: AppBar(title: Text("Profile",style: TextStyle(color: Theme.of(context).canvasColor),),backgroundColor: Theme.of(context).primaryColor,),
     body: Container(
+      color: Theme.of(context).canvasColor,
       child: Center(child: ElevatedButton(onPressed:(){
         
         Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context) => login_activity()),(route) =>false);
