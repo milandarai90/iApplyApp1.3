@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:iapply3/activity/courses_activity.dart';
 import 'package:iapply3/models/consultancy_details_model.dart';
 import 'package:iapply3/services/home_data_services.dart';
 
@@ -75,6 +76,7 @@ setState(() {
               margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
               shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
               child: ListTile(
+                // trailing: Icon(Icons.arrow_forward),
                 leading: branch.photo != null && branch.photo!.isNotEmpty
                     ? ClipRRect(
                   borderRadius: BorderRadius.circular(8),
@@ -89,7 +91,7 @@ setState(() {
                 title: Text(branch.name ?? ''),
                 subtitle: Text(branch.email ?? ''),
                 onTap: () {
-
+                Navigator.push(context, MaterialPageRoute(builder: (context)=>courses_activity(consultancy: widget.name,token:widget.token ,branch:branch.name!,consultancy_id:widget.id!, branch_id : branch.id!)));
                 },
               ),
             );
