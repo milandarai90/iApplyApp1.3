@@ -38,12 +38,12 @@ class Class_details_model{
   final String? id;
   final String? class_name;
   final String? students_number;
-  final String? seat_number;
+  final String? seat_numbers;
   final String? status;
   final String? start_time;
   final String? end_time;
   final String? start_date;
   final String? end_date;
 
-  Class_details_model({required this.id, required this.class_name, required this.students_number, required this.seat_number, required this.status, required this.start_time, required this.end_time, required this.start_date, required this.end_date});
+  Class_details_model({required this.id, required this.class_name, required this.students_number, required this.seat_numbers, required this.status, required this.start_time, required this.end_time, required this.start_date, required this.end_date});
 }

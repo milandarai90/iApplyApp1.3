@@ -8,14 +8,14 @@ class class_details_acitivty extends StatefulWidget{
   final String class_id;
   final String class_name;
   final String students_number;
-  final String seat_number;
+  final String seat_numbers;
   final String status;
   final String start_time;
   final String end_time;
   final String start_date;
   final String end_date;
 
-  const class_details_acitivty({super.key, required this.token, required this.consultancy_id, required this.branch_id, required this.course_id, required this.class_id, required this.class_name, required this.students_number, required this.seat_number, required this.status, required this.start_time, required this.end_time, required this.start_date, required this.end_date});
+  const class_details_acitivty({super.key, required this.token, required this.consultancy_id, required this.branch_id, required this.course_id, required this.class_id, required this.class_name, required this.students_number, required this.seat_numbers, required this.status, required this.start_time, required this.end_time, required this.start_date, required this.end_date});
 
   @override
   State<StatefulWidget> createState() {
@@ -48,7 +48,7 @@ class class_details_state extends State<class_details_acitivty>{
                      padding: const EdgeInsets.all(8.0),
                      child: Container(
                        child: Center(
-                           child: Text("23/50",style: TextStyle(fontSize: 30,color: Theme.of(context).primaryColor),)),
+                           child: Text("${widget.students_number}/${widget.seat_numbers}",style: TextStyle(fontSize: 30,color: Theme.of(context).primaryColor),)),
                        height: 120,
                        width: 120,
                        decoration: BoxDecoration(
@@ -69,8 +69,56 @@ class class_details_state extends State<class_details_acitivty>{
                )
                ),
              ),
-           Container(
+           Padding(
+             padding: const EdgeInsets.only(left: 15.0,right: 15,bottom: 15),
+             child: Container(
+               color: Colors.yellow,
+               height: 200,
+               width: MediaQuery.of(context).size.width,
+               child: Row(
+                 children: [
+                   Expanded(
+                     child: Container(
+                       color: Colors.white,
+                       child: Column(
+                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                         crossAxisAlignment: CrossAxisAlignment.start,
+                         children: [
+                           Text("Class: ${widget.class_name}"),
+                           Text("Students: ${widget.students_number}"),
+                           Text("Capacity: ${widget.seat_numbers}"),
+                           Text("Time: ${widget.start_time} - ${widget.end_time}"),
+                           Text("Date: ${widget.start_date} / ${widget.end_date}"),
+                         ],
+                       ),
 
+                     ),
+                   ),
+                   // Container(
+                   //   width: 5,
+                   //   color: Theme.of(context).canvasColor, // Divider color
+                   // ),
+                   Expanded(
+                     child: Container(
+                       color: Colors.white,
+                       child: Column(
+                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                         crossAxisAlignment: CrossAxisAlignment.start,
+                         children: [
+                           Text("Consultancy:"),
+                           Text("Branch:"),
+                           Text("Course:"),
+                           Text("Class:"),
+                           Text(""),
+                         ],
+                       ),
+
+                     ),
+                   ),
+                 ],
+               ),
+
+             ),
            )
          ],
        ) ,

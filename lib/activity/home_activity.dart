@@ -175,7 +175,7 @@ class home_activity_state extends State<home_activity>{
                                   : consultancy_details_list.isEmpty
                                   ? SizedBox(
                                 height: 90,
-                                    width: 90,
+                                    width: MediaQuery.of(context).size.width,
                                     child: Center(
                                       child: Center(
                                     child: Text(
@@ -280,7 +280,7 @@ class home_activity_state extends State<home_activity>{
                               Center(
                                 child: SizedBox(
                                   height: 90,
-                                  // width: 90,
+                                  width: MediaQuery.of(context).size.width,
                                   child: Center(
                                     child: Text("No country found" , style: TextStyle(color: Colors.red),),
                                   ),
