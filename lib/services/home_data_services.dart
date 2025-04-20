@@ -36,8 +36,8 @@ class consultancy_data_services {
                     ? classMap["students_number"].toString()
                     : classMap["students_number"] ?? '',
                 seat_numbers: (classMap["seat_numbers"] is int)
-                    ? classMap["seat_number"].toString()
-                    : classMap["seat_number"] ?? '',
+                    ? classMap["seat_numbers"].toString()
+                    : classMap["seat_numbers"] ?? '',
                 status: classMap["status"] ?? '',
                 start_time: classMap["start_time"] ?? '',
                 end_time: classMap["end_time"] ?? '',

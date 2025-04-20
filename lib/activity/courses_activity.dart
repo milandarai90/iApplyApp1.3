@@ -34,13 +34,15 @@ class course_state extends State<courses_activity>{
       final match_consultancy_id = response_consultancy.firstWhere((consultancy) => consultancy.id == widget.consultancy_id);
       final branch_list = match_consultancy_id.branch_details;
       final match_branch_id = branch_list.firstWhere((branch)=>branch.id == widget.branch_id);
+      if(!mounted) return;
       setState(() {
         courses_list = match_branch_id.course_details;
         isLoading= false;
       });
     }
         catch(e){
-setState(() {
+          if(!mounted) return;
+          setState(() {
   isLoading = false;
 });
         }

@@ -27,10 +27,12 @@ class all_country_state extends State<all_country_gridview_activity>{
       general_country_services country_service = general_country_services();
       final response_allcountry =await country_service.general_country_data(widget.token);
       country_data = response_allcountry;
+      if(!mounted) return;
       setState(() {
         isLoading = false;
       });
     }catch(e){
+      if(!mounted) return;
       setState(() {
         isLoading = false;
       });

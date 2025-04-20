@@ -23,11 +23,13 @@ class consultancy_gridview_state extends State <consultancy_gridview_activity>{
       consultancy_data_services allconsultancy_services = consultancy_data_services();
       final response_allconsultancy =await allconsultancy_services.consultancy_details(widget.token);
       allconsultancy_list = response_allconsultancy;
+      if(!mounted) return;
       setState(() {
         isLoading = false;
       });
   }catch(e){
-  setState(() {
+      if(!mounted) return;
+      setState(() {
     isLoading =false;
   });
   }

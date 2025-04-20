@@ -28,14 +28,15 @@ super.initState();
       final guidelines_services = general_country_services();
       final country_guidelines_list =await guidelines_services.general_country_data(widget.token);
       final matched_country = country_guidelines_list.firstWhere((country) => country.id == widget.id);
-
+      if(!mounted) return;
       setState(() {
         guidelines_list = matched_country.guidelines_data;
         isLoading = false;
       });
     }
         catch(e){
-      setState(() {
+          if(!mounted) return;
+          setState(() {
         isLoading = false;
       });
         }

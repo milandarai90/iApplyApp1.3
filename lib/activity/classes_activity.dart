@@ -38,14 +38,15 @@ class classes_state extends State<classes_activity>{
       final response_courses = matched_branch.course_details;
       final matched_course = response_courses.firstWhere((course)=> widget.course_id == course.id);
       final response_classes = matched_course.class_details;
-
+      if(!mounted) return;
       setState(() {
          class_list = response_classes;
          isLoading = false;
       });
     }
         catch(e){
-      setState(() {
+          if(!mounted) return;
+          setState(() {
         isLoading = false;
       });
         }

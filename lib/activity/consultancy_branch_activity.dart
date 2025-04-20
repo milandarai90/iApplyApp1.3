@@ -29,12 +29,14 @@ class consultancy_branch_state extends State<consultancy_branch_activity>{
       final consultancy_branch_list =await service.consultancy_details(widget.token);
 
       final matched_consultancy_id = consultancy_branch_list.firstWhere((consultancy) => consultancy.id == widget.id);
+      if(!mounted) return;
       setState(() {
         branch_data = matched_consultancy_id.branch_details;
         isLoading = false;
       });
     }catch(e){
-setState(() {
+      if(!mounted) return;
+      setState(() {
   isLoading = false;
 });
     }
