@@ -85,7 +85,7 @@ class course_state extends State<courses_activity>{
                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
                child: ListTile(
                  onTap: (){
-                   Navigator.push(context, MaterialPageRoute(builder: (context)=> classes_activity(token: widget.token ,consultancy_id: widget.consultancy_id, branch_id: widget.branch_id,course_id: courses.id! , course_name: courses.course_title! ,)));
+                   Navigator.push(context, MaterialPageRoute(builder: (context)=> classes_activity(token: widget.token ,consultancy_id: widget.consultancy_id, branch_id: widget.branch_id,course_id: courses.id! , course_name: courses.course_title!, consultancy: widget.consultancy , branch: widget.branch ,)));
                  },
                  leading: CircleAvatar(
                      radius:18,

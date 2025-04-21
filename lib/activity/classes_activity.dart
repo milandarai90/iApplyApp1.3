@@ -9,8 +9,10 @@ class classes_activity extends StatefulWidget{
   final String branch_id;
   final String course_id;
   final String course_name;
+  final String consultancy;
+  final String branch;
 
-  const classes_activity({super.key, required this.consultancy_id, required this.token, required this.branch_id, required this.course_id, required this.course_name});
+  const classes_activity({super.key,required this.consultancy, required this.branch, required this.consultancy_id, required this.token, required this.branch_id, required this.course_id, required this.course_name});
 
   @override
   State<StatefulWidget> createState() {
@@ -102,7 +104,7 @@ class classes_state extends State<classes_activity>{
                 fontSize: 12),
               ),
                 onTap: (){
-                Navigator.push(context, MaterialPageRoute(builder: (context)=> class_details_acitivty(token: widget.token, consultancy_id: widget.consultancy_id, branch_id: widget.branch_id, course_id: widget.course_id, class_id: classes.id!, class_name: classes.class_name!, students_number: classes.students_number!, seat_numbers: classes.seat_numbers!, status: classes.status!, start_time: classes.start_time!, end_time: classes.end_time!, start_date: classes.start_date!, end_date: classes.end_date!)));
+                Navigator.push(context, MaterialPageRoute(builder: (context)=> class_details_acitivty(consultancy:widget.consultancy, branch: widget.branch ,course: widget.course_name ,token: widget.token, consultancy_id: widget.consultancy_id, branch_id: widget.branch_id, course_id: widget.course_id, class_id: classes.id!, class_name: classes.class_name!, students_number: classes.students_number!, seat_numbers: classes.seat_numbers!, status: classes.status!, start_time: classes.start_time!, end_time: classes.end_time!, start_date: classes.start_date!, end_date: classes.end_date!,)));
                 },
               )
             );
