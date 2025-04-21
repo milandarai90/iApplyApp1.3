@@ -48,7 +48,8 @@ class class_details_acitivty extends StatefulWidget {
 }
 
 class class_details_state extends State<class_details_acitivty> {
-  int refreshCount = 0;
+  bool isBooked = false;
+  int refreshCount =0;
 
   final scaffold_key = GlobalKey<ScaffoldState>();
   Future<void> _refreshData() async {
@@ -242,7 +243,9 @@ class class_details_state extends State<class_details_acitivty> {
                                   booking_response response_booking = await booking.book_services(pass_data, widget.token);
 
                                   if (response_booking.statusCode == 200) {
-                                    // Booking successful
+                                    setState(() {
+                                      isBooked = true;
+                                    });
                                     message = response_booking.message ?? "Booking successful!";
                                     ScaffoldMessenger.of(context).showSnackBar(
                                       SnackBar(
@@ -250,12 +253,15 @@ class class_details_state extends State<class_details_acitivty> {
                                         backgroundColor: Colors.green,
                                       ),
                                     );
-                                    await Future.delayed(Duration(seconds: 2));
-                                    if (context.mounted) {
-                                      Navigator.pop(context, true); // Return `true` to indicate booking was done
-                                    }
+                                    // await Future.delayed(Duration(seconds: 2));
+                                    // if (context.mounted) {
+                                    //   Navigator.pop(context, true); // Return `true` to indicate booking was done
+                                    // }
                                   } else if (response_booking.statusCode == 400) {
                                     // Already booked (error case)
+                                    setState(() {
+                                      isBooked = true;
+                                    });
                                     message = response_booking.message ?? "Already booked for this class.";
                                     ScaffoldMessenger.of(context).showSnackBar(
                                       SnackBar(
