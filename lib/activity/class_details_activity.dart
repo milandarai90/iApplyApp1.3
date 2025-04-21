@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:iapply3/activity/home_activity.dart';
+import 'package:iapply3/models/booking_model.dart';
+import 'package:iapply3/services/booking_services.dart';
 
 class class_details_acitivty extends StatefulWidget {
   final String token;
@@ -47,16 +50,25 @@ class class_details_acitivty extends StatefulWidget {
 class class_details_state extends State<class_details_acitivty> {
   int refreshCount = 0;
 
+  final scaffold_key = GlobalKey<ScaffoldState>();
   Future<void> _refreshData() async {
     await Future.delayed(Duration(seconds: 1));
     setState(() {
       refreshCount++;
     });
   }
+  late final booking_request pass_data;
 
+  late String message;
+@override
+  void initState() {
+    pass_data = booking_request(consultancy_id: widget.consultancy_id, branch_id: widget.branch_id, course_id: widget.course_id, classroom_id: widget.class_id);
+    super.initState();
+  }
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      key: scaffold_key,
       appBar: AppBar(
         backgroundColor: Theme.of(context).primaryColor,
         iconTheme: IconThemeData(color: Theme.of(context).canvasColor),
@@ -223,7 +235,55 @@ class class_details_state extends State<class_details_acitivty> {
                                   borderRadius: BorderRadius.circular(10),
                                 ),
                               ),
-                              onPressed: () {},
+                              onPressed: () async {
+                                booking_services booking = booking_services();
+                                try {
+                                  // Make the booking request
+                                  booking_response response_booking = await booking.book_services(pass_data, widget.token);
+
+                                  if (response_booking.statusCode == 200) {
+                                    // Booking successful
+                                    message = response_booking.message ?? "Booking successful!";
+                                    ScaffoldMessenger.of(context).showSnackBar(
+                                      SnackBar(
+                                        content: Center(child: Text(message)),
+                                        backgroundColor: Colors.green,
+                                      ),
+                                    );
+                                    await Future.delayed(Duration(seconds: 2));
+                                    if (context.mounted) {
+                                      Navigator.pop(context, true); // Return `true` to indicate booking was done
+                                    }
+                                  } else if (response_booking.statusCode == 400) {
+                                    // Already booked (error case)
+                                    message = response_booking.message ?? "Already booked for this class.";
+                                    ScaffoldMessenger.of(context).showSnackBar(
+                                      SnackBar(
+                                        content: Center(child: Text(message)),
+                                        backgroundColor: Colors.orange, // Use orange for "Already booked"
+                                      ),
+                                    );
+                                  } else {
+                                    // Other error cases (e.g., 500 for server error)
+                                    message = response_booking.message ?? "An error occurred!";
+                                    ScaffoldMessenger.of(context).showSnackBar(
+                                      SnackBar(
+                                        content: Center(child: Text(message)),
+                                        backgroundColor: Colors.red,
+                                      ),
+                                    );
+                                  }
+                                } catch (e) {
+                                  // Handle any errors during the request (e.g., network issues)
+                                  ScaffoldMessenger.of(context).showSnackBar(
+                                    SnackBar(
+                                      content: Center(child: Text("An error occurred: $e")),
+                                      backgroundColor: Colors.red,
+                                    ),
+                                  );
+                                }
+                              },
+
                               child: Text(
                                 "JOIN/BOOK",
                                 style: TextStyle(

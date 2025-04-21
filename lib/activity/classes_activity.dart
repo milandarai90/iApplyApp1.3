@@ -103,8 +103,12 @@ class classes_state extends State<classes_activity>{
                 Colors.red,
                 fontSize: 12),
               ),
-                onTap: (){
-                Navigator.push(context, MaterialPageRoute(builder: (context)=> class_details_acitivty(consultancy:widget.consultancy, branch: widget.branch ,course: widget.course_name ,token: widget.token, consultancy_id: widget.consultancy_id, branch_id: widget.branch_id, course_id: widget.course_id, class_id: classes.id!, class_name: classes.class_name!, students_number: classes.students_number!, seat_numbers: classes.seat_numbers!, status: classes.status!, start_time: classes.start_time!, end_time: classes.end_time!, start_date: classes.start_date!, end_date: classes.end_date!,)));
+                onTap: ()async{
+               final result =await Navigator.push(context, MaterialPageRoute(builder: (context)=> class_details_acitivty(consultancy:widget.consultancy, branch: widget.branch ,course: widget.course_name ,token: widget.token, consultancy_id: widget.consultancy_id, branch_id: widget.branch_id, course_id: widget.course_id, class_id: classes.id!, class_name: classes.class_name!, students_number: classes.students_number!, seat_numbers: classes.seat_numbers!, status: classes.status!, start_time: classes.start_time!, end_time: classes.end_time!, start_date: classes.start_date!, end_date: classes.end_date!,)));
+                if (result == true) {
+                  // booking was successful → refresh your class list
+                  fetch_class_details(); // Your function to refetch classes
+                }
                 },
               )
             );
