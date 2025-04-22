@@ -23,7 +23,7 @@ class bottom_navbar_activity_state extends State<bottom_navbar_activity>{
    WidgetList = [
      home_activity(token : widget.token),
      myclass_activity(),
-     notification_activity(),
+     notification_activity(token : widget.token),
      menu_activity(),
      profile_activity()
    ];

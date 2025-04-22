@@ -141,11 +141,13 @@ class class_details_state extends State<class_details_acitivty> {
                             height: 35,
                             child: Padding(
                               padding: const EdgeInsets.all(10.0),
-                              child: Text(
-                                "Class Details",
-                                style: TextStyle(
-                                    fontSize: 18,
-                                    color: Theme.of(context).primaryColor),
+                              child: Center(
+                                child: Text(
+                                  "Class Details",
+                                  style: TextStyle(
+                                      fontSize: 18,
+                                      color: Theme.of(context).primaryColor),
+                                ),
                               ),
                             ),
                           ),
@@ -154,7 +156,7 @@ class class_details_state extends State<class_details_acitivty> {
                             child: Padding(
                               padding: const EdgeInsets.all(10.0),
                               child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
+                                crossAxisAlignment: CrossAxisAlignment.center,
                                 children: [
                                   Padding(
                                     padding: const EdgeInsets.all(8.0),
@@ -192,11 +194,13 @@ class class_details_state extends State<class_details_acitivty> {
                             height: 35,
                             child: Padding(
                               padding: const EdgeInsets.all(10.0),
-                              child: Text(
-                                "Other Details",
-                                style: TextStyle(
-                                    fontSize: 18,
-                                    color: Theme.of(context).primaryColor),
+                              child: Center(
+                                child: Text(
+                                  "Other Details",
+                                  style: TextStyle(
+                                      fontSize: 18,
+                                      color: Theme.of(context).primaryColor),
+                                ),
                               ),
                             ),
                           ),
@@ -205,7 +209,7 @@ class class_details_state extends State<class_details_acitivty> {
                             child: Padding(
                               padding: const EdgeInsets.all(10.0),
                               child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
+                                crossAxisAlignment: CrossAxisAlignment.center,
                                 children: [
                                   Padding(
                                     padding: const EdgeInsets.all(8.0),
