@@ -63,10 +63,27 @@ void initState() {
             child: isLoading
                 ? Center(child: CircularProgressIndicator())
                 : allconsultancy_list.isEmpty
-                ? Center(
-              child: Text(
-                "No consultancies available",
-                style: TextStyle(color: Colors.red),
+                ? RefreshIndicator(
+              onRefresh: fetch_allconsultancy_data,
+              child: ListView(
+                physics: const AlwaysScrollableScrollPhysics(),
+                children: [
+                  SizedBox(
+                    height: MediaQuery.of(context).size.height * 0.7,
+                    child: Center(
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children:  [
+                          Icon(Icons.sentiment_very_dissatisfied_rounded, size: 50, color: Colors.grey),
+                          Padding(
+                            padding: EdgeInsets.all(8.0),
+                            child: Text("No Consultancies found", style:TextStyle(color: Colors.grey)),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                ],
               ),
             )
                 : Padding(

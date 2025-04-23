@@ -58,19 +58,29 @@ class consultancy_branch_state extends State<consultancy_branch_activity>{
         child: isLoading
             ? const Center(child: CircularProgressIndicator())
             : branch_data.isEmpty
-            ? const Center(child:
-        Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Icon(Icons.sentiment_very_dissatisfied_rounded,
-                  size: 50,
-                  color: Colors.grey,),
-                Padding(
-                  padding: EdgeInsets.all(8.0),
-                  child: Text("No branches found", style: TextStyle(color: Colors.grey)),
+            ? RefreshIndicator(
+          onRefresh: fetch_consultancy_branch,
+          child: ListView(
+            physics: const AlwaysScrollableScrollPhysics(),
+            children: [
+              SizedBox(
+                height: MediaQuery.of(context).size.height * 0.7,
+                child: Center(
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children:  [
+                      Icon(Icons.sentiment_very_dissatisfied_rounded, size: 50, color: Colors.grey),
+                      Padding(
+                        padding: EdgeInsets.all(8.0),
+                        child: Text("No branches found for ${widget.name}", style:TextStyle(color: Colors.grey)),
+                      ),
+                    ],
+                  ),
                 ),
-              ],
-            ))
+              ),
+            ],
+          ),
+        )
             : ListView.builder(
           itemCount: branch_data.length,
           itemBuilder: (context, index) {

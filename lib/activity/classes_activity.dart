@@ -65,22 +65,45 @@ class classes_state extends State<classes_activity>{
       Center(child: CircularProgressIndicator(),)
           :
           class_list.isEmpty
-      ? Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          // crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            Icon(Icons.sentiment_very_dissatisfied_rounded,
-              size: 50,
-              color: Colors.grey,),
-            Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Text("No classes found for ${widget.course_name}", style: TextStyle(color: Colors.grey),),
-            )
-          ],
-        ),
-      )
-              :
+      ?
+      //     Center(
+      //   child: Column(
+      //     mainAxisAlignment: MainAxisAlignment.center,
+      //     // crossAxisAlignment: CrossAxisAlignment.center,
+      //     children: [
+      //       Icon(Icons.sentiment_very_dissatisfied_rounded,
+      //         size: 50,
+      //         color: Colors.grey,),
+      //       Padding(
+      //         padding: const EdgeInsets.all(8.0),
+      //         child: Text("No classes found for ${widget.course_name}", style: TextStyle(color: Colors.grey),),
+      //       )
+      //     ],
+      //   ),
+      // )
+          RefreshIndicator(
+            onRefresh: fetch_class_details,
+            child: ListView(
+              physics: const AlwaysScrollableScrollPhysics(),
+              children: [
+                SizedBox(
+                  height: MediaQuery.of(context).size.height * 0.7,
+                  child: Center(
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children:  [
+                        Icon(Icons.sentiment_very_dissatisfied_rounded, size: 50, color: Colors.grey),
+                        Padding(
+                          padding: EdgeInsets.all(8.0),
+                          child: Text("No classes found for ${widget.course_name}", style:TextStyle(color: Colors.grey)),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ) :
       RefreshIndicator(
         onRefresh: ()async{
          await fetch_class_details();

@@ -62,10 +62,27 @@ class all_country_state extends State<all_country_gridview_activity>{
            child: isLoading
                ? Center(child: CircularProgressIndicator())
                : country_data.isEmpty
-               ? Center(
-             child: Text(
-               "No country available",
-               style: TextStyle(color: Colors.red),
+               ?RefreshIndicator(
+             onRefresh: fetch_allcountry_data,
+             child: ListView(
+               physics: const AlwaysScrollableScrollPhysics(),
+               children: [
+                 SizedBox(
+                   height: MediaQuery.of(context).size.height * 0.7,
+                   child: Center(
+                     child: Column(
+                       mainAxisAlignment: MainAxisAlignment.center,
+                       children:  [
+                         Icon(Icons.sentiment_very_dissatisfied_rounded, size: 50, color: Colors.grey),
+                         Padding(
+                           padding: EdgeInsets.all(8.0),
+                           child: Text("No countries found", style:TextStyle(color: Colors.grey)),
+                         ),
+                       ],
+                     ),
+                   ),
+                 ),
+               ],
              ),
            )
                : Padding(

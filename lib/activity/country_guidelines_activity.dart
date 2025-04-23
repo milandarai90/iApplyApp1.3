@@ -60,19 +60,29 @@ super.initState();
           child: isLoading
               ? const Center(child: CircularProgressIndicator())
               : guidelines_list.isEmpty
-              ? const Center(
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Icon(Icons.sentiment_very_dissatisfied_rounded,
-                  size: 50,
-                  color: Colors.grey,),
-                  Padding(
-                    padding: EdgeInsets.all(8.0),
-                    child: Text("No Guidelines found", style: TextStyle(color: Colors.grey)),
+              ? RefreshIndicator(
+            onRefresh: fetch_country_guidelines,
+            child: ListView(
+              physics: const AlwaysScrollableScrollPhysics(),
+              children: [
+                SizedBox(
+                  height: MediaQuery.of(context).size.height * 0.7,
+                  child: Center(
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children:  [
+                        Icon(Icons.sentiment_very_dissatisfied_rounded, size: 50, color: Colors.grey),
+                        Padding(
+                          padding: EdgeInsets.all(8.0),
+                          child: Text("No guidelines found for ${widget.country}", style:TextStyle(color: Colors.grey)),
+                        ),
+                      ],
+                    ),
                   ),
-                ],
-              ))
+                ),
+              ],
+            ),
+          )
               : ListView.builder(
             itemCount: guidelines_list.length,
             itemBuilder: (context, index) {

@@ -2,107 +2,113 @@ import 'package:flutter/material.dart';
 import 'package:iapply3/models/notification_model.dart';
 import 'package:iapply3/services/notification_services.dart';
 import 'package:intl/intl.dart';
-
-class notification_activity extends StatefulWidget{
+class notification_activity extends StatefulWidget {
   final String token;
- const notification_activity({required this.token ,super.key});
+  const notification_activity({required this.token, super.key});
+
   @override
-  State<StatefulWidget> createState() {
-    return notification_activity_state();
-  }
+  State<notification_activity> createState() => notification_activity_state();
 }
-class notification_activity_state extends State<notification_activity>{
+
+class notification_activity_state extends State<notification_activity> {
+  bool isLoading = true;
+  List<notification_model> notificationList = [];
+
   @override
   void initState() {
     super.initState();
-    fetch_notifications();
+    fetchNotifications();
   }
-  bool isLoading = true;
-  List<notification_model> notification_list =[];
 
-
-  Future <void> fetch_notifications() async {
+  Future<void> fetchNotifications() async {
     try {
-      final notify_service = notification_services();
-      final notify_list = await notify_service.notification(widget.token);
-      // print("Fetched ${notify_list.length} notifications");  // Debug line
-      if(!mounted)
-        return;
+      final notifyService = notification_services();
+      final notifyList = await notifyService.notification(widget.token);
+      if (!mounted) return;
       setState(() {
-        notification_list = notify_list;
+        notificationList = notifyList;
         isLoading = false;
       });
     } catch (e) {
-      // print("Error fetching notifications: $e"); // Debug line
-      if(!mounted)
-        return;
-      setState(() {
-        isLoading = false;
-      });
+      if (!mounted) return;
+      setState(() => isLoading = false);
     }
   }
 
-
+  String _formatDatetime(String? datetime) {
+    if (datetime == null) return "";
+    try {
+      final parsedDateTime = DateTime.parse(datetime).toUtc();
+      final nepalTime = parsedDateTime.add(const Duration(hours: 5, minutes: 45));
+      return DateFormat('yyyy-MM-dd HH:mm a').format(nepalTime);
+    } catch (e) {
+      return '';
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text("Notification",style: TextStyle(color: Theme.of(context).canvasColor),),backgroundColor: Theme.of(context).primaryColor,),
+      appBar: AppBar(
+        title: Text("Notification", style: TextStyle(color: Theme.of(context).canvasColor)),
+        backgroundColor: Theme.of(context).primaryColor,
+      ),
       body: Container(
         color: Theme.of(context).canvasColor,
-        child: isLoading ? Center(child: CircularProgressIndicator(),) :
-        notification_list.isEmpty ?
-            Center(
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                // crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  Icon(Icons.sentiment_very_dissatisfied_rounded,
-                    size: 50,
-                    color: Colors.grey,),
-                  Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Text("Notifications are empty", style: TextStyle(color: Colors.grey),),
-                  )
-                ],
-              ),            )
-            :
-            RefreshIndicator(
-              onRefresh: ()async{
-                await fetch_notifications();
-              },
-              child: Container(
-                child: ListView.builder(
-                  itemCount: notification_list.length,
-                    itemBuilder: (context, index){
+        child: isLoading
+            ? const Center(child: CircularProgressIndicator())
+            : notificationList.isEmpty
+            ? RefreshIndicator(
+          onRefresh: fetchNotifications,
+          child: ListView(
+          physics: const AlwaysScrollableScrollPhysics(),
+          children: [
+          SizedBox(
+          height: MediaQuery.of(context).size.height * 0.7,
+          child: Center(
+          child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: const [
+          Icon(Icons.sentiment_very_dissatisfied_rounded, size: 50, color: Colors.grey),
+          Padding(
+          padding: EdgeInsets.all(8.0),
+          child: Text("Notifications are empty", style: TextStyle(color: Colors.grey)),
+          ),
+          ],
+          ),
+          ),
+          ),
+          ],
+          ),
+    )
 
-                   final notify = notification_list[index];
 
-                   String format_datetime = _formatdatetime(notify.created_at);
-
-                  return Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: ListTile(
-                      title:  Text("${notify.notifications ?? ""}",style: TextStyle(color: Theme.of(context).primaryColor),),
-                      leading: CircleAvatar(child: Icon(Icons.person)),
-                      subtitle: Text("${format_datetime ?? ""}"),
-                      trailing: Icon(Icons.more_horiz),
+            : RefreshIndicator(
+          onRefresh: fetchNotifications,
+          child: ListView.builder(
+            itemCount: notificationList.length,
+            itemBuilder: (context, index) {
+              final notify = notificationList[index];
+              final formattedDate = _formatDatetime(notify.created_at);
+              return Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Card(
+                  child: ListTile(
+                    title: Text(
+                      notify.notifications ?? "",
+                      style: TextStyle(color: Theme.of(context).primaryColor),
                     ),
-                  );
-                }),
-              ),
-            )
-      )
+                    leading: const CircleAvatar(
+                        radius :25,child: Icon(Icons.person,size: 30,)),
+                    subtitle: Text(formattedDate),
+                    trailing: const Icon(Icons.more_horiz),
+                  ),
+                ),
+              );
+            },
+          ),
+        ),
+      ),
     );
-  }
-}
-String _formatdatetime(String? datetime){
-  if(datetime == null) return "";
-  try{
-    DateTime parsedDateTime = DateTime.parse(datetime).toUtc();
-    DateTime nepalTime = parsedDateTime.add(Duration(hours: 5 ,minutes: 45));
-    return DateFormat('yyyy-MM-dd HH:mm a').format(nepalTime);
-  }catch(e){
-    return '';
   }
 }

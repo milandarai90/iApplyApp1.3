@@ -61,20 +61,45 @@ class course_state extends State<courses_activity>{
          Center(
            child: CircularProgressIndicator(),
          ): courses_list.isEmpty ?
-         Center(
-           child:Column(
-             mainAxisAlignment: MainAxisAlignment.center,
+         // Center(
+         //   child:Column(
+         //     mainAxisAlignment: MainAxisAlignment.center,
+         //     children: [
+         //       Icon(Icons.sentiment_very_dissatisfied_rounded,
+         //       size: 50,
+         //           color: Colors.grey,),
+         //       Padding(
+         //         padding: const EdgeInsets.all(8.0),
+         //         child: Text("No courses found for ${widget.branch}", style: TextStyle(color: Colors.grey),),
+         //       )
+         //     ],
+         //   ) ,
+         // )
+         RefreshIndicator(
+           onRefresh: fetch_courses_data,
+           child: ListView(
+             physics: const AlwaysScrollableScrollPhysics(),
              children: [
-               Icon(Icons.sentiment_very_dissatisfied_rounded,
-               size: 50,
-                   color: Colors.grey,),
-               Padding(
-                 padding: const EdgeInsets.all(8.0),
-                 child: Text("No courses found for ${widget.branch}", style: TextStyle(color: Colors.grey),),
-               )
+               SizedBox(
+                 height: MediaQuery.of(context).size.height * 0.7,
+                 child: Center(
+                   child: Column(
+                     mainAxisAlignment: MainAxisAlignment.center,
+                     children:  [
+                       Icon(Icons.sentiment_very_dissatisfied_rounded, size: 50, color: Colors.grey),
+                       Padding(
+                         padding: EdgeInsets.all(8.0),
+                         child: Text("No courses found for ${widget.branch}", style:TextStyle(color: Colors.grey)),
+                       ),
+                     ],
+                   ),
+                 ),
+               ),
              ],
-           ) ,
-         ): Container(
+           ),
+         )
+
+             : Container(
            margin: const EdgeInsets.only(bottom: 10 ,top: 10),
            child: ListView.builder(
              itemCount: courses_list.length,
