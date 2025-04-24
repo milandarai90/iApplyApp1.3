@@ -1,0 +1,33 @@
+import 'dart:convert';
+
+import 'package:http/http.dart' as http;
+import 'package:iapply3/models/myclass_model.dart';
+class myclass_services{
+
+ Future<List<myclass_model>?> myclass_data (String token)async{
+   final url = "https://iapply.techenfield.com/api/AfterBookingPage/";
+   final uri = Uri.parse(url);
+   final response = await http.get(uri , headers: {
+     "Authorization" : "Bearer $token",
+     "Accept" : "application/json",
+     "Content-Type" : "application/json"
+   });
+   if(response.statusCode == 200){
+     final body = response.body;
+     final json = jsonDecode(body);
+     final List<dynamic> myclass_data = json["data"] ?? "";
+     final mapped_myclass_data = myclass_data.map<myclass_model>((e){
+       return myclass_model(
+           consultancy: e['consultancy'],
+           branch: e['branch'],
+           course: e['course'],
+           classroom: e['classroom']);
+     }).toList();
+     return mapped_myclass_data;
+   }
+   else{
+     throw Exception("Something went wrong.");
+   }
+
+ }
+}
