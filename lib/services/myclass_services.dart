@@ -14,14 +14,17 @@ class myclass_services{
    });
    if(response.statusCode == 200){
      final body = response.body;
+     // print(response.body);
      final json = jsonDecode(body);
-     final List<dynamic> myclass_data = json["data"] ?? "";
+     final List<dynamic> myclass_data = json["data"] ?? [];
      final mapped_myclass_data = myclass_data.map<myclass_model>((e){
        return myclass_model(
-           consultancy: e['consultancy'],
-           branch: e['branch'],
-           course: e['course'],
-           classroom: e['classroom']);
+           consultancy: e['consultancy_name'],
+           branch: e['branch_name'],
+           course: e['course_name'],
+           classroom: e['classroom_name'],
+         status: e['status']
+       );
      }).toList();
      return mapped_myclass_data;
    }

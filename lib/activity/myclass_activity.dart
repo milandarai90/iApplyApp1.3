@@ -71,8 +71,13 @@
 //
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:iapply3/models/myclass_model.dart';
+import 'package:iapply3/services/myclass_services.dart';
 
 class myclass_activity extends StatefulWidget{
+  final String token;
+  myclass_activity({required this.token});
+
   @override
   State<StatefulWidget> createState() {
     return myclass_state();
@@ -80,9 +85,123 @@ class myclass_activity extends StatefulWidget{
 }
 
 class myclass_state extends State<myclass_activity>{
+
+  bool isLoading = true;
+  List<myclass_model>classes_list = [];
+
+  Future<void>fetch_myclasses()async{
+    try{
+     final services = myclass_services();
+     final myclasses_data = await services.myclass_data(widget.token);
+     if(!mounted) return;
+     setState(() {
+       isLoading = false;
+       classes_list = myclasses_data ?? [];
+     });
+  }
+  catch(e){
+if(!mounted) return ;
+setState(() {
+  isLoading= false;
+});
+  }
+  }
+
+  @override
+  void initState() {
+    fetch_myclasses();
+    super.initState();
+  }
+
+
   @override
   Widget build(BuildContext context) {
-    return Scaffold();
+    return Scaffold(
+      appBar: AppBar(
+        // iconTheme:IconThemeData(color: Theme.of(context).canvasColor) ,
+        title: Text("My Classes" ,
+          style: TextStyle(color: Theme.of(context).canvasColor),),
+      backgroundColor: Theme.of(context).primaryColor,),
+      body: Container(
+        color: Theme.of(context).canvasColor,
+        child: isLoading
+            ? const Center(child: CircularProgressIndicator())
+            : classes_list.isEmpty
+            ? RefreshIndicator(
+          onRefresh: fetch_myclasses,
+          child: ListView(
+            physics: const AlwaysScrollableScrollPhysics(),
+            children: [
+              SizedBox(
+                height: MediaQuery.of(context).size.height * 0.7,
+                child: Center(
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: const [
+                      Icon(Icons.sentiment_very_dissatisfied_rounded, size: 50, color: Colors.grey),
+                      Padding(
+                        padding: EdgeInsets.all(8.0),
+                        child: Text("You haven't joined any classes yet.", style: TextStyle(color: Colors.grey)),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+            ],
+          ),
+        )
+            : RefreshIndicator(
+          onRefresh: fetch_myclasses,
+          child:ListView.builder(
+            itemCount: classes_list.length,
+              itemBuilder: (context,index){
+              final myClasses = classes_list[index];
+              return Padding(
+                padding: const EdgeInsets.only(left: 20.0, right: 20,top: 20),
+                child: Card(
+                  // color: Theme.of(context).canvasColor,
+                  child: Row(
+                    children: [
+                      Expanded(
+                        flex: 4,
+                        child: Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text("Consultancy: ${myClasses.consultancy}",style: TextStyle(color: Theme.of(context).primaryColor,fontWeight: FontWeight.bold,fontSize: 16),),
+                              Text("Branch: ${myClasses.branch}",style: TextStyle(color: Theme.of(context).primaryColor,fontWeight: FontWeight.bold,fontSize: 16),),
+                              Text("Course: ${myClasses.course}",style: TextStyle(color: Theme.of(context).primaryColor,fontWeight: FontWeight.bold,fontSize: 16),),
+                              Text("Class: ${myClasses.classroom}",style: TextStyle(color: Theme.of(context).primaryColor,fontWeight: FontWeight.bold,fontSize: 16),),
+                            ],
+                          ),
+                        ),
+                      ),
+                     if (myClasses.status == "joined")
+                       Expanded(
+                         flex: 1,
+                         child: Column(
+                           crossAxisAlignment: CrossAxisAlignment.start,
+
+                           children: [
+                             Center(child: Icon(Icons.check_circle,color: Colors.green,)),
+                             Center(child: Text("Joined",style: TextStyle(color: Colors.green),))
+                           ],
+                         ),
+                       ) else Container(
+                           color: Colors.red,
+                           child: ElevatedButton(onPressed: (){},
+                               child:Text("Cancel Booking") ),
+                         ),
+                ]
+                  ),
+                ),
+              );
+              }) ,
+
+        ),
+      ),
+    );
   }
 
 }

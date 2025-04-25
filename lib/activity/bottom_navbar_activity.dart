@@ -22,7 +22,7 @@ class bottom_navbar_activity_state extends State<bottom_navbar_activity>{
    super.initState();
    WidgetList = [
      home_activity(token : widget.token),
-     myclass_activity(),
+     myclass_activity(token : widget.token),
      notification_activity(token : widget.token),
      menu_activity(),
      profile_activity()
@@ -60,7 +60,7 @@ class bottom_navbar_activity_state extends State<bottom_navbar_activity>{
           selectedItemColor: Theme.of(context).canvasColor,
           items: [
         BottomNavigationBarItem(icon: Icon(Icons.home_outlined,color: Theme.of(context).canvasColor,),label:  "Home",),
-        BottomNavigationBarItem(icon: Icon(Icons.people_alt_outlined,color: Theme.of(context).canvasColor),label:  "Users"),
+        BottomNavigationBarItem(icon: Icon(Icons.people_alt_outlined,color: Theme.of(context).canvasColor),label:  "My Classes"),
         BottomNavigationBarItem(icon: Icon(Icons.notifications_outlined,color: Theme.of(context).canvasColor),label:  "Notification"),
         BottomNavigationBarItem(icon: Icon(Icons.menu_rounded,color: Theme.of(context).canvasColor),label:  "Menu"),
         BottomNavigationBarItem(icon: Icon(Icons.person,color: Theme.of(context).canvasColor),label:  "Profile"),
