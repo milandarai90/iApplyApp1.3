@@ -98,6 +98,9 @@ class consultancy_branch_state extends State<consultancy_branch_activity>{
                     height: 60,
                     width: 60,
                     fit: BoxFit.cover,
+                    errorBuilder: (context,error, stackTrace){
+                      return const Icon(Icons.business,size: 40,color: Colors.grey,);
+                    },
                   ),
                 )
                     : const Icon(Icons.business, size: 50, color: Colors.grey),

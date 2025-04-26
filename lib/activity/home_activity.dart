@@ -177,7 +177,7 @@ class home_activity_state extends State<home_activity>{
                                       child: Center(
                                     child: Text(
                                       "No consultancies found",
-                                      style: TextStyle(color: Colors.red),
+                                      style: TextStyle(color: Colors.grey),
                                     ),),
                                     ),
                                   )
@@ -209,17 +209,31 @@ class home_activity_state extends State<home_activity>{
                                                       fit: BoxFit.cover,
                                                 ) : null,
                                                   borderRadius: BorderRadius.circular(16),
-                                                  color: Colors.blueAccent
                                               ),
-                                              child: consultancy.photo == null
-                                                  ? const Center(
-                                                child: Icon(
-                                                  Icons.image_not_supported,
-                                                  size: 48,
-                                                  color: Colors.grey,
+                                              child: ClipRRect(
+                                                borderRadius: BorderRadius.circular(16),
+                                                child: consultancy.photo != null && consultancy.photo!.isNotEmpty
+                                                    ? Image.network(
+                                                  consultancy.photo!,
+                                                  fit: BoxFit.cover,
+                                                  errorBuilder: (context, error, stackTrace) {
+                                                    return Center(
+                                                      child: Icon(
+                                                        Icons.image_not_supported,
+                                                        size: 48,
+                                                        color: Colors.grey,
+                                                      ),
+                                                    );
+                                                  },
+                                                )
+                                                    : Center(
+                                                  child: Icon(
+                                                    Icons.image_not_supported,
+                                                    size: 48,
+                                                    color: Colors.grey,
+                                                  ),
                                                 ),
-                                              )
-                                                  : null,
+                                              ),
                                             ),
                                             const SizedBox(height: 15),
                                             SizedBox(
@@ -305,18 +319,31 @@ class home_activity_state extends State<home_activity>{
                                                   width: 1
                                                 ),
                                                   borderRadius: BorderRadius.circular(16),
-                                                  color: Colors.blueAccent,
-                                                image: country.map !=null ?
-                                                    DecorationImage(image: NetworkImage(country.map!),
-                                                      fit: BoxFit.cover
-                                                    ):null,
                                               ),
-                                              child: country.map == null ? Center(
-                                                child: Icon(Icons.image_not_supported,
-                                                  size: 48,
-                                                  color: Colors.grey,
+                                                child: ClipRRect(
+                                                  borderRadius: BorderRadius.circular(16),
+                                                  child: country.map != null && country.map!.isNotEmpty
+                                                      ? Image.network(
+                                                    country.map!,
+                                                    fit: BoxFit.cover,
+                                                    errorBuilder: (context, error, stackTrace) {
+                                                      return Center(
+                                                        child: Icon(
+                                                          Icons.flag_rounded,
+                                                          size: 48,
+                                                          color: Colors.grey,
+                                                        ),
+                                                      );
+                                                    },
+                                                  )
+                                                      : Center(
+                                                    child: Icon(
+                                                      Icons.flag_rounded,
+                                                      size: 48,
+                                                      color: Colors.grey,
+                                                    ),
+                                                  ),
                                                 ),
-                                              ):null,
                                             ),
                                             const SizedBox(height: 15),
                                             SizedBox(

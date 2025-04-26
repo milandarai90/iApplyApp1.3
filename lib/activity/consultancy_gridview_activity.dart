@@ -2,11 +2,10 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:iapply3/models/consultancy_details_model.dart';
 import 'package:iapply3/services/home_data_services.dart';
-
 import 'consultancy_branch_activity.dart';
 
-class consultancy_gridview_activity extends StatefulWidget{
-   final String token;
+class consultancy_gridview_activity extends StatefulWidget {
+  final String token;
   const consultancy_gridview_activity({super.key, required this.token});
 
   @override
@@ -14,33 +13,34 @@ class consultancy_gridview_activity extends StatefulWidget{
     return consultancy_gridview_state();
   }
 }
-class consultancy_gridview_state extends State <consultancy_gridview_activity>{
 
+class consultancy_gridview_state extends State<consultancy_gridview_activity> {
   bool isLoading = true;
-  List<Consultancy_details_model>allconsultancy_list =[];
-  Future <void> fetch_allconsultancy_data()async{
-    try{
+  List<Consultancy_details_model> allconsultancy_list = [];
+
+  Future<void> fetch_allconsultancy_data() async {
+    try {
       consultancy_data_services allconsultancy_services = consultancy_data_services();
-      final response_allconsultancy =await allconsultancy_services.consultancy_details(widget.token);
+      final response_allconsultancy = await allconsultancy_services.consultancy_details(widget.token);
       allconsultancy_list = response_allconsultancy;
-      if(!mounted) return;
+      if (!mounted) return;
       setState(() {
         isLoading = false;
       });
-  }catch(e){
-      if(!mounted) return;
+    } catch (e) {
+      if (!mounted) return;
       setState(() {
-    isLoading =false;
-  });
+        isLoading = false;
+      });
+    }
   }
-}
-@override
-void initState() {
+
+  @override
+  void initState() {
     fetch_allconsultancy_data();
     super.initState();
   }
 
-  @override
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -61,7 +61,7 @@ void initState() {
           color: Theme.of(context).canvasColor,
           child: SafeArea(
             child: isLoading
-                ? Center(child: CircularProgressIndicator())
+                ? const Center(child: CircularProgressIndicator())
                 : allconsultancy_list.isEmpty
                 ? RefreshIndicator(
               onRefresh: fetch_allconsultancy_data,
@@ -73,11 +73,14 @@ void initState() {
                     child: Center(
                       child: Column(
                         mainAxisAlignment: MainAxisAlignment.center,
-                        children:  [
+                        children: const [
                           Icon(Icons.sentiment_very_dissatisfied_rounded, size: 50, color: Colors.grey),
                           Padding(
                             padding: EdgeInsets.all(8.0),
-                            child: Text("No Consultancies found", style:TextStyle(color: Colors.grey)),
+                            child: Text(
+                              "No Consultancies found",
+                              style: TextStyle(color: Colors.grey),
+                            ),
                           ),
                         ],
                       ),
@@ -92,60 +95,78 @@ void initState() {
                 onRefresh: fetch_allconsultancy_data,
                 child: GridView.builder(
                   shrinkWrap: true,
-                  physics: AlwaysScrollableScrollPhysics(),
+                  physics: const AlwaysScrollableScrollPhysics(),
                   itemCount: allconsultancy_list.length,
-                  gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                  gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                     crossAxisCount: 3,
                     mainAxisSpacing: 10,
                     crossAxisSpacing: 20,
-                    childAspectRatio: 3/4,
+                    childAspectRatio: 3 / 4,
                   ),
                   itemBuilder: (context, index) {
                     final consultancy = allconsultancy_list[index];
-                    return Container(
+                    return GestureDetector(
+                      onTap: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => consultancy_branch_activity(
+                              token: widget.token,
+                              id: consultancy.id,
+                              name: consultancy.name,
+                            ),
+                          ),
+                        );
+                      },
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.center,
                         children: [
-                             GestureDetector(
-                               onTap: (){
-                                 Navigator.push(context, MaterialPageRoute(builder: (context)=> consultancy_branch_activity(token:widget.token,id :consultancy.id , name : consultancy.name)));
-                               },
-                               child: Container(
-                                width: 90,
-                                height: 90,
-                                decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(16),
-                                    border: Border.all(
-                                      color: Theme.of(context).primaryColor,
+                          Container(
+                            width: 90,
+                            height: 90,
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(16),
+                              border: Border.all(
+                                color: Theme.of(context).primaryColor,
+                              ),
+                              color: Colors.grey[200],
+                            ),
+                            child: ClipRRect(
+                              borderRadius: BorderRadius.circular(16),
+                              child: consultancy.photo != null && consultancy.photo!.isNotEmpty
+                                  ? Image.network(
+                                consultancy.photo!,
+                                fit: BoxFit.cover,
+                                errorBuilder: (context, error, stackTrace) {
+                                  return const Center(
+                                    child: Icon(
+                                      Icons.image_not_supported,
+                                      size: 40,
+                                      color: Colors.grey,
                                     ),
-                                  image: consultancy.photo != null
-                                      ? DecorationImage(
-                                    image:
-                                    NetworkImage(consultancy.photo!),
-                                    fit: BoxFit.cover,
-                                  )
-                                      : null,
-                                  color: Colors.grey[200],
+                                  );
+                                },
+                              )
+                                  : const Center(
+                                child: Icon(
+                                  Icons.image_not_supported,
+                                  size: 40,
+                                  color: Colors.grey,
                                 ),
-                                child: consultancy.photo == null
-                                    ? Center(
-                                  child: Icon(
-                                    Icons.image_not_supported,
-                                    size: 40,
-                                    color: Colors.grey,
-                                  ),
-                                )
-                                    : null,
-                                                           ),
-                             ),
-
+                              ),
+                            ),
+                          ),
                           const SizedBox(height: 15),
                           Padding(
                             padding: const EdgeInsets.only(left: 5.0),
                             child: SizedBox(
                               child: Align(
                                 alignment: Alignment.center,
-                                child: Text(consultancy.name ,style: TextStyle(color: Theme.of(context).primaryColor,),
+                                child: Text(
+                                  consultancy.name,
+                                  style: TextStyle(
+                                    color: Theme.of(context).primaryColor,
+                                  ),
                                   overflow: TextOverflow.ellipsis,
                                 ),
                               ),
@@ -163,6 +184,4 @@ void initState() {
       ),
     );
   }
-
-
 }
