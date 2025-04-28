@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:iapply3/activity/after_booking.dart';
 import 'package:iapply3/activity/classes_activity.dart';
 import 'package:iapply3/activity/home_activity.dart';
 import 'package:iapply3/models/booking_model.dart';
@@ -256,12 +257,7 @@ class class_details_state extends State<class_details_acitivty> {
                                       backgroundColor: Colors.green,
                                     ),
                                   );
-                                  // await Future.delayed(Duration(seconds: 2));
-                                  // if (context.mounted) {
-                                  //   Navigator.pop(context, true); // Return `true` to indicate booking was done
-                                  // }
-                                } else if (response_booking.statusCode == 400) {
-                                  // Already booked (error case)
+                                } else if (response_booking.statusCode == 300) {
                                   setState(() {
                                     isBooked = true;
                                   });
@@ -272,14 +268,21 @@ class class_details_state extends State<class_details_acitivty> {
                                       backgroundColor: Colors.orange, // Use orange for "Already booked"
                                     ),
                                   );
-                                } else {
-                                  // Other error cases (e.g., 500 for server error)
-                                  message = response_booking.message ?? "An error occurred!";
+                                } else if(response_booking.statusCode == 300){
+                                  // message = response_booking.message ?? "An error occurred!";
+                                  // ScaffoldMessenger.of(context).showSnackBar(
+                                  //   SnackBar(
+                                  //     content: Center(child: Text(message)),
+                                  //     backgroundColor: Colors.red,
+                                  //   ),
+                                  // );
+                                  Navigator.push(context, MaterialPageRoute(builder: (context)=>after_booking_activity()));
+                                }
+                                else{
+                                  message = response_booking.message ?? "An error occured.";
                                   ScaffoldMessenger.of(context).showSnackBar(
-                                    SnackBar(
-                                      content: Center(child: Text(message)),
-                                      backgroundColor: Colors.red,
-                                    ),
+                                    SnackBar(content: Center(child: Text(message),),
+                                    backgroundColor: Colors.red,)
                                   );
                                 }
                               } catch (e) {
