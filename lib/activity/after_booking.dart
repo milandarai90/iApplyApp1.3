@@ -10,7 +10,13 @@ class after_booking_activity extends StatefulWidget{
 class after_booking_state extends State<after_booking_activity>{
   @override
   Widget build(BuildContext context) {
-    return Scaffold();
+    return Scaffold(
+      body: Container(
+        child: Center(
+          child: Text("coming coon."),
+        ),
+      )
+    );
   }
 
 }
