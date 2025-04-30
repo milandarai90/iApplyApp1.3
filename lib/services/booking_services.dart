@@ -16,6 +16,9 @@ class booking_services{
    }else if(response.statusCode == 400 || response.statusCode == 401){
      return booking_response.from_bookingServer(json.decode(response.body),response.statusCode);
    }
+   else if(response.statusCode == 202){
+     return booking_response.from_bookingServer(jsonDecode(response.body), response.statusCode);
+   }
 else{
   throw Exception('Failed to book.');
    }

@@ -257,7 +257,7 @@ class class_details_state extends State<class_details_acitivty> {
                                       backgroundColor: Colors.green,
                                     ),
                                   );
-                                } else if (response_booking.statusCode == 300) {
+                                } else if (response_booking.statusCode == 202) {
                                   setState(() {
                                     isBooked = true;
                                   });
@@ -268,14 +268,6 @@ class class_details_state extends State<class_details_acitivty> {
                                       backgroundColor: Colors.orange, // Use orange for "Already booked"
                                     ),
                                   );
-                                } else if(response_booking.statusCode == 300){
-                                  // message = response_booking.message ?? "An error occurred!";
-                                  // ScaffoldMessenger.of(context).showSnackBar(
-                                  //   SnackBar(
-                                  //     content: Center(child: Text(message)),
-                                  //     backgroundColor: Colors.red,
-                                  //   ),
-                                  // );
                                   Navigator.push(context, MaterialPageRoute(builder: (context)=>after_booking_activity()));
                                 }
                                 else{

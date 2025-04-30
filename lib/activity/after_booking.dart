@@ -13,7 +13,7 @@ class after_booking_state extends State<after_booking_activity>{
     return Scaffold(
       body: Container(
         child: Center(
-          child: Text("coming coon."),
+          child: Text("coming soon."),
         ),
       )
     );
