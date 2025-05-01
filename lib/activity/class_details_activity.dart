@@ -268,7 +268,7 @@ class class_details_state extends State<class_details_acitivty> {
                                       backgroundColor: Colors.orange, // Use orange for "Already booked"
                                     ),
                                   );
-                                  Navigator.push(context, MaterialPageRoute(builder: (context)=>after_booking_activity()));
+                                  Navigator.push(context, MaterialPageRoute(builder: (context)=>after_booking_activity(consultancy: widget.consultancy, branch : widget.branch , course : widget.course, classes : widget.class_name, cid: widget.consultancy_id , bid :widget.branch_id , coid : widget.course_id , clid :widget.class_id ,token :widget.token)));
                                 }
                                 else{
                                   message = response_booking.message ?? "An error occured.";
