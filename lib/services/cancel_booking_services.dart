@@ -15,9 +15,9 @@ class cancel_booking_services{
         body: jsonEncode(requestCancelBooking.toCancelServer())
     );
     if(response.statusCode == 200){
-      return cancel_booking_response.fromServer(jsonDecode(response.body));
+      return cancel_booking_response.fromServer(jsonDecode(response.body),response.statusCode);
     }else if(response.statusCode == 400){
-      return cancel_booking_response.fromServer(jsonDecode(response.body));
+      return cancel_booking_response.fromServer(jsonDecode(response.body),response.statusCode);
     }
     else {
       throw Exception("Failed to cancel booking.");

@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:iapply3/activity/class_details_activity.dart';
+import 'package:iapply3/activity/classes_activity.dart';
+import 'package:iapply3/models/cancel_booking_model.dart';
+import 'package:iapply3/services/cancel_booking_services.dart';
 
 class after_booking_activity extends StatefulWidget{
-  @override
   final String consultancy;
   final String token;
   final String branch;
@@ -21,6 +24,15 @@ const after_booking_activity({required this.token, required this.course, require
 
 }
 class after_booking_state extends State<after_booking_activity>{
+  late final cancel_booking_request passing_cancel_data;
+  bool isCanceled = false;
+
+  @override
+  void initState() {
+    passing_cancel_data = cancel_booking_request(course_id: widget.coid, consultancy_id: widget.cid, branch_id: widget.bid, classroom_id: widget.clid);
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -54,7 +66,47 @@ class after_booking_state extends State<after_booking_activity>{
                 ),
                 Padding(
                   padding: const EdgeInsets.all(10.0),
-                  child: ElevatedButton(onPressed: (){}, child: Text("Cancel Booking",style: TextStyle(color: Theme.of(context).canvasColor),),
+                  child: ElevatedButton(onPressed: ()async{
+                    cancel_booking_services cancel = cancel_booking_services();
+                    try{
+                      cancel_booking_response cancel_response =await cancel.cancel_booking(passing_cancel_data, widget.token);
+                      if(cancel_response.statusCode == 200 ){
+                        setState(() {
+                          isCanceled = true;
+                        });
+                        Navigator.pushAndRemoveUntil(
+                          context,
+                          MaterialPageRoute(builder: (context) => classes_activity(consultancy: widget.consultancy, branch: widget.branch, consultancy_id: widget.cid, token: widget.token, branch_id: widget.bid, course_id: widget.coid, course_name: widget.course)),
+                              (Route<dynamic> route) => false,
+                        );
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          SnackBar(
+                            backgroundColor: Colors.green,
+                              content: Center(
+                            child: Text("Booking canceled successfully."),))
+                        );
+                      }else if(cancel_response.statusCode == 400){
+                        setState(() {
+                          isCanceled =false;
+                        });
+                        ScaffoldMessenger.of(context).showSnackBar(
+                            SnackBar(
+                                backgroundColor: Colors.green,
+                                content: Center(
+                                  child: Text("Booking cancellation failed."),))
+                        );
+                      }
+                    }
+                        catch(e){
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        SnackBar(
+                          backgroundColor: Colors.red,
+                            content:Center(child: Text("Error occurred during cancellation."),) )
+                      );
+                        }
+
+                  },
+                    child: Text("Cancel Booking",style: TextStyle(color: Theme.of(context).canvasColor),),
                     style: ElevatedButton.styleFrom(
                       backgroundColor: Colors.redAccent,
                       shape: RoundedRectangleBorder(

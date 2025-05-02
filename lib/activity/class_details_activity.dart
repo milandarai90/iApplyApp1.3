@@ -281,7 +281,7 @@ class class_details_state extends State<class_details_acitivty> {
                                 // Handle any errors during the request (e.g., network issues)
                                 ScaffoldMessenger.of(context).showSnackBar(
                                   SnackBar(
-                                    content: Center(child: Text("An error occurred: $e")),
+                                    content: Center(child: Text("An error occurred")),
                                     backgroundColor: Colors.red,
                                   ),
                                 );

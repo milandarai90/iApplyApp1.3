@@ -21,11 +21,15 @@ class cancel_booking_request{
 
 }
 class cancel_booking_response{
-final String message;
-cancel_booking_response({required this.message});
+final String? message;
+final int? statusCode;
 
-factory cancel_booking_response.fromServer(Map<String,dynamic>json){
-  return cancel_booking_response(message: json["message"]);
+cancel_booking_response({required this.message,required this.statusCode});
+
+factory cancel_booking_response.fromServer(Map<String,dynamic>json,int statusCode){
+  return cancel_booking_response(
+      statusCode: statusCode,
+      message: json["message"]);
 }
 
 }
