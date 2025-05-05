@@ -2,6 +2,7 @@
 import 'package:flutter/material.dart';
 import 'package:iapply3/activity/bottom_navbar_activity.dart';
 import 'package:iapply3/activity/home_activity.dart';
+import 'package:iapply3/activity/register_activity.dart';
 import 'package:iapply3/models/login_model.dart';
 import 'package:iapply3/services/login_services.dart';
 
@@ -54,7 +55,10 @@ class loginactivity_state extends State<login_activity>{
              Padding(
                padding: const EdgeInsets.all(20.0),
                child: Container(
-                 color: Theme.of(context).canvasColor,
+                 decoration: BoxDecoration(
+                   color: Theme.of(context).canvasColor,
+                   borderRadius: BorderRadius.circular(10)
+                 ),
                  child: Center(
                    child: Column(
                      children: [
@@ -202,7 +206,9 @@ class loginactivity_state extends State<login_activity>{
                                      mainAxisAlignment: MainAxisAlignment.center,
                                      children: [
                                        Text("Don't have an account?"),
-                                       TextButton(onPressed: (){}, child: Text("Register Now",style: TextStyle(color: Colors.green),))
+                                       TextButton(onPressed: (){
+                                         Navigator.pushReplacement(context, MaterialPageRoute(builder: (context)=>register_activity()));
+                                       }, child: Text("Register Now",style: TextStyle(color: Colors.green),))
                                      ],
                                    ),
                                  )
