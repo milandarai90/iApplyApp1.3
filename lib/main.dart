@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:iapply3/activity/splashscreen_activity.dart';
+import 'package:iapply3/activity/verify_otp_activity.dart';
 
 void main() {
   runApp(const MyApp());
@@ -17,7 +18,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
       ),
-      home: splashscreen_activity(),
+      home: verifyOTP_activity(),
     );
   }
 }
