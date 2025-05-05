@@ -274,7 +274,14 @@ class register_activity_state extends State<register_activity>{
                                                     if(context.mounted){
                                                       Navigator.pushReplacement(context, MaterialPageRoute(builder: (context)=>verifyOTP_activity()));
                                                     }
-                                                  }else{
+                                                  }else if(response.statusCode == 409){
+                                                    ScaffoldMessenger.of(context).showSnackBar(
+                                                        SnackBar(
+                                                            backgroundColor: Colors.deepOrange,
+                                                            content: Center(child: Text("User already registered.Please login"),))
+                                                    );
+                                                  }
+                                                  else{
                                                     ScaffoldMessenger.of(context).showSnackBar(
                                                       SnackBar(
                                                         backgroundColor: Colors.red,
