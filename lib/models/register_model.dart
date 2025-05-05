@@ -12,10 +12,10 @@ factory register_response.register_fromServer(Map<String,dynamic>json,int status
 
 
 class register_request{
-  final String name;
-  final String email;
-  final String password;
-  final String c_password;
+  late  String name;
+  late  String email;
+  late  String password;
+  late  String c_password;
 
   register_request({required this.name, required this.email, required this.password, required this.c_password});
   Map<String,dynamic>register_toServer(){

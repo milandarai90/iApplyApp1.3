@@ -1,6 +1,11 @@
 
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:iapply3/activity/login_activity.dart';
+import 'package:iapply3/activity/verify_otp_activity.dart';
+import 'package:iapply3/models/register_model.dart';
+import 'package:iapply3/services/register_services.dart';
 
 class register_activity extends StatefulWidget{
   @override
@@ -16,6 +21,17 @@ class register_activity_state extends State<register_activity>{
   final emailController = TextEditingController();
   final passwordController = TextEditingController();
   final cPasswordController = TextEditingController();
+
+  final form_key = GlobalKey<FormState>();
+  final scaffold_key = GlobalKey<ScaffoldState>();
+
+  late final register_request passRegisterData;
+
+  @override
+  void initState() {
+    passRegisterData = register_request(name: "", email: "", password: "", c_password: "");
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -59,6 +75,7 @@ class register_activity_state extends State<register_activity>{
                                 Padding(
                                   padding: const EdgeInsets.all(15.0),
                                   child: Form(
+                                    key: form_key,
                                       child: Column(
                                         children: [
                                           TextFormField(
@@ -144,7 +161,7 @@ class register_activity_state extends State<register_activity>{
                                               if(input == null || input.isEmpty){
                                                 return "Password is required.";
                                               }
-                                              if(input.length < 6){
+                                              if(input.length < 8){
                                                 return "Password must contain atleast 8 character.";
                                               }
                                               return null;
@@ -192,8 +209,8 @@ class register_activity_state extends State<register_activity>{
                                               if(input == null || input.isEmpty){
                                                 return "Confirm password is required.";
                                               }
-                                              if(input.length < 6){
-                                                return "Password must contain atleast 8 character.";
+                                              if(input != passwordController.text){
+                                                return "Confirm Password must be same as Password.";
                                               }
                                               return null;
                                             },
@@ -238,8 +255,34 @@ class register_activity_state extends State<register_activity>{
                                           SizedBox(
                                               width: 100,
                                               height: 40,
-                                              child: ElevatedButton(onPressed: (){
+                                              child: ElevatedButton(onPressed: ()async{
+                                                if(form_key.currentState!.validate()){
+                                                  passRegisterData.email  = emailController.text.trim();
+                                                  passRegisterData.password = passwordController.text.trim();
+                                                  passRegisterData.name = nameController.text.trim();
+                                                  passRegisterData.c_password = cPasswordController.text.trim();
 
+                                                  final registering = register_services();
+                                                  final response =await registering.register_user(passRegisterData);
+                                                  if(response.statusCode == 200 ){
+                                                    ScaffoldMessenger.of(context).showSnackBar(
+                                                      SnackBar(
+                                                        backgroundColor: Colors.green,
+                                                          content: Center(child: Text("OTP has been sent to your email."),))
+                                                    );
+                                                   // await Future.delayed(Duration(seconds: 2));
+                                                    if(context.mounted){
+                                                      Navigator.pushReplacement(context, MaterialPageRoute(builder: (context)=>verifyOTP_activity()));
+                                                    }
+                                                  }else{
+                                                    ScaffoldMessenger.of(context).showSnackBar(
+                                                      SnackBar(
+                                                        backgroundColor: Colors.red,
+                                                          content: Center(child: Text("Registration failed.")))
+                                                    );
+                                                  }
+
+                                                }
                                               },
                                                   style: ElevatedButton.styleFrom(
                                                     backgroundColor: Theme.of(context).primaryColor,

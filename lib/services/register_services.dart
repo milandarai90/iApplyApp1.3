@@ -9,10 +9,14 @@ Future <register_response> register_user(register_request registerData)async{
   final uri = Uri.parse(url);
   final response =await http.post(uri,headers: {'Content-Type': 'application/json','Accept' :'application/json'},
       body: jsonEncode(registerData.register_toServer()));
-
   if(response.statusCode == 200){
-    register_response.register_fromServer(jsonDecode(response.body), response.statusCode);
+    return register_response.register_fromServer(jsonDecode(response.body), response.statusCode);
   }
-  throw Exception("Something went wrong..");
+  else if(response.statusCode == 409){
+   return register_response.register_fromServer(jsonDecode(response.body), response.statusCode);
+  }else{
+    throw Exception("Something went wrong..");
+
+  }
 }
 }
