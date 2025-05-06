@@ -272,7 +272,7 @@ class register_activity_state extends State<register_activity>{
                                                     );
                                                    // await Future.delayed(Duration(seconds: 2));
                                                     if(context.mounted){
-                                                      Navigator.pushReplacement(context, MaterialPageRoute(builder: (context)=>verifyOTP_activity()));
+                                                      Navigator.pushReplacement(context, MaterialPageRoute(builder: (context)=>verifyOTP_activity(email : emailController.text ,name : nameController.text , password : passwordController.text , cPassword : cPasswordController.text)));
                                                     }
                                                   }else if(response.statusCode == 409){
                                                     ScaffoldMessenger.of(context).showSnackBar(
