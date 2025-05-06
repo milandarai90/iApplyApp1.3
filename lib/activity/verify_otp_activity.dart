@@ -131,7 +131,7 @@ ScaffoldMessenger.of(context).showSnackBar(
                 // SizedBox(
                 //   height: 25,
                 // ),
-                Text("Enter a OTP sent to",style: TextStyle(fontSize: 16),),
+                Text("Enter a OTP sent to ${widget.email}",style: TextStyle(fontSize: 16),),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: List.generate(5, otpBoxes),
