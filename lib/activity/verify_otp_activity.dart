@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:iapply3/activity/login_activity.dart';
+import 'package:iapply3/models/verifyOTP_model.dart';
+import 'package:iapply3/services/verifyOTP_services.dart';
 
 class verifyOTP_activity extends StatefulWidget {
   final String email;
@@ -57,8 +60,51 @@ class verifyOTP_state extends State<verifyOTP_activity>{
       ),
     );
 }
-void verifyOTP(){
-    String otp = controllers.map((c)=>c.text).join();
+late final verifyOTP_request passOTP ;
+
+@override
+  void initState() {
+    passOTP = verifyOTP_request(c_password: "", name: "", password: "", email: "", otp: "");
+    super.initState();
+  }
+
+void verifyOTP() async{
+  String finalOTP = controllers.map((c)=>c.text).join();
+
+  passOTP.c_password = widget.cPassword.trim();
+  passOTP.name = widget.name.trim();
+  passOTP.otp = finalOTP.trim();
+  passOTP.password = widget.password.trim();
+  passOTP.email = widget.email.trim();
+  
+    final verifyOTP_services otpRecieved = verifyOTP_services();
+    final response = await otpRecieved.otp_verification(passOTP);
+    if(response.statusCode == 200 ){
+
+     ScaffoldMessenger.of(context).showSnackBar(
+       SnackBar(
+         backgroundColor: Colors.green,
+           content: Center(
+         child: Text("Verified.Your registration is successful. Please LOGIN to continue.",))
+     ));
+     await Future.delayed(Duration(seconds: 2));
+     Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => login_activity()));
+      
+    }else if(response.statusCode == 400){
+ScaffoldMessenger.of(context).showSnackBar(
+  SnackBar(
+    backgroundColor: Colors.orange,
+      content: Center(child: Text("Expired or Invalid OTP."),))
+);
+    }else{
+      ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+              backgroundColor: Colors.red,
+              content: Center(child: Text("Registration failed.")))
+      );
+    }
+
+
 }
 
   @override

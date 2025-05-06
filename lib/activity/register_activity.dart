@@ -270,7 +270,7 @@ class register_activity_state extends State<register_activity>{
                                                         backgroundColor: Colors.green,
                                                           content: Center(child: Text("OTP has been sent to your email."),))
                                                     );
-                                                   // await Future.delayed(Duration(seconds: 2));
+                                                   await Future.delayed(Duration(seconds: 2));
                                                     if(context.mounted){
                                                       Navigator.pushReplacement(context, MaterialPageRoute(builder: (context)=>verifyOTP_activity(email : emailController.text ,name : nameController.text , password : passwordController.text , cPassword : cPasswordController.text)));
                                                     }
