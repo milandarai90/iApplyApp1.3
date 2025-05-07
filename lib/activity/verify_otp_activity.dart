@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:iapply3/activity/login_activity.dart';
+import 'package:iapply3/models/resendOTP_model.dart';
 import 'package:iapply3/models/verifyOTP_model.dart';
+import 'package:iapply3/services/resendOTP_services.dart';
 import 'package:iapply3/services/verifyOTP_services.dart';
 
 class verifyOTP_activity extends StatefulWidget {
@@ -61,11 +63,36 @@ class verifyOTP_state extends State<verifyOTP_activity>{
     );
 }
 late final verifyOTP_request passOTP ;
+  late final otpResendRequest otpResent;
 
 @override
   void initState() {
     passOTP = verifyOTP_request(c_password: "", name: "", password: "", email: "", otp: "");
+    otpResent = otpResendRequest(email: "");
     super.initState();
+  }
+
+  late  String messageResendOTP;
+
+  void otpResend()async{
+  otpResent.email = widget.email.trim();
+  final otpResendServices otpResend = otpResendServices();
+  final resendResponse =await otpResend.otp(otpResent);
+
+  if(resendResponse.statusCode == 200){
+    messageResendOTP = resendResponse.message ?? "otp has been sent to your email";
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(backgroundColor:Colors.green, content: Center(child: Text(messageResendOTP),))
+    );
+  }
+  else{
+    messageResendOTP = resendResponse.message ?? "Something went wrong.";
+    ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          backgroundColor: Colors.red,
+            content: Center(child: Text(messageResendOTP),))
+    );
+  }
   }
 
 void verifyOTP() async{
@@ -93,7 +120,7 @@ void verifyOTP() async{
     }else if(response.statusCode == 400){
 ScaffoldMessenger.of(context).showSnackBar(
   SnackBar(
-    backgroundColor: Colors.orange,
+    backgroundColor: Colors.red,
       content: Center(child: Text("Expired or Invalid OTP."),))
 );
     }else{
@@ -141,7 +168,7 @@ ScaffoldMessenger.of(context).showSnackBar(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     Text("Didn't get a code?"),
-                    TextButton(onPressed: (){}, child: Text("Resend OTP",style: TextStyle(color: Colors.green ,fontSize: 16),))
+                    TextButton(onPressed:otpResend, child: Text("Resend OTP",style: TextStyle(color: Colors.green ,fontSize: 16),))
                     
                   ],
                 ),
