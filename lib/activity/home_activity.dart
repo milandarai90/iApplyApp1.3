@@ -24,6 +24,11 @@ class home_activity_state extends State<home_activity>{
   List<General_country_model>general_country_list =[];
   int myIndex =0;
   bool isLoading =true;
+
+  @override
+  void dispose() {
+    super.dispose();
+  }
   
 
   @override
@@ -31,6 +36,8 @@ class home_activity_state extends State<home_activity>{
     super.initState();
     fetchAllData();
   }
+
+
 
   Future<void> fetchAllData() async {
     try {

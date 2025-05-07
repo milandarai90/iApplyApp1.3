@@ -62,10 +62,11 @@ class verifyOTP_state extends State<verifyOTP_activity>{
       ),
     );
 }
-late final verifyOTP_request passOTP ;
+
+  late final verifyOTP_request passOTP ;
   late final otpResendRequest otpResent;
 
-@override
+  @override
   void initState() {
     passOTP = verifyOTP_request(c_password: "", name: "", password: "", email: "", otp: "");
     otpResent = otpResendRequest(email: "");
@@ -95,7 +96,7 @@ late final verifyOTP_request passOTP ;
   }
   }
 
-void verifyOTP() async{
+  void verifyOTP() async{
   String finalOTP = controllers.map((c)=>c.text).join();
 
   passOTP.c_password = widget.cPassword.trim();
