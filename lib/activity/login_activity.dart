@@ -59,7 +59,7 @@ class loginactivity_state extends State<login_activity>{
         if(responseFromServer.token?.isNotEmpty == true){
           auth_token =responseFromServer.token!;
           ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(content: Center(child: Text("login successful")),
+            SnackBar(content: Center(child: Text("logged in successfully")),
               backgroundColor: Colors.green,),
           );
           await Future.delayed(Duration(seconds: 2));
