@@ -71,8 +71,8 @@
 //
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:iapply3/models/myclass_model.dart';
-import 'package:iapply3/services/myclass_services.dart';
+import 'package:iApply/models/myclass_model.dart';
+import 'package:iApply/services/myclass_services.dart';
 
 class myclass_activity extends StatefulWidget{
   final String token;

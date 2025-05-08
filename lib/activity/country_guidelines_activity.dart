@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:iapply3/models/general_country_model.dart';
-import 'package:iapply3/services/general_country_services.dart';
+import 'package:iApply/models/general_country_model.dart';
+import 'package:iApply/services/general_country_services.dart';
 
 class general_country_activity extends StatefulWidget{
   final String token;

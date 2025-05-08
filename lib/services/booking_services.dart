@@ -1,5 +1,5 @@
 import 'package:http/http.dart' as http;
-import 'package:iapply3/models/booking_model.dart';
+import 'package:iApply/models/booking_model.dart';
 import 'dart:convert';
 
 class booking_services{

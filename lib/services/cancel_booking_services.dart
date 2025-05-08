@@ -1,7 +1,7 @@
 import 'dart:convert';
 
 import 'package:http/http.dart' as http;
-import 'package:iapply3/models/cancel_booking_model.dart';
+import 'package:iApply/models/cancel_booking_model.dart';
 
 class cancel_booking_services{
   Future<cancel_booking_response> cancel_booking(cancel_booking_request requestCancelBooking,String token)async{

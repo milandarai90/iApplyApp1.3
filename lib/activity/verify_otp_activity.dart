@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:iapply3/activity/login_activity.dart';
-import 'package:iapply3/models/resendOTP_model.dart';
-import 'package:iapply3/models/verifyOTP_model.dart';
-import 'package:iapply3/services/resendOTP_services.dart';
-import 'package:iapply3/services/verifyOTP_services.dart';
+import 'package:iApply/activity/login_activity.dart';
+import 'package:iApply/models/resendOTP_model.dart';
+import 'package:iApply/models/verifyOTP_model.dart';
+import 'package:iApply/services/resendOTP_services.dart';
+import 'package:iApply/services/verifyOTP_services.dart';
 
 class verifyOTP_activity extends StatefulWidget {
   final String email;

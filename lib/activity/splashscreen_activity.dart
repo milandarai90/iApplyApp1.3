@@ -1,8 +1,7 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
-import 'package:iapply3/activity/home_activity.dart';
-import 'package:iapply3/activity/login_activity.dart';
+import 'package:iApply/activity/login_activity.dart';
 
 
 class splashscreen_activity extends StatefulWidget{

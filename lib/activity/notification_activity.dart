@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:iapply3/models/notification_model.dart';
-import 'package:iapply3/services/notification_services.dart';
+import 'package:iApply/models/notification_model.dart';
+import 'package:iApply/services/notification_services.dart';
 import 'package:intl/intl.dart';
 class notification_activity extends StatefulWidget {
   final String token;

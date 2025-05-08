@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:iapply3/activity/class_details_activity.dart';
-import 'package:iapply3/models/consultancy_details_model.dart';
-import 'package:iapply3/services/home_data_services.dart';
+import 'package:iApply/activity/class_details_activity.dart';
+import 'package:iApply/models/consultancy_details_model.dart';
+import 'package:iApply/services/home_data_services.dart';
 
 class classes_activity extends StatefulWidget{
   final String consultancy_id;

@@ -1,7 +1,7 @@
 import 'dart:convert';
 
 import 'package:http/http.dart' as http;
-import 'package:iapply3/models/resendOTP_model.dart';
+import 'package:iApply/models/resendOTP_model.dart';
 
 class otpResendServices{
 

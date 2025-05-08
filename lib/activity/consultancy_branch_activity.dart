@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:iapply3/activity/courses_activity.dart';
-import 'package:iapply3/models/consultancy_details_model.dart';
-import 'package:iapply3/services/home_data_services.dart';
+import 'package:iApply/activity/courses_activity.dart';
+import 'package:iApply/models/consultancy_details_model.dart';
+import 'package:iApply/services/home_data_services.dart';
 
 class consultancy_branch_activity extends StatefulWidget{
   late final String token;

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:iapply3/activity/classes_activity.dart';
-import 'package:iapply3/models/cancel_booking_model.dart';
-import 'package:iapply3/services/cancel_booking_services.dart';
+import 'package:iApply/activity/classes_activity.dart';
+import 'package:iApply/models/cancel_booking_model.dart';
+import 'package:iApply/services/cancel_booking_services.dart';
 
 class AfterBookingActivity extends StatefulWidget {
   final String consultancy;

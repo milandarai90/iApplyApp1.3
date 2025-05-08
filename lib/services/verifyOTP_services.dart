@@ -1,7 +1,7 @@
 import 'dart:convert';
 
 import 'package:http/http.dart' as http;
-import 'package:iapply3/models/verifyOTP_model.dart';
+import 'package:iApply/models/verifyOTP_model.dart';
 
 class verifyOTP_services{
 

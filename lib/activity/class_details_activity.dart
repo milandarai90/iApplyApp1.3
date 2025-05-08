@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:iapply3/activity/after_booking.dart';
-import 'package:iapply3/activity/classes_activity.dart';
-import 'package:iapply3/activity/home_activity.dart';
-import 'package:iapply3/models/booking_model.dart';
-import 'package:iapply3/services/booking_services.dart';
+import 'package:iApply/activity/after_booking.dart';
+import 'package:iApply/activity/classes_activity.dart';
+import 'package:iApply/activity/home_activity.dart';
+import 'package:iApply/models/booking_model.dart';
+import 'package:iApply/services/booking_services.dart';
 
 class class_details_acitivty extends StatefulWidget {
   final String token;

@@ -1,7 +1,7 @@
 import 'dart:convert';
 
 import 'package:http/http.dart' as http;
-import 'package:iapply3/models/register_model.dart';
+import 'package:iApply/models/register_model.dart';
 
 class register_services{
 Future <register_response> register_user(register_request registerData)async{

@@ -1,10 +1,10 @@
 
 import 'package:flutter/material.dart';
-import 'package:iapply3/activity/bottom_navbar_activity.dart';
-import 'package:iapply3/activity/home_activity.dart';
-import 'package:iapply3/activity/register_activity.dart';
-import 'package:iapply3/models/login_model.dart';
-import 'package:iapply3/services/login_services.dart';
+import 'package:iApply/activity/bottom_navbar_activity.dart';
+import 'package:iApply/activity/home_activity.dart';
+import 'package:iApply/activity/register_activity.dart';
+import 'package:iApply/models/login_model.dart';
+import 'package:iApply/services/login_services.dart';
 
 
 class login_activity extends StatefulWidget{
@@ -78,7 +78,7 @@ class loginactivity_state extends State<login_activity>{
       }
       catch(e){
         ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(content: Center(child: Text("Something went wrong during login.")),
+            SnackBar(content: Center(child: Text("Something went wrong.Try again later")),
                 backgroundColor: Colors.red));
       }
       finally{

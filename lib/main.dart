@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:iapply3/activity/splashscreen_activity.dart';
-import 'package:iapply3/activity/verify_otp_activity.dart';
+import 'package:iApply/activity/splashscreen_activity.dart';
 
 void main() {
   runApp(const MyApp());

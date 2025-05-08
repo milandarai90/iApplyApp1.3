@@ -2,10 +2,10 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
-import 'package:iapply3/activity/login_activity.dart';
-import 'package:iapply3/activity/verify_otp_activity.dart';
-import 'package:iapply3/models/register_model.dart';
-import 'package:iapply3/services/register_services.dart';
+import 'package:iApply/activity/login_activity.dart';
+import 'package:iApply/activity/verify_otp_activity.dart';
+import 'package:iApply/models/register_model.dart';
+import 'package:iApply/services/register_services.dart';
 
 class register_activity extends StatefulWidget{
   @override

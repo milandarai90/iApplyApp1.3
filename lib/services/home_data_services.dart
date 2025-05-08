@@ -1,7 +1,7 @@
 import 'dart:convert';
 
 import 'package:http/http.dart' as http;
-import 'package:iapply3/models/consultancy_details_model.dart';
+import 'package:iApply/models/consultancy_details_model.dart';
 
 class consultancy_data_services {
 

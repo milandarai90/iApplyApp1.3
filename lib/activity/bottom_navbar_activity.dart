@@ -1,10 +1,10 @@
 
 import 'package:flutter/material.dart';
-import 'package:iapply3/activity/home_activity.dart';
-import 'package:iapply3/activity/menu_activity.dart';
-import 'package:iapply3/activity/myclass_activity.dart';
-import 'package:iapply3/activity/notification_activity.dart';
-import 'package:iapply3/activity/profile_activity.dart';
+import 'package:iApply/activity/home_activity.dart';
+import 'package:iApply/activity/menu_activity.dart';
+import 'package:iApply/activity/myclass_activity.dart';
+import 'package:iApply/activity/notification_activity.dart';
+import 'package:iApply/activity/profile_activity.dart';
 
 class bottom_navbar_activity extends StatefulWidget{
   final String token;

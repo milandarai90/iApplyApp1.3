@@ -1,7 +1,7 @@
 import 'dart:convert';
 
 import 'package:http/http.dart' as http;
-import 'package:iapply3/models/myclass_model.dart';
+import 'package:iApply/models/myclass_model.dart';
 class myclass_services{
 
  Future<List<myclass_model>?> myclass_data (String token)async{
