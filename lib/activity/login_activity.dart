@@ -227,7 +227,7 @@ class loginactivity_state extends State<login_activity>{
                                    SizedBox(
                                      width: 100,
                                        height: 40,
-                                       child: ElevatedButton(onPressed:isLoading ? null : _login ,
+                                       child: ElevatedButton(onPressed: _login ,
                                            style: ElevatedButton.styleFrom(
                                              backgroundColor: Theme.of(context).primaryColor,
                                              shape: RoundedRectangleBorder(

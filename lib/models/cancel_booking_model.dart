@@ -22,7 +22,7 @@ class cancel_booking_request{
 }
 class cancel_booking_response{
 final String? message;
-final int? statusCode;
+final int statusCode;
 
 cancel_booking_response({required this.message,required this.statusCode});
 

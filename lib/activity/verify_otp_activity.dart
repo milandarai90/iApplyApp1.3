@@ -22,6 +22,14 @@ class verifyOTP_activity extends StatefulWidget {
 
 class verifyOTP_state extends State<verifyOTP_activity>{
 
+
+  @override
+  void initState() {
+    passOTP = verifyOTP_request(c_password: "", name: "", password: "", email: "", otp: "");
+    otpResent = otpResendRequest(email: "");
+    super.initState();
+  }
+
   @override
   void dispose() {
     controllers.forEach((c) => c.dispose());
@@ -66,16 +74,16 @@ class verifyOTP_state extends State<verifyOTP_activity>{
   late final verifyOTP_request passOTP ;
   late final otpResendRequest otpResent;
 
-  @override
-  void initState() {
-    passOTP = verifyOTP_request(c_password: "", name: "", password: "", email: "", otp: "");
-    otpResent = otpResendRequest(email: "");
-    super.initState();
-  }
-
   late  String messageResendOTP;
 
+  bool isLoading = false;
+
   void otpResend()async{
+    FocusScope.of(context).unfocus();
+    setState(() {
+      isLoading = true;
+    });
+try{
   otpResent.email = widget.email.trim();
   final otpResendServices otpResend = otpResendServices();
   final resendResponse =await otpResend.otp(otpResent);
@@ -83,47 +91,66 @@ class verifyOTP_state extends State<verifyOTP_activity>{
   if(resendResponse.statusCode == 200){
     messageResendOTP = resendResponse.message ?? "otp has been sent to your email";
     ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(backgroundColor:Colors.green, content: Center(child: Text(messageResendOTP),))
+        SnackBar(backgroundColor:Colors.green, content: Center(child: Text(messageResendOTP),))
     );
   }
   else{
     messageResendOTP = resendResponse.message ?? "Something went wrong.";
     ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
-          backgroundColor: Colors.red,
+            backgroundColor: Colors.red,
             content: Center(child: Text(messageResendOTP),))
     );
   }
+}
+    catch(e){
+      ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+              backgroundColor: Colors.red,
+              content: Center(child: Text(messageResendOTP),))
+      );
+    }
+    finally{
+  if(mounted)
+    setState(() {
+      isLoading = false;
+    });
+    }
   }
 
   void verifyOTP() async{
-  String finalOTP = controllers.map((c)=>c.text).join();
 
-  passOTP.c_password = widget.cPassword.trim();
-  passOTP.name = widget.name.trim();
-  passOTP.otp = finalOTP.trim();
-  passOTP.password = widget.password.trim();
-  passOTP.email = widget.email.trim();
-  
+    setState(() {
+      isLoading = true;
+    });
+  String finalOTP = controllers.map((c)=>c.text).join();
+  try{
+
+    passOTP.c_password = widget.cPassword.trim();
+    passOTP.name = widget.name.trim();
+    passOTP.otp = finalOTP.trim();
+    passOTP.password = widget.password.trim();
+    passOTP.email = widget.email.trim();
+
     final verifyOTP_services otpRecieved = verifyOTP_services();
     final response = await otpRecieved.otp_verification(passOTP);
     if(response.statusCode == 200 ){
 
-     ScaffoldMessenger.of(context).showSnackBar(
-       SnackBar(
-         backgroundColor: Colors.green,
-           content: Center(
-         child: Text("Verified.Your registration is successful. Please LOGIN to continue.",))
-     ));
-     await Future.delayed(Duration(seconds: 2));
-     Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => login_activity()));
-      
+      ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+              backgroundColor: Colors.green,
+              content: Center(
+                  child: Text("Verified.Your registration is successful. Please LOGIN to continue.",))
+          ));
+      await Future.delayed(Duration(seconds: 2));
+      Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => login_activity()));
+
     }else if(response.statusCode == 400){
-ScaffoldMessenger.of(context).showSnackBar(
-  SnackBar(
-    backgroundColor: Colors.red,
-      content: Center(child: Text("Expired or Invalid OTP."),))
-);
+      ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+              backgroundColor: Colors.red,
+              content: Center(child: Text("Expired or Invalid OTP."),))
+      );
     }else{
       ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
@@ -131,7 +158,19 @@ ScaffoldMessenger.of(context).showSnackBar(
               content: Center(child: Text("Registration failed.")))
       );
     }
-
+  }catch(e){
+    ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+            backgroundColor: Colors.red,
+            content: Center(child: Text("Please enter valid OTP.")))
+    );
+  }
+  finally{
+    if(mounted)
+    setState(() {
+      isLoading = false;
+    });
+  }
 
 }
 
@@ -139,55 +178,68 @@ ScaffoldMessenger.of(context).showSnackBar(
   Widget build(BuildContext context) {
 
   return Scaffold(
-    body: Container(
-      height: MediaQuery.of(context).size.height,
-      color: Theme.of(context).primaryColor,
-      child: Center(
-        child: Padding(
-          padding: const EdgeInsets.all(20),
-          child: Container(
-            height: 400,
-            decoration: BoxDecoration(
-              color: Theme.of(context).canvasColor,
-              borderRadius: BorderRadius.circular(10)
-            ),
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              mainAxisAlignment: MainAxisAlignment.spaceAround,
-              children: [
-                Text("OTP Verification", style: TextStyle(color: Theme.of(context).primaryColor,fontSize: 30, fontWeight: FontWeight.bold),),
-                // SizedBox(
-                //   height: 25,
-                // ),
-                Text("Enter a OTP sent to ${widget.email}",style: TextStyle(fontSize: 16),),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: List.generate(5, otpBoxes),
-                ),
-                Row(
-                  mainAxisSize: MainAxisSize.min,
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Text("Didn't get a code?"),
-                    TextButton(onPressed:otpResend, child: Text("Resend OTP",style: TextStyle(color: Colors.green ,fontSize: 16),))
-                    
-                  ],
-                ),
-                ElevatedButton(
-                    onPressed: verifyOTP,
-                    child: Text("SUBMIT",style: TextStyle(color: Theme.of(context).canvasColor,fontSize: 16,fontWeight: FontWeight.w500),),
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: Theme.of(context).primaryColor,
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(10)
-                    )
+    body: Stack(
+      children: [
+        Container(
+        height: MediaQuery.of(context).size.height,
+        color: Theme.of(context).primaryColor,
+        child: Center(
+          child: Padding(
+            padding: const EdgeInsets.all(20),
+            child: Container(
+              height: 400,
+              decoration: BoxDecoration(
+                color: Theme.of(context).canvasColor,
+                borderRadius: BorderRadius.circular(10)
+              ),
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                children: [
+                  Text("OTP Verification", style: TextStyle(color: Theme.of(context).primaryColor,fontSize: 30, fontWeight: FontWeight.bold),),
+                  // SizedBox(
+                  //   height: 25,
+                  // ),
+                  Text("Enter a OTP sent to ${widget.email}",style: TextStyle(fontSize: 16),),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: List.generate(5, otpBoxes),
                   ),
-                )
-              ],
+                  Row(
+                    mainAxisSize: MainAxisSize.min,
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Text("Didn't get a code?"),
+                      TextButton(onPressed:otpResend, child: Text("Resend OTP",style: TextStyle(color: Colors.green ,fontSize: 16),))
+
+                    ],
+                  ),
+                  ElevatedButton(
+                      onPressed: verifyOTP,
+                      child: Text("SUBMIT",style: TextStyle(color: Theme.of(context).canvasColor,fontSize: 16,fontWeight: FontWeight.w500),),
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: Theme.of(context).primaryColor,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(10)
+                      )
+                    ),
+                  )
+                ],
+              ),
             ),
           ),
         ),
       ),
+        if(isLoading)
+          Container(
+            color: Color.fromRGBO(0, 0, 0, 0.5),
+            child: const Center(
+              child: CircularProgressIndicator(
+                valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
+              ),
+            ),
+          )
+    ],
     ),
   );
   }
