@@ -72,7 +72,7 @@ class loginactivity_state extends State<login_activity>{
         }
         else{
           ScaffoldMessenger.of(context).showSnackBar(
-              SnackBar(content: Center(child: Text("Login Failed. Incorrect Email or Password.")),
+              SnackBar(content: Center(child: Text("Login Failed.Incorrect Email or Password.")),
                   backgroundColor: Colors.red));
         }
       }
