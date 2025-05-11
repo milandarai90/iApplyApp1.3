@@ -129,8 +129,8 @@ class branchInfoModel {
       branch_pan: json["branch_pan"] ?? '',
       branch_manager_name: json["branch_manager_name"] ?? '',
       branch_manager_phone: json["branch_manager_phone"] ?? '',
-      branch_details: json["branch_details"] != null
-          ? branchDetailsModel.fromJson(json["branch_details"])
+      branch_details: json["user_branch"] != null
+          ? branchDetailsModel.fromJson(json["user_branch"])
           : null,
     );
   }

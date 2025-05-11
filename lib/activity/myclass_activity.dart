@@ -213,7 +213,7 @@ class myclass_state extends State<myclass_activity> {
                 itemBuilder: (context, index) {
                   final requestedClasses = requestedClassesList[index];
                   String consultancyName = requestedClasses.consultancy?.consultancy_details?.name ?? "No Name";
-                  String branchName = requestedClasses.branch?.branch_details?.name?? "No Branch";
+                  String branchName = requestedClasses.branch?.branch_details?.name ?? "No Branch";
                   String courseName = requestedClasses.course?.course ?? "No Course";
                   String className = requestedClasses.classroom?.class_name ?? "No Class";
 
