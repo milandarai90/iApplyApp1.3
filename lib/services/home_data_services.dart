@@ -18,11 +18,11 @@ class consultancy_data_services {
       final body = response_consultancy_data.body;
       final json = jsonDecode(body);
       final List<dynamic> result = json["consultancy_details"] ?? [];
-
       final mappedData = result.map<Consultancy_details_model>((e) {
-        final List<dynamic> branchList = e["branch_details"] ?? [];
 
+        final List<dynamic> branchList = e["branch_details"] ?? [];
         final List<Branch_details_model> branches = branchList.map<Branch_details_model>((branch) {
+
           final List<dynamic> courseList = branch["course_details"] ?? [];
 
           final List<Course_details_model> courses = courseList.map<Course_details_model>((course) {
