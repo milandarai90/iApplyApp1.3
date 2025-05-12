@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:iApply/models/cancel_booking_model.dart';
 import 'package:iApply/models/myclass_model.dart';
 import 'package:iApply/models/requestedClass_model.dart';
+import 'package:iApply/services/cancel_booking_services.dart';
 import 'package:iApply/services/myclass_services.dart';
 import 'package:iApply/services/requestedClassService.dart';
 
@@ -52,12 +54,58 @@ class myclass_state extends State<myclass_activity> {
       });
     }
   }
+  late cancel_booking_request passCancelBookingData;
 
   @override
   void initState() {
     fetch_myclasses();
     fetch_requestedClasses();
+    passCancelBookingData = cancel_booking_request(course_id: "", consultancy_id: "", branch_id: "", classroom_id: "");
     super.initState();
+  }
+
+
+  void _cancelBooking()async{
+    setState(() {
+      isLoading = true;
+    });
+    try{
+      final service = cancel_booking_services();
+      final cancel_booking_response response =await service.cancel_booking(passCancelBookingData, widget.token);
+      print(response.message);
+      if(response.statusCode == 200){
+        setState(() {
+          fetch_requestedClasses();
+        });
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            backgroundColor: Colors.green,
+            content: Center(child: Text("Booking canceled successfully.")),
+          ),
+        );
+      }else if (response.statusCode == 400) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            backgroundColor: Colors.red,
+            content: Center(child: Text("Booking cancellation failed.")),
+          ),
+        );
+      }
+    }
+        catch(e){
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              backgroundColor: Colors.red,
+              content: Center(child: Text("Something went wrong.")),
+            ),
+          );
+        }
+    finally{
+      if(!mounted) return;
+      setState(() {
+        isLoading = false;
+      });
+    }
   }
 
   @override
@@ -256,12 +304,21 @@ class myclass_state extends State<myclass_activity> {
                           if (requestedClasses.status == "book")
                             Expanded(
                               flex: 1,
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.center,
-                                children: [
-                                  Icon(Icons.cancel, color: Colors.red),
-                                  Text("Cancel", style: TextStyle(color: Colors.red))
-                                ],
+                              child: GestureDetector(
+                                onTap: (){
+                                  setState(() {
+                                    passCancelBookingData = cancel_booking_request(course_id:requestedClasses.course_id , consultancy_id: requestedClasses.consultancy_id, branch_id: requestedClasses.branch_id, classroom_id: requestedClasses.classroom_id);
+                                  });
+                                  _cancelBooking();
+                                },
+
+                                child:Column(
+                                  crossAxisAlignment: CrossAxisAlignment.center,
+                                  children: [
+                                    Icon(Icons.cancel, color: Colors.red),
+                                    Text("Cancel", style: TextStyle(color: Colors.red))
+                                  ],
+                                ),
                               ),
                             )
                         ],
@@ -271,26 +328,29 @@ class myclass_state extends State<myclass_activity> {
                 },
               ),
             )
-                : ListView(
-              physics: const AlwaysScrollableScrollPhysics(),
-              children: [
-                SizedBox(
-                  height: MediaQuery.of(context).size.height * 0.7,
-                  child: Center(
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: const [
-                        Icon(Icons.sentiment_very_dissatisfied_rounded, size: 50, color: Colors.grey),
-                        Padding(
-                          padding: EdgeInsets.all(8.0),
-                          child: Text("You haven't requested any classes yet.", style: TextStyle(color: Colors.grey)),
-                        ),
-                      ],
+                : RefreshIndicator(
+              onRefresh: fetch_requestedClasses,
+                  child: ListView(
+                                physics: const AlwaysScrollableScrollPhysics(),
+                                children: [
+                  SizedBox(
+                    height: MediaQuery.of(context).size.height * 0.7,
+                    child: Center(
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: const [
+                          Icon(Icons.sentiment_very_dissatisfied_rounded, size: 50, color: Colors.grey),
+                          Padding(
+                            padding: EdgeInsets.all(8.0),
+                            child: Text("You haven't requested any classes yet.", style: TextStyle(color: Colors.grey)),
+                          ),
+                        ],
+                      ),
                     ),
                   ),
+                                ],
+                              ),
                 ),
-              ],
-            ),
           ],
         ),
       ),
