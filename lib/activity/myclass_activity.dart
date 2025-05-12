@@ -19,7 +19,7 @@ class myclass_activity extends StatefulWidget {
 class myclass_state extends State<myclass_activity> {
   bool isLoading = true;
   List<myclass_model> classes_list = [];
-  List<requestedClassModel> requestedClassesList = [];
+
 
   Future<void> fetch_myclasses() async {
     try {
@@ -38,6 +38,8 @@ class myclass_state extends State<myclass_activity> {
     }
   }
 
+  List<requestedClassModel> requestedClassesList = [];
+
   Future<void> fetch_requestedClasses() async {
     try {
       final requestClass = requestedClassServices();
@@ -54,6 +56,7 @@ class myclass_state extends State<myclass_activity> {
       });
     }
   }
+
   late cancel_booking_request passCancelBookingData;
 
   @override

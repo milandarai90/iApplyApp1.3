@@ -5,6 +5,9 @@ import 'package:iApply/activity/home_activity.dart';
 import 'package:iApply/models/booking_model.dart';
 import 'package:iApply/services/booking_services.dart';
 
+import '../models/myclass_model.dart';
+import '../services/myclass_services.dart';
+
 class class_details_acitivty extends StatefulWidget {
   final String token;
   final String consultancy_id;
@@ -74,7 +77,6 @@ class class_details_state extends State<class_details_acitivty> {
   FocusScope.of(context).unfocus();
     super.dispose();
   }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -240,6 +242,7 @@ class class_details_state extends State<class_details_acitivty> {
                               ),
                             ),
                           ),
+                          // if(widget.status != "joined")
                           Padding(
                             padding: const EdgeInsets.all(20.0),
                             child: ElevatedButton(
@@ -306,7 +309,6 @@ class class_details_state extends State<class_details_acitivty> {
                                     });
                                 }
                               },
-                    
                               child: Text(
                                 "JOIN/BOOK",
                                 style: TextStyle(
