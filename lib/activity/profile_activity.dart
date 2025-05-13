@@ -34,45 +34,46 @@ class profile_activity_state extends State<profile_activity> {
                   children: [
                     Padding(
                       padding: const EdgeInsets.all(8.0),
-                      child: Container(
-                        height: 100,
-                        width: 100,
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(100),
-                          border: Border.all(
-                              color: Theme.of(context).primaryColor, width: 3),
-                        ),
-                        child: GestureDetector(
-                          onTap:(){
-                           showDialog(
-                               context: context,
-                               barrierDismissible: true,
-                               builder: (BuildContext context){
-                                 return AlertDialog(
-                                   shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
-                                   title: Text("Choose a photo"),
-                                   content: Column(
-                                     mainAxisSize: MainAxisSize.min,
-                                     children: [
-                                       ListTile(
-                                         leading: Icon(Icons.camera_alt),
-                                         title: Text("Open Camera"),
-                                         onTap: (){
+                      child: GestureDetector(
+                        onTap:(){
+                          showDialog(
+                              context: context,
+                              barrierDismissible: true,
+                              builder: (BuildContext context){
+                                return AlertDialog(
+                                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+                                  title: Text("Choose a photo",style: TextStyle(color: Theme.of(context).primaryColor),),
+                                  content: Column(
+                                    mainAxisSize: MainAxisSize.min,
+                                    children: [
+                                      ListTile(
+                                        leading: Icon(Icons.camera_alt,size: 30,color: Theme.of(context).primaryColor),
+                                        title: Text("Open Camera",style: TextStyle(color: Theme.of(context).primaryColor)),
+                                        onTap: (){
 
-                                         },
-                                       ),
-                                       ListTile(
-                                         leading:Icon(Icons.photo) ,
-                                         title: Text("Open Gallery"),
-                                         onTap: (){
+                                        },
+                                      ),
+                                      ListTile(
+                                        leading:Icon(Icons.photo,color: Theme.of(context).primaryColor,size: 30,) ,
+                                        title: Text("Open Gallery",style: TextStyle(color: Theme.of(context).primaryColor)),
+                                        onTap: (){
 
-                                         },
-                                       )
-                                     ],
-                                   ),
-                                 );
-                               });
-                          } ,
+                                        },
+                                      )
+                                    ],
+                                  ),
+                                );
+                              });
+                        } ,
+
+                        child: Container(
+                          height: 100,
+                          width: 100,
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(100),
+                            border: Border.all(
+                                color: Theme.of(context).primaryColor, width: 3),
+                          ),
                           child: Icon(
                             Icons.add_photo_alternate,
                             color: Theme.of(context).primaryColor,
