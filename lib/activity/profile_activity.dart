@@ -1,5 +1,8 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 import 'package:iApply/activity/login_activity.dart';
+import 'package:image_picker/image_picker.dart';
 
 class profile_activity extends StatefulWidget {
   @override
@@ -9,6 +12,25 @@ class profile_activity extends StatefulWidget {
 }
 
 class profile_activity_state extends State<profile_activity> {
+
+  final ImagePicker picker = ImagePicker();
+
+  Future<void> imageFromCamera()async{
+    final XFile? photo =await picker.pickImage(source: ImageSource.camera);
+    if(photo != null){
+      print("Opened");
+    }else{
+      print("Not picked");
+    }
+  }
+  Future<void>imageFromGallery()async{
+    final XFile? galleryPhoto = await picker.pickImage(source: ImageSource.gallery);
+    if(galleryPhoto != null){
+      print("Opened");
+    }else{
+      print("Not opened");
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -49,16 +71,12 @@ class profile_activity_state extends State<profile_activity> {
                                       ListTile(
                                         leading: Icon(Icons.camera_alt,size: 30,color: Theme.of(context).primaryColor),
                                         title: Text("Open Camera",style: TextStyle(color: Theme.of(context).primaryColor)),
-                                        onTap: (){
-
-                                        },
+                                        onTap: imageFromCamera
                                       ),
                                       ListTile(
                                         leading:Icon(Icons.photo,color: Theme.of(context).primaryColor,size: 30,) ,
                                         title: Text("Open Gallery",style: TextStyle(color: Theme.of(context).primaryColor)),
-                                        onTap: (){
-
-                                        },
+                                        onTap:imageFromGallery
                                       )
                                     ],
                                   ),
@@ -133,7 +151,6 @@ class profile_activity_state extends State<profile_activity> {
                           ),
                         ),
                       ),
-                      // ✅ Added Logout Gesture
                       GestureDetector(
                         onTap: () {
                           Navigator.pushReplacement(
