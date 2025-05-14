@@ -94,11 +94,71 @@ class profile_activity_state extends State<profile_activity> {
     }
   }
   Future<void>imageFromGallery()async{
-    final XFile? galleryPhoto = await picker.pickImage(source: ImageSource.gallery);
-    if(galleryPhoto != null){
-      print("Opened");
+    final XFile? galleryImage = await picker.pickImage(source: ImageSource.gallery);
+    if(galleryImage != null){
+      setState(() {
+        isLoading = true;
+      });
+      final galleryImageDirectory = await getApplicationDocumentsDirectory();
+      final path = '${galleryImageDirectory.path}/${DateTime.now().millisecondsSinceEpoch}_${galleryImage.name}';
+      final savedPath = await File(galleryImage.path).copy(path);
+
+      final avatarChangeRequest requestGalleryImage = avatarChangeRequest(avatar: savedPath);
+      final galleryServices = avatarChangeServices();
+
+      try{
+        final response = await galleryServices.changeAvatar(requestGalleryImage, widget.token);
+        if(response.statusCode == 200){
+          ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(
+                  backgroundColor: Colors.green,
+                  content: Center(child: Text("${response.message}")))
+          );
+          setState(() {
+            isLoading = false;
+          });
+        }else if(response.statusCode == 300){
+          ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(
+                  backgroundColor: Colors.orange,
+                  content: Center(child: Text("${response.message}")))
+          );
+          setState(() {
+            isLoading = false;
+          });
+        }else{
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              backgroundColor: Colors.red,
+              content: Center(child: Text("Unexpected response")),
+            ),
+          );
+          setState(() {
+            isLoading = false;
+          });
+        }
+        }
+      catch(e){
+    ScaffoldMessenger.of(context).showSnackBar(
+    SnackBar(
+    backgroundColor: Colors.red,
+    content: Center(child: Text("Something went wrong")))
+    );
+    setState(() {
+    isLoading = false;
+    });
+    print("Upload failed : $e");
+      }finally{
+        if(!mounted)
+          return;
+        setState(() {
+          isLoading = false;
+        });
+      }
     }else{
-      print("Not opened");
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Center(child: Text("Image is not selected."),))
+      );
     }
   }
 

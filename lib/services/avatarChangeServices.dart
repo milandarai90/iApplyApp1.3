@@ -18,7 +18,6 @@ class avatarChangeServices{
     request.headers.addAll({
       'Authorization' : "Bearer $token",
     });
-    // print(request.headers);
     request.files.add(await http.MultipartFile.fromPath('avatar',avatarRequest.avatar.path,filename: basename(avatarRequest.avatar.path) ));
 
     var response = await request.send();
