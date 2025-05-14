@@ -25,7 +25,7 @@ class bottom_navbar_activity_state extends State<bottom_navbar_activity>{
      myclass_activity(token : widget.token),
      notification_activity(token : widget.token),
      menu_activity(),
-     profile_activity()
+     profile_activity(token : widget.token)
    ];
 
   }
