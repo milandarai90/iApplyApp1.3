@@ -123,11 +123,11 @@ class home_activity_state extends State<home_activity>{
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               Text('Welcome',style: TextStyle(color: Colors.white,fontSize: 16,fontWeight: FontWeight.normal),),
-                              Text('@${userName?.name ?? "username"}',style: TextStyle(color: Colors.white,fontSize:28 ,fontWeight: FontWeight.w500),)
+                              Text('${userName?.name ?? "username"}',style: TextStyle(color: Colors.white,fontSize:28 ,fontWeight: FontWeight.w500),)
                             ],
                           ),
                           SizedBox(
-                              height: 45,
+                              height: 50,
                               width: 116,
                               child: Image.asset('assets/images/iapply_logo.png'))
                         ],
