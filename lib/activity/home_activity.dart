@@ -300,7 +300,7 @@ class home_activity_state extends State<home_activity>{
                                   height: 90,
                                   width: MediaQuery.of(context).size.width,
                                   child: Center(
-                                    child: Text("No country found" , style: TextStyle(color: Colors.red),),
+                                    child: Text("No country found" , style: TextStyle(color: Colors.grey),),
                                   ),
                                 ),
                               ):
