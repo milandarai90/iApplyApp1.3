@@ -7,8 +7,10 @@ import 'package:iApply/activity/consultancy_gridview_activity.dart';
 import 'package:iApply/activity/country_guidelines_activity.dart';
 import 'package:iApply/models/consultancy_details_model.dart';
 import 'package:iApply/models/general_country_model.dart';
+import 'package:iApply/models/userDetailsModel.dart';
 import 'package:iApply/services/general_country_services.dart';
 import 'package:iApply/services/home_data_services.dart';
+import 'package:iApply/services/userDetailsServices.dart';
 
 class home_activity extends StatefulWidget{
   final String token;
@@ -33,6 +35,7 @@ class home_activity_state extends State<home_activity>{
 
   @override
   void initState() {
+    fetchUserName();
     super.initState();
     fetchAllData();
   }
@@ -62,6 +65,28 @@ class home_activity_state extends State<home_activity>{
         isLoading = false;
       });
     }
+  }
+
+  userDataModel? userName;
+
+  Future<void>fetchUserName()async{
+    setState(() {
+      isLoading = true;
+    });
+    try{
+      userDetailsServices userServices = userDetailsServices();
+      final userData = await userServices.userDetails(widget.token);
+      if(!mounted) return;
+      setState(() {
+        userName = userData.data;
+        isLoading = false;
+      });
+    }
+        catch(e){
+      setState(() {
+        isLoading = false;
+      });
+        }
   }
 
 
@@ -98,7 +123,7 @@ class home_activity_state extends State<home_activity>{
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               Text('Welcome',style: TextStyle(color: Colors.white,fontSize: 16,fontWeight: FontWeight.normal),),
-                              Text('@username',style: TextStyle(color: Colors.white,fontSize:28 ,fontWeight: FontWeight.w500),)
+                              Text('@${userName?.name ?? "username"}',style: TextStyle(color: Colors.white,fontSize:28 ,fontWeight: FontWeight.w500),)
                             ],
                           ),
                           SizedBox(
