@@ -49,13 +49,10 @@ class _AfterBookingState extends State<AfterBookingActivity> {
     setState(() {
       isLoading = true;
     });
-
     final cancelService = cancel_booking_services();
-
     try {
       final cancel_booking_response cancelResponse =
       await cancelService.cancel_booking(passingCancelData, widget.token);
-
       if (cancelResponse.statusCode == 200) {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
@@ -63,7 +60,6 @@ class _AfterBookingState extends State<AfterBookingActivity> {
             content: Center(child: Text("Booking canceled successfully.")),
           ),
         );
-
         Navigator.pushAndRemoveUntil(
           context,
           MaterialPageRoute(
@@ -109,7 +105,6 @@ class _AfterBookingState extends State<AfterBookingActivity> {
       fontSize: 16,
       fontWeight: FontWeight.w500,
     );
-
     return Scaffold(
       appBar: AppBar(
         title: Text(widget.classes,
