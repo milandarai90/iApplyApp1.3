@@ -1,3 +1,5 @@
+
+
 import 'package:flutter/material.dart';
 import 'package:iApply/activity/all_country_gridview_activity.dart';
 import 'package:iApply/activity/consultancy_branch_activity.dart';
@@ -10,7 +12,7 @@ import 'package:iApply/services/general_country_services.dart';
 import 'package:iApply/services/home_data_services.dart';
 import 'package:iApply/services/userDetailsServices.dart';
 
-class home_activity extends StatefulWidget {
+class home_activity extends StatefulWidget{
   final String token;
   const home_activity({super.key, required this.token});
   @override
@@ -18,29 +20,27 @@ class home_activity extends StatefulWidget {
     return home_activity_state();
   }
 }
+class home_activity_state extends State<home_activity>{
 
-class home_activity_state extends State<home_activity> {
-  List<Consultancy_details_model> consultancy_details_list = [];
-  List<General_country_model> general_country_list = [];
-  bool isLoading = true;
-
-  List<_SearchResultItem> searchResults = [];
-  TextEditingController searchController = TextEditingController();
-
-  userDataModel? userName;
-
-  @override
-  void initState() {
-    super.initState();
-    fetchUserName();
-    fetchAllData();
-  }
+  List<Consultancy_details_model>consultancy_details_list =[];
+  List<General_country_model>general_country_list =[];
+  int myIndex =0;
+  bool isLoading =true;
 
   @override
   void dispose() {
-    searchController.dispose();
     super.dispose();
   }
+
+
+  @override
+  void initState() {
+    fetchUserName();
+    super.initState();
+    fetchAllData();
+  }
+
+
 
   Future<void> fetchAllData() async {
     try {
@@ -67,93 +67,44 @@ class home_activity_state extends State<home_activity> {
     }
   }
 
-  Future<void> fetchUserName() async {
+  userDataModel? userName;
+
+  Future<void>fetchUserName()async{
     setState(() {
       isLoading = true;
     });
-    try {
+    try{
       userDetailsServices userServices = userDetailsServices();
       final userData = await userServices.userDetails(widget.token);
-      if (!mounted) return;
+      if(!mounted) return;
       setState(() {
         userName = userData.data;
         isLoading = false;
       });
-    } catch (e) {
+    }
+    catch(e){
       setState(() {
         isLoading = false;
       });
     }
   }
 
-  void searchData(String query) {
-    List<_SearchResultItem> results = [];
 
-    if (query.trim().isEmpty) {
-      setState(() {
-        searchResults = [];
-      });
-      return;
-    }
-
-    final q = query.toLowerCase();
-
-    for (var consultancy in consultancy_details_list) {
-      // Check consultancy name
-      if (consultancy.name.toLowerCase().contains(q)) {
-        results.add(_SearchResultItem(
-          type: _SearchResultType.Consultancy,
-          consultancy: consultancy,
-        ));
-      }
-
-      // Check branches
-      for (var branch in consultancy.branch_details) {
-        if (branch.name != null && branch.name!.toLowerCase().contains(q)) {
-          results.add(_SearchResultItem(
-            type: _SearchResultType.Branch,
-            consultancy: consultancy,
-            branch: branch,
-          ));
-        }
-
-        // Check courses
-        for (var course in branch.course_details) {
-          if (course.course_title != null &&
-              course.course_title!.toLowerCase().contains(q)) {
-            results.add(_SearchResultItem(
-              type: _SearchResultType.Course,
-              consultancy: consultancy,
-              branch: branch,
-              course: course,
-            ));
-          }
-        }
-      }
-    }
-
-    setState(() {
-      searchResults = results;
-    });
-  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: InkWell(
-        onTap: () {
+        onTap: (){
           FocusScope.of(context).unfocus();
-          setState(() {
-            searchResults = [];
-            searchController.clear();
-          });
         },
         child: Container(
           color: Theme.of(context).primaryColor,
           child: SafeArea(
             child: RefreshIndicator(
-              onRefresh: () async {
-                if (!mounted) return;
+              onRefresh: ()async{
+                if(!mounted)
+                  return;
                 setState(() {
                   isLoading = true;
                 });
@@ -164,28 +115,15 @@ class home_activity_state extends State<home_activity> {
                 child: Column(
                   children: [
                     Padding(
-                      padding: const EdgeInsets.only(
-                          top: 30.0, bottom: 30, left: 25, right: 28),
+                      padding: const EdgeInsets.only(top: 30.0,bottom: 30 ,left: 25,right: 28 ),
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              Text(
-                                'Welcome',
-                                style: TextStyle(
-                                    color: Colors.white,
-                                    fontSize: 16,
-                                    fontWeight: FontWeight.normal),
-                              ),
-                              Text(
-                                '${userName?.name ?? "username"}',
-                                style: TextStyle(
-                                    color: Colors.white,
-                                    fontSize: 28,
-                                    fontWeight: FontWeight.w500),
-                              )
+                              Text('Welcome',style: TextStyle(color: Colors.white,fontSize: 16,fontWeight: FontWeight.normal),),
+                              Text('${userName?.name ?? "username"}',style: TextStyle(color: Colors.white,fontSize:28 ,fontWeight: FontWeight.w500),)
                             ],
                           ),
                           SizedBox(
@@ -198,167 +136,54 @@ class home_activity_state extends State<home_activity> {
                     Container(
                       color: hexToColor("7E6BA3"),
                       child: Padding(
-                        padding: const EdgeInsets.only(
-                            left: 25, right: 25, bottom: 10, top: 10),
+                        padding: const EdgeInsets.only(left:25,right: 25,bottom: 10,top: 10 ),
                         child: SizedBox(
                           child: TextFormField(
-                            controller: searchController,
                             autofocus: false,
-                            onChanged: (value) {
-                              searchData(value);
-                            },
                             decoration: InputDecoration(
+                              // contentPadding: EdgeInsets.symmetric(vertical: 10),
                               enabledBorder: OutlineInputBorder(
-                                borderSide:
-                                BorderSide(color: Colors.white, width: 3),
+                                borderSide: BorderSide(
+                                    color: Colors.white,
+                                    width: 3
+                                ),
                                 borderRadius: BorderRadius.circular(27),
                               ),
                               focusedBorder: OutlineInputBorder(
                                   borderRadius: BorderRadius.circular(27),
-                                  borderSide: BorderSide(
-                                      color: Theme.of(context).primaryColor,
-                                      width: 1)),
+                                  borderSide: BorderSide(color: Theme.of(context).primaryColor,
+                                      width: 1
+                                  )
+                              ),
                               hintText: "Search",
-                              hintStyle:
-                              TextStyle(color: Colors.grey, fontSize: 16),
+                              hintStyle: TextStyle(color: Colors.grey,fontSize: 16,),
                               fillColor: Colors.white,
                               filled: true,
-                              suffixIcon: IconButton(
-                                onPressed: () {
-                                  searchData(searchController.text);
-                                },
-                                icon: Icon(
-                                  Icons.search,
-                                  color: Theme.of(context).primaryColor,
-                                ),
+                              suffixIcon: IconButton(onPressed: (){
+                              }, icon: Icon(Icons.search,color: Theme.of(context).primaryColor,)
                               ),
+                              // iconColor: Theme.of(context).canvasColor
+
                             ),
                           ),
                         ),
                       ),
                     ),
-
-                    if (searchResults.isNotEmpty)
-                      Container(
-                        color: Colors.white,
-                        constraints: BoxConstraints(
-                          maxHeight: 300,
-                        ),
-                        child: ListView.builder(
-                          shrinkWrap: true,
-                          physics: ClampingScrollPhysics(),
-                          itemCount: searchResults.length,
-                          itemBuilder: (context, index) {
-                            final item = searchResults[index];
-                            String title = '';
-                            String subtitle = '';
-                            IconData icon;
-
-                            switch (item.type) {
-                              case _SearchResultType.Consultancy:
-                                title = item.consultancy!.name;
-                                subtitle = "Consultancy";
-                                icon = Icons.business;
-                                break;
-                              case _SearchResultType.Branch:
-                                title = item.branch!.name ?? "";
-                                subtitle = "Branch of ${item.consultancy!.name}";
-                                icon = Icons.account_tree;
-                                break;
-                              case _SearchResultType.Course:
-                                title = item.course!.course_title ?? "";
-                                subtitle =
-                                "Course in ${item.branch!.name} branch";
-                                icon = Icons.book;
-                                break;
-                            }
-
-                            return ListTile(
-                              leading: Icon(icon, color: Theme.of(context).primaryColor),
-                              title: Text(title),
-                              subtitle: Text(subtitle),
-                              onTap: () {
-                                if (item.type == _SearchResultType.Consultancy) {
-                                  Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                      builder: (context) => consultancy_branch_activity(
-                                          token: widget.token,
-                                          id: item.consultancy!.id,
-                                          name: item.consultancy!.name),
-                                    ),
-                                  );
-                                } else if (item.type == _SearchResultType.Branch) {
-                                  Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                      builder: (context) => consultancy_branch_activity(
-                                          token: widget.token,
-                                          id: item.consultancy!.id,
-                                          name: item.branch!.name ?? ""),
-                                    ),
-                                  );
-                                } else if (item.type == _SearchResultType.Course) {
-                                  // Navigate to course details page, replace with your actual screen
-                                  Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                      builder: (context) => CourseDetailsScreen(
-                                        token: widget.token,
-                                        consultancyId: item.consultancy!.id,
-                                        branchId: item.branch!.id ?? "",
-                                        courseId: item.course!.id ?? "",
-                                        courseTitle: item.course!.course_title ?? "",
-                                      ),
-                                    ),
-                                  );
-                                }
-                                // Clear search after navigating
-                                setState(() {
-                                  searchResults = [];
-                                  searchController.clear();
-                                });
-                              },
-                            );
-                          },
-                        ),
-                      ),
-
-                    // Original UI below remains unchanged
                     Column(
                       children: [
-                        Container(
-                          height: 25,
-                          color: Theme.of(context).canvasColor,
-                        ),
+                        Container(height: 25,
+                          color: Theme.of(context).canvasColor,),
                         Container(
                           color: Colors.white,
                           child: Padding(
-                            padding: const EdgeInsets.only(left: 25, right: 10),
+                            padding: const EdgeInsets.only(left: 25,right: 10),
                             child: Row(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
-                                Text(
-                                  'Top Consultancies',
-                                  style: TextStyle(
-                                      color: Theme.of(context).primaryColor,
-                                      fontSize: 18,
-                                      fontWeight: FontWeight.w500),
-                                ),
-                                TextButton(
-                                    onPressed: () {
-                                      Navigator.push(
-                                          context,
-                                          MaterialPageRoute(
-                                              builder: (context) =>
-                                                  consultancy_gridview_activity(
-                                                      token: widget.token)));
-                                    },
-                                    child: Text(
-                                      'More',
-                                      style: TextStyle(
-                                          color: hexToColor('40D900')),
-                                    ))
+                                Text('Top Consultancies',style: TextStyle(color: Theme.of(context).primaryColor,fontSize: 18,fontWeight: FontWeight.w500),),
+                                TextButton(onPressed: (){
+                                  Navigator.push(context, MaterialPageRoute(builder: (context) => consultancy_gridview_activity(token: widget.token)));
+                                }, child: Text('More',style:TextStyle(color: hexToColor('40D900')) ,))
                               ],
                             ),
                           ),
@@ -367,12 +192,10 @@ class home_activity_state extends State<home_activity> {
                           color: Theme.of(context).canvasColor,
                           width: double.infinity,
                           child: Padding(
-                            padding:
-                            const EdgeInsets.only(top: 20, bottom: 18),
+                            padding: const EdgeInsets.only(top: 20,bottom: 18),
                             child: SingleChildScrollView(
                               scrollDirection: Axis.horizontal,
-                              child: isLoading
-                                  ? SizedBox(
+                              child:isLoading? SizedBox(
                                 height: 140,
                                 width: MediaQuery.of(context).size.width,
                                 child: Center(
@@ -381,76 +204,190 @@ class home_activity_state extends State<home_activity> {
                                   : consultancy_details_list.isEmpty
                                   ? SizedBox(
                                 height: 90,
-                                width:
-                                MediaQuery.of(context).size.width,
+                                width: MediaQuery.of(context).size.width,
                                 child: Center(
                                   child: Center(
                                     child: Text(
                                       "No consultancies found",
-                                      style:
-                                      TextStyle(color: Colors.grey),
-                                    ),
-                                  ),
+                                      style: TextStyle(color: Colors.grey),
+                                    ),),
                                 ),
                               )
-                                  : Row(
-                                children: consultancy_details_list
-                                    .take(5)
-                                    .map((consultancy) {
+                                  :
+                              Row(
+                                  children: consultancy_details_list.take(5).map((consultancy){
+                                    return  Padding(
+                                      padding: const EdgeInsets.only(right: 8,top: 10, bottom: 10,left: 28),
+                                      child: GestureDetector(
+                                        onTap: (){
+                                          Navigator.push(context, MaterialPageRoute(builder: (context)=> consultancy_branch_activity(token:widget.token,id :consultancy.id , name : consultancy.name)));
+                                        },
+                                        child: SizedBox(
+                                          width: 90,
+                                          child: Column(
+                                            crossAxisAlignment: CrossAxisAlignment.start,
+                                            children: [
+                                              Container(
+                                                height: 90,
+                                                width: 90,
+                                                decoration: BoxDecoration(
+                                                  border: Border.all(
+                                                      color: Theme.of(context).primaryColor,
+                                                      width: 1
+                                                  ),
+                                                  image: consultancy.photo != null ?
+                                                  DecorationImage(
+                                                    image: NetworkImage(consultancy.photo!),
+                                                    fit: BoxFit.cover,
+                                                  ) : null,
+                                                  borderRadius: BorderRadius.circular(16),
+                                                ),
+                                                child: ClipRRect(
+                                                  borderRadius: BorderRadius.circular(16),
+                                                  child: consultancy.photo != null && consultancy.photo!.isNotEmpty
+                                                      ? Image.network(
+                                                    consultancy.photo!,
+                                                    fit: BoxFit.cover,
+                                                    errorBuilder: (context, error, stackTrace) {
+                                                      return Center(
+                                                        child: Icon(
+                                                          Icons.image_not_supported,
+                                                          size: 48,
+                                                          color: Colors.grey,
+                                                        ),
+                                                      );
+                                                    },
+                                                  )
+                                                      : Center(
+                                                    child: Icon(
+                                                      Icons.image_not_supported,
+                                                      size: 48,
+                                                      color: Colors.grey,
+                                                    ),
+                                                  ),
+                                                ),
+                                              ),
+                                              const SizedBox(height: 15),
+                                              SizedBox(
+                                                child: Align(
+                                                  alignment: Alignment.center,
+                                                  child: Text(consultancy.name ,style: TextStyle(color: Theme.of(context).primaryColor,),
+                                                    overflow: TextOverflow.ellipsis,
+                                                  ),
+                                                ),
+                                              ),
+                                            ],
+                                          ),
+                                        ),
+                                      ),
+                                    );
+                                  }).toList()
+
+                              ),
+                            ),
+                          ),
+                        )
+                      ],
+                    ),
+                    Column(
+                      children: [
+                        Container(
+                          color: Theme.of(context).canvasColor,),
+                        Container(
+                          color: Colors.white,
+                          child: Padding(
+                            padding: const EdgeInsets.only(left: 25,right: 10),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Text('Countries',style: TextStyle(color: Theme.of(context).primaryColor,fontSize: 18,fontWeight: FontWeight.w500),),
+                                TextButton(onPressed: (){
+                                  Navigator.push(context, MaterialPageRoute(builder: (context) => all_country_gridview_activity(token : widget.token)));
+                                }, child: Text('More',style:TextStyle(color: hexToColor('40D900')) ,))
+                              ],
+                            ),
+                          ),
+                        ),
+                        Container(
+                          color: Theme.of(context).canvasColor,
+                          width: double.infinity,
+                          child: Padding(
+                            padding: const EdgeInsets.only(top: 20,bottom: 18),
+                            child: SingleChildScrollView(
+                              scrollDirection: Axis.horizontal,
+                              child: isLoading? SizedBox(
+                                  height:140,
+                                  width: MediaQuery.of(context).size.width,
+                                  child: Center(child: CircularProgressIndicator(),))
+                                  :general_country_list.isEmpty?
+                              Center(
+                                child: SizedBox(
+                                  height: 90,
+                                  width: MediaQuery.of(context).size.width,
+                                  child: Center(
+                                    child: Text("No country found" , style: TextStyle(color: Colors.grey),),
+                                  ),
+                                ),
+                              ):
+                              Row(
+                                children: general_country_list.reversed.take(5).toList().reversed.map((country){
                                   return Padding(
-                                    padding: const EdgeInsets.only(
-                                        right: 8,
-                                        top: 10,
-                                        bottom: 10,
-                                        left: 28),
+                                    padding: const EdgeInsets.only(right: 8,top: 10, bottom: 10,left: 28),
                                     child: GestureDetector(
-                                      onTap: () {
-                                        Navigator.push(
-                                            context,
-                                            MaterialPageRoute(
-                                                builder: (context) =>
-                                                    consultancy_branch_activity(
-                                                        token:
-                                                        widget.token,
-                                                        id:
-                                                        consultancy
-                                                            .id,
-                                                        name: consultancy
-                                                            .name)));
+                                      onTap: (){
+                                        Navigator.push(context, MaterialPageRoute(builder: (context) => general_country_activity(token : widget.token , id : country.id , country : country.country!)));
                                       },
                                       child: SizedBox(
                                         width: 90,
                                         child: Column(
-                                          crossAxisAlignment:
-                                          CrossAxisAlignment.center,
+                                          crossAxisAlignment: CrossAxisAlignment.start,
                                           children: [
-                                            CircleAvatar(
-                                              radius: 30,
-                                              backgroundImage:
-                                              consultancy.photo ==
-                                                  null
-                                                  ? AssetImage(
-                                                  "assets/images/dummy_profile.jpg")
-                                                  : NetworkImage(
-                                                  consultancy.photo!)
-                                              as ImageProvider,
-                                            ),
-                                            Padding(
-                                              padding:
-                                              const EdgeInsets.only(
-                                                  top: 12.0),
-                                              child: Text(
-                                                consultancy.name,
-                                                style: TextStyle(
-                                                    fontSize: 14,
-                                                    fontWeight:
-                                                    FontWeight
-                                                        .w400),
-                                                maxLines: 2,
-                                                textAlign:
-                                                TextAlign.center,
+                                            Container(
+                                              height: 90,
+                                              width: 90,
+                                              decoration: BoxDecoration(
+                                                border: Border.all(
+                                                    color: Theme.of(context).primaryColor,
+                                                    width: 1
+                                                ),
+                                                borderRadius: BorderRadius.circular(16),
                                               ),
-                                            )
+                                              child: ClipRRect(
+                                                borderRadius: BorderRadius.circular(16),
+                                                child: country.map != null && country.map!.isNotEmpty
+                                                    ? Image.network(
+                                                  country.map!,
+                                                  fit: BoxFit.cover,
+                                                  errorBuilder: (context, error, stackTrace) {
+                                                    return Center(
+                                                      child: Icon(
+                                                        Icons.flag_rounded,
+                                                        size: 48,
+                                                        color: Colors.grey,
+                                                      ),
+                                                    );
+                                                  },
+                                                )
+                                                    : Center(
+                                                  child: Icon(
+                                                    Icons.flag_rounded,
+                                                    size: 48,
+                                                    color: Colors.grey,
+                                                  ),
+                                                ),
+                                              ),
+                                            ),
+                                            const SizedBox(height: 15),
+                                            SizedBox(
+                                              // height:20,
+                                              child: Align(
+                                                alignment: Alignment.center,
+                                                child: Text(country.country!,
+                                                  style: TextStyle(color: Theme.of(context).primaryColor,),
+                                                  overflow: TextOverflow.ellipsis,
+                                                ),
+                                              ),
+                                            ),
                                           ],
                                         ),
                                       ),
@@ -460,157 +397,20 @@ class home_activity_state extends State<home_activity> {
                               ),
                             ),
                           ),
-                        ),
-                        SizedBox(
-                          height: 35,
-                          width: MediaQuery.of(context).size.width,
-                          child: Padding(
-                            padding:
-                            const EdgeInsets.only(left: 20, right: 20),
-                            child: ElevatedButton(
-                              style: ElevatedButton.styleFrom(
-                                backgroundColor: Theme.of(context).primaryColor,
-                                shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(20),
-                                ),
-                              ),
-                              onPressed: () {
-                                Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                        builder: (context) =>
-                                            all_country_gridview_activity(
-                                                token: widget.token)));
-                              },
-                              child: const Text('Explore Countries'),
-                            ),
-                          ),
-                        ),
-                        Container(
-                          color: Theme.of(context).canvasColor,
-                          height: 10,
-                        ),
-                        Container(
-                          color: Colors.white,
-                          child: Padding(
-                            padding:
-                            const EdgeInsets.only(left: 25, right: 10),
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                Text(
-                                  'Country Guidelines',
-                                  style: TextStyle(
-                                      color: Theme.of(context).primaryColor,
-                                      fontSize: 18,
-                                      fontWeight: FontWeight.w500),
-                                ),
-                                TextButton(
-                                    onPressed: () {
-                                      Navigator.push(
-                                          context,
-                                          MaterialPageRoute(
-                                              builder: (context) =>
-                                                  all_country_gridview_activity(
-                                                      token: widget.token)));
-                                    },
-                                    child: Text(
-                                      'More',
-                                      style: TextStyle(
-                                          color: hexToColor('40D900')),
-                                    ))
-                              ],
-                            ),
-                          ),
-                        ),
-                        Container(
-                          color: Colors.white,
-                          child: Padding(
-                            padding:
-                            const EdgeInsets.only(
-                                left: 25, right: 25, top: 20, bottom: 25),
-                            child: isLoading
-                                ? Center(
-                              child: CircularProgressIndicator(),
-                            )
-                                : general_country_list.isEmpty
-                                ? Center(
-                              child: Text(
-                                "No guidelines found",
-                                style: TextStyle(color: Colors.grey),
-                              ),
-                            )
-                                : ListView.builder(
-                                physics: NeverScrollableScrollPhysics(),
-                                shrinkWrap: true,
-                                itemCount: general_country_list.length,
-                                itemBuilder: (context, index) {
-                                  return Padding(
-                                    padding: const EdgeInsets.only(
-                                        bottom: 15),
-                                    child: InkWell(
-                                      onTap: () {
-                                        Navigator.push(
-                                            context,
-                                            MaterialPageRoute(
-                                                builder: (context) =>
-                                                    general_country_activity(
-                                                        token:
-                                                        widget.token,
-                                                        id: general_country_list[
-                                                        index]
-                                                            .id,
-                                                        country:
-                                                        general_country_list[
-                                                        index]
-                                                            .country!)));
-                                      },
-                                      child: SizedBox(
-                                        height: 36,
-                                        child: Row(
-                                          children: [
-                                            Container(
-                                              decoration: BoxDecoration(
-                                                  borderRadius:
-                                                  BorderRadius
-                                                      .circular(6)),
-                                              clipBehavior: Clip.hardEdge,
-                                              child: Image.network(
-                                                general_country_list[index]
-                                                    .map ??
-                                                    "",
-                                                height: 36,
-                                                width: 54,
-                                                fit: BoxFit.fill,
-                                              ),
-                                            ),
-                                            Padding(
-                                              padding:
-                                              const EdgeInsets.only(
-                                                  left: 15),
-                                              child: Text(
-                                                general_country_list[index]
-                                                    .country ??
-                                                    "",
-                                                style: TextStyle(
-                                                    fontWeight:
-                                                    FontWeight.w500,
-                                                    fontSize: 14),
-                                              ),
-                                            )
-                                          ],
-                                        ),
-                                      ),
-                                    ),
-                                  );
-                                }),
-                          ),
-                        ),
+                        )
                       ],
+                    ),
+                    SizedBox(
+                      height: 80,
+                      child: Container(
+
+                        color: Theme.of(context).canvasColor,
+                      ),
                     )
                   ],
                 ),
               ),
+
             ),
           ),
         ),
@@ -618,53 +418,10 @@ class home_activity_state extends State<home_activity> {
     );
   }
 }
-
-enum _SearchResultType { Consultancy, Branch, Course }
-
-class _SearchResultItem {
-  final _SearchResultType type;
-  final Consultancy_details_model? consultancy;
-  final Branch_details_model? branch;
-  final Course_details_model? course;
-
-  _SearchResultItem(
-      {required this.type, this.consultancy, this.branch, this.course});
-}
-
-// Dummy hexToColor function if you don't have yours
-Color hexToColor(String hex) {
-  final buffer = StringBuffer();
-  if (hex.length == 6 || hex.length == 7) buffer.write('ff');
-  buffer.write(hex.replaceFirst('#', ''));
-  return Color(int.parse(buffer.toString(), radix: 16));
-}
-
-// Placeholder for course details screen - replace with your real screen
-class CourseDetailsScreen extends StatelessWidget {
-  final String token;
-  final String consultancyId;
-  final String branchId;
-  final String courseId;
-  final String courseTitle;
-
-  const CourseDetailsScreen(
-      {super.key,
-        required this.token,
-        required this.consultancyId,
-        required this.branchId,
-        required this.courseId,
-        required this.courseTitle});
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text(courseTitle),
-      ),
-      body: Center(
-        child: Text(
-            'Course details page for $courseTitle\nConsultancy ID: $consultancyId\nBranch ID: $branchId\nCourse ID: $courseId'),
-      ),
-    );
+Color hexToColor(String hexColor) {
+  hexColor = hexColor.replaceAll("#", "");
+  if (hexColor.length == 6) {
+    hexColor = "FF$hexColor"; // Add alpha value if not provided
   }
+  return Color(int.parse("0x$hexColor"));
 }
