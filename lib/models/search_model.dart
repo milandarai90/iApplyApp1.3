@@ -1,3 +1,0 @@
-class search_model{
-
-}
