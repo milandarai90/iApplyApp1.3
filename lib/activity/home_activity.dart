@@ -24,6 +24,10 @@ class home_activity_state extends State<home_activity>{
 
   List<Consultancy_details_model>consultancy_details_list =[];
   List<General_country_model>general_country_list =[];
+
+  List<Consultancy_details_model> filterConsultancy =[];
+  List<General_country_model> filterCountry = [];
+
   int myIndex =0;
   bool isLoading =true;
 
@@ -57,6 +61,8 @@ class home_activity_state extends State<home_activity>{
 
       if (!mounted) return;
       setState(() {
+        filterConsultancy = consultancy_details_list;
+        filterCountry = general_country_list;
         isLoading = false;
       });
     } catch (e) {
@@ -65,6 +71,10 @@ class home_activity_state extends State<home_activity>{
         isLoading = false;
       });
     }
+  }
+
+  Future<void> filterSearch(String query)async{
+
   }
 
   userDataModel? userName;
@@ -421,7 +431,7 @@ class home_activity_state extends State<home_activity>{
 Color hexToColor(String hexColor) {
   hexColor = hexColor.replaceAll("#", "");
   if (hexColor.length == 6) {
-    hexColor = "FF$hexColor"; // Add alpha value if not provided
+    hexColor = "FF$hexColor";
   }
   return Color(int.parse("0x$hexColor"));
 }
