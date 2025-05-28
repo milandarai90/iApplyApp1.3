@@ -470,7 +470,7 @@ class home_activity_state extends State<home_activity> {
                         elevation: 20,
                         borderRadius: BorderRadius.circular(12),
                         child: Container(
-                          height: 250,
+                          height: 300,
                           decoration: BoxDecoration(
                             color: Colors.white,
                             borderRadius: BorderRadius.circular(12),
